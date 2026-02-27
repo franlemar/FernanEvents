@@ -1,4 +1,4 @@
-package FernanEventsTemas05y06;
+package FernanEvents;
 
 public class FernanEventsApp {
     static void main(String[] args) {
