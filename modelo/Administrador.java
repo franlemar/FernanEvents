@@ -1,4 +1,4 @@
-package FernanEventsTemas05y06.modelo;
+package FernanEvents.modelo;
 
 public class Administrador extends Usuario{
 
