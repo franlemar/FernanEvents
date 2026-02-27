@@ -1,4 +1,4 @@
-package FernanEventsTemas05y06.vista;
+package FernanEvents.vista;
 
 public class VistaFernan {
 }
