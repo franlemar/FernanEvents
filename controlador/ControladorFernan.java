@@ -1,4 +1,4 @@
-package FernanEventsTemas05y06.controlador;
+package FernanEvents.controlador;
 
 public class ControladorFernan {
 }
