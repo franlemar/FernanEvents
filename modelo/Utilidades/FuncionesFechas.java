@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class funcionesFechas {
+public class FuncionesFechas {
     private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter FORMATO_SALIDA = DateTimeFormatter.ofPattern("dd 'de' MMMM yyyy - HH:mm");
 
@@ -34,8 +34,8 @@ public class funcionesFechas {
         return ChronoUnit.HOURS.between(LocalDateTime.now(), fecha);
     }
 
-    public static long diasRestantes(LocalDateTime fecha){
-        return ChronoUnit.DAYS.between(LocalDateTime.now(), fecha);
+    public static long diasRestantes(LocalDate fecha){
+        return ChronoUnit.DAYS.between(LocalDate.now(), fecha);
     }
 
     // funciones adicionales que nos pueden venir bien
