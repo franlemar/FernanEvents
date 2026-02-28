@@ -1,7 +1,6 @@
 package FernanEvents.controlador;
 
-import FernanEvents.modelo.Rol;
-import FernanEvents.modelo.Usuario;
+import FernanEvents.modelo.*;
 import FernanEvents.modelo.utilidades.interfaces.Aumentable;
 
 public class GestionUsuario implements Aumentable {
@@ -12,6 +11,7 @@ public class GestionUsuario implements Aumentable {
     public GestionUsuario(int tamanio) {
         usuarios = new Usuario[tamanio];
         numUsuarios = 0;
+        cargarUsuariosPredefinidos();
     }
 
     public Usuario[] getUsuarios() {
@@ -63,7 +63,7 @@ public class GestionUsuario implements Aumentable {
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CRUD.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     //C --> CREATE
-    public boolean registrarUsuario(Usuario nuevoUsuario){
+    public boolean aniadirUsuario(Usuario nuevoUsuario){
         if(numUsuarios == usuarios.length){
             aumentarCapacidad();
         }
@@ -72,6 +72,19 @@ public class GestionUsuario implements Aumentable {
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS HELPER.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    private void cargarUsuariosPredefinidos(){
+        Usuario admin = new Administrador("admin", "admin@fernanevents.com", "admin");
+        Usuario organizador1 = new Organizador("organizador1", "organizador1@fernanevents.com", "organizador1");
+        Usuario asistente1 = new Asistente("asistente1", "asistente1@fernanevents.com", "1234");
+        Usuario asistente2 = new Asistente("asistente2", "asistente2@fernanevents.com", "5678");
+
+        aniadirUsuario(admin);
+        aniadirUsuario(organizador1);
+        aniadirUsuario(asistente1);
+        aniadirUsuario(asistente2);
+    }
+
+
     protected Usuario buscaUsuarioPorCorreo(String correo){
         for (int i = 0; i < numUsuarios; i++) {
             if(usuarios[i].getCorreo().equalsIgnoreCase(correo)){

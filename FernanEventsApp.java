@@ -11,10 +11,6 @@ public class FernanEventsApp {
         VistaFernan vista = new VistaFernan();
         ControladorFernan controlador = new ControladorFernan(modelo,vista);
 
-
-
         controlador.iniciarFernan();
-
-
     }
 }

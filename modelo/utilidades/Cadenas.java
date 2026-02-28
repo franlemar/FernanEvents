@@ -42,6 +42,13 @@ public class Cadenas {
         else return true;
     }
 
+    /**
+     * Función que genera un codigo aleatorio de 4 cifras para utilizar como token en los inicios de sesión y registro de nuevos usuarios
+     */
+    public static String generarCodigoVerificacion() {
+        return String.valueOf((int) (Math.random() * 9000) + 1000);
+    }
+
     static void main(String[] args) {
 
         System.out.println(esTextoValido("Esto es una prueba", 15, 300));

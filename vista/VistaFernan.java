@@ -303,16 +303,53 @@ public class VistaFernan{
         System.out.println(mensaje);
     }
 
+    public void opcionNoValida(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Opción no válida" + estilo.ANSI_RESET);
+    }
+
     public void pedirCorreoLoguin(){
         System.out.print(estilo.PASTEL_BLUE + "Introduzca su correo electrónico para iniciar sesión: " + estilo.ANSI_RESET);
     }
 
-    public void mensajeNoExisteCorreo(){
+    public void pedirPasswordLoguin(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca su contraseña de acceso: " + estilo.ANSI_RESET);
+    }
+
+    public void noExisteCorreo(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "No existe ningún usuario con ese correo asociado" + estilo.ANSI_RESET);
     }
 
-    public void mensajeUsuarioBloqueado(){
+    public void usuarioBloqueado(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Tu usuario está bloqueado, póngase en contacto con el administrador" + estilo.ANSI_RESET);
+    }
+
+    public void seBloqueaUsuario(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Has gastado los intentos, tu usuario ha sido bloqueado" + estilo.ANSI_RESET);
+
+    }
+
+    public void normalPassIncorrecta(int intentos){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Los datos introducidos no son correctos. Le quedan " + intentos + " intentos restantes" + estilo.ANSI_RESET);
+    }
+
+    public void adminPassIncorrecta(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Los datos introducidos no son correctos. Inténtelo de nuevo" + estilo.ANSI_RESET);
+    }
+
+    public void correoVerificacionEnviado(){
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Código de verificación enviado a su correo electrónico." + estilo.ANSI_RESET);
+    }
+
+    public void pedirToken(){
+        System.out.println(estilo.BG_AZUL_PASTEL + estilo.ANSI_BLACK + estilo.BOLD + "Introduzca el código 2FA enviado a su correo" + estilo.ANSI_RESET);
+    }
+
+    public void loginCorrecto(){
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Has iniciado sesión correctamente \n" + estilo.ANSI_RESET);
+    }
+
+    public void tokenIncorrecto(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "El código introducido no es correcto. Inténtelo de nuevo \n" + estilo.ANSI_RESET);
 
     }
 

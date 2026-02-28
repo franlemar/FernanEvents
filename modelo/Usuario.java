@@ -8,6 +8,7 @@ public abstract class Usuario {
     private String password;
     private Rol rol;
     private float saldoUsuario;
+    private boolean bloqueado;
 
 
     //Constructor
@@ -17,6 +18,7 @@ public abstract class Usuario {
         this.password = password;
         this.rol = rol;
         this.saldoUsuario = 0f;
+        this.bloqueado = false;
     }
 
     //Métodos
@@ -62,5 +64,11 @@ public abstract class Usuario {
         this.saldoUsuario = saldoUsuario;
     }
 
+    public boolean isBloqueado() {
+        return bloqueado;
+    }
 
+    public void setBloqueado(boolean bloqueado) {
+        this.bloqueado = bloqueado;
+    }
 }
