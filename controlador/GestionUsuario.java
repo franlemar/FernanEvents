@@ -30,6 +30,7 @@ public class GestionUsuario implements Aumentable {
         this.numUsuarios = numUsuarios;
     }
 
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS INTERFAZ AUMENTABLE.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     public void aumentarCapacidad(){
         aumentarCapacidad(1);
     }
@@ -42,11 +43,11 @@ public class GestionUsuario implements Aumentable {
         this.usuarios = nuevoArray;
     }
 
-    public void disminuyeCapacidad(){
-        disminuyeCapacidad(1);
+    public void disminuirCapacidad(){
+        disminuirCapacidad(1);
     }
 
-    public void disminuyeCapacidad(int cantidad){
+    public void disminuirCapacidad(int cantidad){
         int nuevoTamanio = usuarios.length - cantidad;
         if(nuevoTamanio < numUsuarios){
             System.out.println("ERROR, no se puede reducir ese espacio");
@@ -60,7 +61,18 @@ public class GestionUsuario implements Aumentable {
         this.usuarios = nuevoArray;
     }
 
-    public Usuario buscaCorreo(String correo){
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CRUD.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    //C --> CREATE
+    public boolean registrarUsuario(Usuario nuevoUsuario){
+        if(numUsuarios == usuarios.length){
+            aumentarCapacidad();
+        }
+        usuarios[numUsuarios++] = nuevoUsuario;
+        return true;
+    }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS HELPER.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    protected Usuario buscaUsuarioPorCorreo(String correo){
         for (int i = 0; i < numUsuarios; i++) {
             if(usuarios[i].getCorreo().equalsIgnoreCase(correo)){
                 return usuarios[i];
@@ -69,9 +81,17 @@ public class GestionUsuario implements Aumentable {
         return null;
     }
 
-    //CRUD --> READ
+    protected int buscaPosicionPorCorreo(String correo){
+        for (int i = 0; i < numUsuarios; i++) {
+            if(usuarios[i].getCorreo().equalsIgnoreCase(correo)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     // buscar usuario por nombre
-    public Usuario buscarPorNombre(String nombre){
+    protected Usuario buscarPorNombre(String nombre){
         for (int i = 0; i <numUsuarios ; i++) {
             if (usuarios[i] != null && usuarios[i].getNombre().equalsIgnoreCase(nombre)){
                 return usuarios[i];
@@ -81,7 +101,7 @@ public class GestionUsuario implements Aumentable {
     }
 
     // buscar usuario por rol
-    public Usuario[] buscarPorRol(Rol rol){
+    protected Usuario[] buscarPorRol(Rol rol){
         int contador = 0;
         for (int i = 0; i < numUsuarios; i++) {
             if (usuarios[i] != null && usuarios[i].getRol() == rol){
@@ -101,7 +121,7 @@ public class GestionUsuario implements Aumentable {
     //CRUD --> UPDATE
     //actualizar nombre de usuario
     public boolean actualizarNombre(String correo, String nuevoNombre){
-        Usuario usuario = buscaCorreo(correo);
+        Usuario usuario = buscaUsuarioPorCorreo(correo);
         if (usuario == null) { return false; }
 
         Usuario existente = buscarPorNombre(nuevoNombre);
@@ -114,7 +134,7 @@ public class GestionUsuario implements Aumentable {
 
     // actualizar contraseña de usuario
     public boolean actualizarContrasena(String correo, String nuevaContrasena){
-        Usuario usuario = buscaCorreo(correo);
+        Usuario usuario = buscaUsuarioPorCorreo(correo);
         if (usuario == null) { return false; }
 
         usuario.setPassword(nuevaContrasena);
@@ -122,7 +142,7 @@ public class GestionUsuario implements Aumentable {
     }
 
     public boolean cambiarRol (String correo, Rol nuevoRol){
-        Usuario usuario = buscaCorreo(correo);
+        Usuario usuario = buscaUsuarioPorCorreo(correo);
         if (usuario == null) { return false; }
 
         usuario.setRol(nuevoRol);
@@ -130,7 +150,7 @@ public class GestionUsuario implements Aumentable {
     }
 
     public boolean aniadirSaldo (String correo, float cantidad){
-        Usuario usuario = buscaCorreo(correo);
+        Usuario usuario = buscaUsuarioPorCorreo(correo);
 
         if (usuario == null || cantidad <= 0) { return false; }
         usuario.setSaldoUsuario(usuario.getSaldoUsuario() + cantidad);
@@ -138,7 +158,7 @@ public class GestionUsuario implements Aumentable {
     }
 
     public boolean quitarSaldo (String correo, float cantidad){
-        Usuario usuario = buscaCorreo(correo);
+        Usuario usuario = buscaUsuarioPorCorreo(correo);
 
         if (usuario == null || cantidad <= 0) { return false; }
 
@@ -150,7 +170,22 @@ public class GestionUsuario implements Aumentable {
     }
 
     //CRUD --> DELETE
+    public boolean eliminaUsuario(String correo){
+        int posicion = buscaPosicionPorCorreo(correo);
+        if(posicion < 0){
+            return false;
+        }else{
+            usuarios[posicion] = null;
+            eliminaEspacios(posicion);
+            return true;
+        }
+    }
 
+    private void eliminaEspacios(int posicion){
+        usuarios[posicion] = usuarios[numUsuarios - 1];
+        usuarios[numUsuarios - 1] = null;
+        numUsuarios--;
+    }
 
 
 

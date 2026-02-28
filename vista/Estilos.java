@@ -2,53 +2,53 @@ package FernanEvents.vista;
 
 public class Estilos {
 
-    private final String ANSI_BLACK = "\u001B[30m";
-    private final String ANSI_RED = "\u001B[31m";
-    private final String ANSI_GREEN = "\u001B[32m";
-    private final String ANSI_YELLOW = "\u001B[33m";
-    private final String ANSI_BLUE = "\u001B[34m";
-    private final String ANSI_PURPLE = "\u001B[35m";
-    private final String ANSI_CYAN = "\u001B[36m";
-    private final String ANSI_WHITE = "\u001B[37m";
-    private final String ANSI_ORANGE = "\u001B[38;5;208m";
-    private final String ANSI_DARK_GREEN = "\u001B[38;5;28m";
+    protected final String ANSI_BLACK = "\u001B[30m";
+    protected final String ANSI_RED = "\u001B[31m";
+    protected final String ANSI_GREEN = "\u001B[32m";
+    protected final String ANSI_YELLOW = "\u001B[33m";
+    protected final String ANSI_BLUE = "\u001B[34m";
+    protected final String ANSI_PURPLE = "\u001B[35m";
+    protected final String ANSI_CYAN = "\u001B[36m";
+    protected final String ANSI_WHITE = "\u001B[37m";
+    protected final String ANSI_ORANGE = "\u001B[38;5;208m";
+    protected final String ANSI_DARK_GREEN = "\u001B[38;5;28m";
 
-    private final String NEON_GREEN = "\u001B[38;5;82m";
-    private final String NEON_RED = "\u001B[38;5;196m";
-    private final String NEON_BLUE = "\u001B[38;5;45m";
-    private final String NEON_PINK = "\u001B[38;5;199m";
-    private final String NEON_YELLOW = "\u001B[38;5;226m";
+    protected final String NEON_GREEN = "\u001B[38;5;82m";
+    protected final String NEON_RED = "\u001B[38;5;196m";
+    protected final String NEON_BLUE = "\u001B[38;5;45m";
+    protected final String NEON_PINK = "\u001B[38;5;199m";
+    protected final String NEON_YELLOW = "\u001B[38;5;226m";
 
-    private final String GOLD = "\u001B[38;5;178m";
+    protected final String GOLD = "\u001B[38;5;178m";
 
-    private final String PASTEL_PURPLE = "\u001B[38;5;183m";
-    private final String PASTEL_BLUE = "\u001B[38;5;153m";
-    private final String PASTEL_GREEN = "\u001B[38;5;157m";
-    private final String PASTEL_RED = "\u001B[38;2;255;105;97m";
-    private final String PASTEL_YELLOW = "\u001B[38;2;255;253;208m";
+    protected final String PASTEL_PURPLE = "\u001B[38;5;183m";
+    protected final String PASTEL_BLUE = "\u001B[38;5;153m";
+    protected final String PASTEL_GREEN = "\u001B[38;5;157m";
+    protected final String PASTEL_RED = "\u001B[38;2;255;105;97m";
+    protected final String PASTEL_YELLOW = "\u001B[38;2;255;253;208m";
 
-    private final String SILVER = "\u001B[38;5;250m";
+    protected final String SILVER = "\u001B[38;5;250m";
 
-    private final String ANSI_RESET = "\u001B[0m";
+    protected final String ANSI_RESET = "\u001B[0m";
 
     // Estilos
-    private final String BOLD = "\u001B[1m";
-    private final String BLOCK = "█";
-    private final String WARNING = "⚠";
+    protected final String BOLD = "\u001B[1m";
+    protected final String BLOCK = "█";
+    protected final String WARNING = "⚠";
 
-    private final String ITALIC = "\u001B[3m";
-    private final String UNDERLINE = "\u001B[4m";
+    protected final String ITALIC = "\u001B[3m";
+    protected final String UNDERLINE = "\u001B[4m";
 
     // Colores de fondo
-    private final String BG_BLACK = "\u001B[40m";
-    private final String BG_WHITE = "\u001B[47m";
-    private final String BG_BRIGHT_BLACK = "\u001B[100m";
-    private final String BG_PINK = "\u001B[48;5;205m";
-    private final String BG_BROWN = "\u001B[48;5;94m";
-    private final String BG_GREY = "\u001B[48;5;240m";
-    private final String BG_RED = "\u001B[41m";
-    private final String BG_GOLD = "\u001B[48;5;178m";
-    private final String BG_AZUL_PASTEL = "\u001B[48;2;173;216;230m";
+    protected final String BG_BLACK = "\u001B[40m";
+    protected final String BG_WHITE = "\u001B[47m";
+    protected final String BG_BRIGHT_BLACK = "\u001B[100m";
+    protected final String BG_PINK = "\u001B[48;5;205m";
+    protected final String BG_BROWN = "\u001B[48;5;94m";
+    protected final String BG_GREY = "\u001B[48;5;240m";
+    protected final String BG_RED = "\u001B[41m";
+    protected final String BG_GOLD = "\u001B[48;5;178m";
+    protected final String BG_AZUL_PASTEL = "\u001B[48;2;173;216;230m";
 
     public String getANSI_BLACK() {
         return ANSI_BLACK;
