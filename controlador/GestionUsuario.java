@@ -84,7 +84,6 @@ public class GestionUsuario implements Aumentable {
         aniadirUsuario(asistente2);
     }
 
-
     protected Usuario buscaUsuarioPorCorreo(String correo){
         for (int i = 0; i < numUsuarios; i++) {
             if(usuarios[i].getCorreo().equalsIgnoreCase(correo)){

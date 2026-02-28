@@ -29,7 +29,9 @@ public class ControladorFernan {
 
             switch(opcionMenu){
                 case 1:
-                    LoginUsuario();
+                    if(LoginUsuario()){
+                        muestraMenuPorRol();
+                    }
                     break;
 
                 case 2:
@@ -37,7 +39,7 @@ public class ControladorFernan {
                     break;
 
                 case 3:
-                    //MENSAJE SALIDA
+                    //Rompe el bucle y lleva al mensaje de fuera del do-while
                     break;
 
                 default:
@@ -77,7 +79,7 @@ public class ControladorFernan {
             if(usuario.getPassword().equals(password)){
                 passwordCorrecta = true;
             }else{
-                if(!usuario.getRol().name().equals("ADMIN")){
+                if(!usuario.getRol().name().equals("ADMINISTRADOR")){
                     intentosRestantes--;
                     vista.normalPassIncorrecta(intentosRestantes);
                 }else{
@@ -116,5 +118,118 @@ public class ControladorFernan {
             }
         }
         return false;
+    }
+
+    public void muestraMenuPorRol(){
+        if(usuarioLogueado == null){ return; }
+
+        switch(usuarioLogueado.getRol()){
+            case ADMINISTRADOR:
+                menuPrincipalAdmin();
+                break;
+
+            case ORGANIZADOR:
+                menuPrincipalOrganizador();
+                break;
+
+            case ASISTENTE:
+                menuPrincipalAsistente();
+                break;
+        }
+    }
+
+    private void menuPrincipalAdmin(){
+        Scanner s = new Scanner(System.in);
+        int opcionMenu;
+
+        do{
+            vista.menuAdministrador();
+            opcionMenu = Integer.parseInt(s.nextLine());
+
+            switch(opcionMenu){
+                case 1:
+                    break;
+
+                case 2:
+                    break;
+
+                case 3:
+                    break;
+
+                case 4:
+                    break;
+
+                case 5:
+                    break;
+
+                default:
+                    vista.opcionNoValida();
+
+            }
+        }while(opcionMenu != 5);
+    }
+
+    private void menuPrincipalOrganizador(){
+        Scanner s = new Scanner(System.in);
+        int opcionMenu;
+
+        do{
+            vista.menuOrganizador();
+            opcionMenu = Integer.parseInt(s.nextLine());
+
+            switch(opcionMenu){
+                case 1:
+                    break;
+
+                case 2:
+                    break;
+
+                case 3:
+                    break;
+
+                case 4:
+                    break;
+
+                default:
+                    vista.opcionNoValida();
+
+            }
+
+        }while(opcionMenu != 4);
+    }
+
+    private void menuPrincipalAsistente(){
+        Scanner s = new Scanner(System.in);
+        int opcionMenu;
+
+        do{
+            vista.menuAsistente();
+            opcionMenu = Integer.parseInt(s.nextLine());
+
+            switch(opcionMenu){
+                case 1:
+                    break;
+
+                case 2:
+                    break;
+
+                case 3:
+                    break;
+
+                case 4:
+                    break;
+
+                case 5:
+                    break;
+
+                case 6:
+                    break;
+
+                default:
+                    vista.opcionNoValida();
+
+            }
+
+        }while(opcionMenu != 6);
     }
 }
