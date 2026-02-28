@@ -1,6 +1,8 @@
 package FernanEvents.modelo;
 
-public class Entrada {
+import FernanEvents.modelo.utilidades.interfaces.Aumentable;
+
+public class Entrada implements Aumentable {
 
 
 }

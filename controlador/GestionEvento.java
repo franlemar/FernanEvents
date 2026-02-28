@@ -1,4 +1,6 @@
-package FernanEvents.modelo;
+package FernanEvents.controlador;
+
+import FernanEvents.modelo.Evento;
 
 public class GestionEvento {
 

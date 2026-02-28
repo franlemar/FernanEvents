@@ -7,17 +7,17 @@ public class Evento {
     //Atributos
     private String nombre;
     private String descripcion;
-    private Categoria categoria;
+    private CategoriaEvento categoriaEvento;
     private LocalDate fecha;
     private int aforo;
     private int personasInscritas;
 
 
     //Constructor
-    public Evento(String nombre, String descripcion, Categoria categoria, LocalDate fecha, int aforo, int personasInscritas) {
+    public Evento(String nombre, String descripcion, CategoriaEvento categoriaEvento, LocalDate fecha, int aforo, int personasInscritas) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.categoria = categoria;
+        this.categoriaEvento = categoriaEvento;
         this.fecha = fecha;
         this.aforo = aforo;
         this.personasInscritas = personasInscritas;
@@ -39,12 +39,12 @@ public class Evento {
         this.descripcion = descripcion;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public CategoriaEvento getCategoria() {
+        return categoriaEvento;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setCategoria(CategoriaEvento categoriaEvento) {
+        this.categoriaEvento = categoriaEvento;
     }
 
     public LocalDate getFecha() {

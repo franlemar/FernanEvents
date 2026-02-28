@@ -1,4 +1,4 @@
-package FernanEvents.modelo.Utilidades;
+package FernanEvents.modelo.utilidades;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

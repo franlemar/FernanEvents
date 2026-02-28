@@ -1,5 +1,5 @@
 package FernanEvents.modelo;
 
-public enum Categoria {
+public enum CategoriaEvento {
     ARTE, TECNOLOGIA, CINE, MUSICA, MODA, JUEGOS
 }

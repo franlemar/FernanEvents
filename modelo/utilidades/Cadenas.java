@@ -1,4 +1,4 @@
-package FernanEvents.modelo.Utilidades;
+package FernanEvents.modelo.utilidades;
 
 public class Cadenas {
 

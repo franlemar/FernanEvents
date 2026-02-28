@@ -1,9 +1,12 @@
 package FernanEvents.modelo;
 
-public class Asistente extends Usuario{
+import FernanEvents.modelo.utilidades.interfaces.Bloqueable;
+
+public class Asistente extends Usuario implements Bloqueable {
 
     private Entrada[] misEntradas;
     private int numEntradas;
+    private boolean bloqueado = false;
 
     public Asistente(String nombre, String correo, String password){
         super(nombre, correo, password, Rol.ASISTENTE);
@@ -25,5 +28,19 @@ public class Asistente extends Usuario{
 
     public void setNumEntradas(int numEntradas) {
         this.numEntradas = numEntradas;
+    }
+
+    @Override
+    public void bloquear() {
+        this.bloqueado = true;
+    }
+
+    public void desbloquear(){
+        this.bloqueado = false;
+    }
+
+    @Override
+    public boolean estaBloqueado() {
+        return this.bloqueado;
     }
 }

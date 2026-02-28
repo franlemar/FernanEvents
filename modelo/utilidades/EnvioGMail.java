@@ -1,4 +1,4 @@
-package FernanEvents.modelo.Utilidades;
+package FernanEvents.modelo.utilidades;
 
 import javax.mail.Message;
 import javax.mail.Session;
