@@ -165,7 +165,7 @@ public class GestionUsuario implements Aumentable {
         Usuario usuario = buscaUsuarioPorCorreo(correo);
 
         if (usuario == null || cantidad <= 0) { return false; }
-        usuario.setSaldoUsuario(usuario.getSaldoUsuario() + cantidad);
+        usuario.setSaldo(usuario.getSaldo() + cantidad);
         return true;
     }
 
@@ -174,8 +174,8 @@ public class GestionUsuario implements Aumentable {
 
         if (usuario == null || cantidad <= 0) { return false; }
 
-        if (usuario.getSaldoUsuario() >= cantidad) {
-            usuario.setSaldoUsuario(usuario.getSaldoUsuario() - cantidad);
+        if (usuario.getSaldo() >= cantidad) {
+            usuario.setSaldo(usuario.getSaldo() - cantidad);
             return true;
         }
         return false;

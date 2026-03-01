@@ -1,5 +1,7 @@
 package FernanEvents.vista;
 
+import FernanEvents.modelo.Rol;
+
 public class VistaFernan{
 
     private  Estilos estilo = new Estilos();
@@ -110,6 +112,7 @@ public class VistaFernan{
         System.out.println("2. Añadir saldo");
         System.out.println("3. Retirar saldo");
         System.out.println(estilo.NEON_PINK + "4. Volver atrás" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_GREEN + "Elige la opción que deseas realizar: " + estilo.ANSI_RESET);
     }
 
     /**
@@ -122,7 +125,7 @@ public class VistaFernan{
         System.out.println("2. Cambiar contraseña" + estilo.ANSI_RESET);
         System.out.println(estilo.NEON_PINK + "3. Volver atrás" + estilo.ANSI_RESET);
 
-        System.out.println(estilo.PASTEL_GREEN + "Elige la opción que desea realizar: " + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_GREEN + "Elige la opción que deseas realizar: " + estilo.ANSI_RESET);
     }
 
     /**
@@ -209,7 +212,7 @@ public class VistaFernan{
     /**
      * Función que se encarga de mostrar de forma visual en consola el cierre de sesión de un perfil de usuario de FernanEvents. Aquí "thread.sleep" se encarga de hacer que aparezcan los puntos progresivamente con un tiempo ya predefinido.
      */
-    public void cerrarSesion(String rolUsuario) throws InterruptedException {
+    public void cerrarSesion(Rol rolUsuario) throws InterruptedException {
         System.out.print(estilo.ANSI_RED + estilo.WARNING + estilo.BOLD +" Cerrando sesión como " + rolUsuario + estilo.ANSI_RESET );
         for (int i = 1; i <=3 ; i++) {
             System.out.print(estilo.ANSI_RED + "."+ estilo.ANSI_RESET);
@@ -350,7 +353,27 @@ public class VistaFernan{
 
     public void tokenIncorrecto(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "El código introducido no es correcto. Inténtelo de nuevo \n" + estilo.ANSI_RESET);
+    }
 
+    public void consultaSaldo(float saldo){
+        System.out.println(estilo.PASTEL_BLUE + "El saldo actual de su cartera digital es de: " + estilo.ANSI_RESET +
+                estilo.BOLD + estilo.PASTEL_GREEN + saldo + "€ \n" + estilo.ANSI_RESET);
+    }
+
+    public void preguntaSumaSaldo(){
+        System.out.println(estilo.PASTEL_BLUE + "¿Cuánto saldo quiere añadir a su cartera digital?" + estilo.ANSI_RESET);
+    }
+
+    public void preguntaRetiraSaldo(){
+        System.out.println(estilo.PASTEL_BLUE + "¿Cuánto saldo quiere retirar de su cartera digital?" + estilo.ANSI_RESET);
+    }
+
+    public void sumaSaldoOK(float saldo){
+        System.out.println(estilo.PASTEL_BLUE + "Saldo añadido con éxito. Su saldo actual es: " + estilo.ANSI_RESET + estilo.BOLD + estilo.PASTEL_YELLOW + saldo + "€ \n" + estilo.ANSI_RESET);
+    }
+
+    public void retiraSaldoOK(float saldo){
+        System.out.println(estilo.PASTEL_BLUE + "Saldo retirado con éxito. Su saldo actual es: " + estilo.ANSI_RESET + estilo.BOLD + estilo.PASTEL_YELLOW + saldo + "€ \n" + estilo.ANSI_RESET);
     }
 
 }

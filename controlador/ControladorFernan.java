@@ -120,9 +120,8 @@ public class ControladorFernan {
         return false;
     }
 
-    public void muestraMenuPorRol(){
+    public void muestraMenuPorRol() throws InterruptedException {
         if(usuarioLogueado == null){ return; }
-
         switch(usuarioLogueado.getRol()){
             case ADMINISTRADOR:
                 menuPrincipalAdmin();
@@ -138,7 +137,7 @@ public class ControladorFernan {
         }
     }
 
-    private void menuPrincipalAdmin(){
+    private void menuPrincipalAdmin() throws InterruptedException {
         Scanner s = new Scanner(System.in);
         int opcionMenu;
 
@@ -154,6 +153,7 @@ public class ControladorFernan {
                     break;
 
                 case 3:
+                    gestionaCarteraDigital();
                     break;
 
                 case 4:
@@ -167,9 +167,10 @@ public class ControladorFernan {
 
             }
         }while(opcionMenu != 5);
+        vista.cerrarSesion(usuarioLogueado.getRol());
     }
 
-    private void menuPrincipalOrganizador(){
+    private void menuPrincipalOrganizador() throws InterruptedException {
         Scanner s = new Scanner(System.in);
         int opcionMenu;
 
@@ -182,6 +183,7 @@ public class ControladorFernan {
                     break;
 
                 case 2:
+                    gestionaCarteraDigital();
                     break;
 
                 case 3:
@@ -192,13 +194,13 @@ public class ControladorFernan {
 
                 default:
                     vista.opcionNoValida();
-
             }
 
         }while(opcionMenu != 4);
+        vista.cerrarSesion(usuarioLogueado.getRol());
     }
 
-    private void menuPrincipalAsistente(){
+    private void menuPrincipalAsistente() throws InterruptedException {
         Scanner s = new Scanner(System.in);
         int opcionMenu;
 
@@ -214,6 +216,7 @@ public class ControladorFernan {
                     break;
 
                 case 3:
+                    gestionaCarteraDigital();
                     break;
 
                 case 4:
@@ -227,9 +230,64 @@ public class ControladorFernan {
 
                 default:
                     vista.opcionNoValida();
-
             }
 
         }while(opcionMenu != 6);
+        vista.cerrarSesion(usuarioLogueado.getRol());
     }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CARTERA DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    private void gestionaCarteraDigital(){
+        Scanner s = new Scanner(System.in);
+        int opcionMenu;
+
+        do{
+            vista.menucarteraDigital();
+            opcionMenu = Integer.parseInt(s.nextLine());
+
+            switch(opcionMenu){
+                case 1:
+                    vista.consultaSaldo(usuarioLogueado.getSaldo());
+                    break;
+
+                case 2:
+                    sumaSaldo();
+                    break;
+
+                case 3:
+                    retiraSaldo();
+                    break;
+
+                case 4:
+                    break;
+
+                default:
+                    vista.opcionNoValida();
+            }
+        }while(opcionMenu != 4);
+    }
+
+    private void sumaSaldo(){
+        Scanner s = new Scanner(System.in);
+        vista.preguntaSumaSaldo();
+        float saldoASumar = Float.parseFloat(s.nextLine());
+        usuarioLogueado.setSaldo(usuarioLogueado.getSaldo() + saldoASumar);
+        vista.sumaSaldoOK(usuarioLogueado.getSaldo());
+    }
+
+    private void retiraSaldo(){
+        Scanner s = new Scanner(System.in);
+        vista.preguntaRetiraSaldo();
+        float saldoARetirar = Float.parseFloat(s.nextLine());
+
+        if(usuarioLogueado.getSaldo() == 0 || saldoARetirar > usuarioLogueado.getSaldo()){
+            vista.mensajeError();
+        }else{
+            usuarioLogueado.setSaldo(usuarioLogueado.getSaldo() - saldoARetirar);
+            vista.retiraSaldoOK(usuarioLogueado.getSaldo());
+        }
+    }
+
+
 }

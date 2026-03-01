@@ -7,7 +7,7 @@ public abstract class Usuario {
     private String correo;
     private String password;
     private Rol rol;
-    private float saldoUsuario;
+    private float saldo;
     private boolean bloqueado;
 
 
@@ -17,7 +17,7 @@ public abstract class Usuario {
         this.correo = correo;
         this.password = password;
         this.rol = rol;
-        this.saldoUsuario = 0f;
+        this.saldo = 0f;
         this.bloqueado = false;
     }
 
@@ -56,12 +56,12 @@ public abstract class Usuario {
         this.rol = rol;
     }
 
-    public float getSaldoUsuario() {
-        return saldoUsuario;
+    public float getSaldo() {
+        return saldo;
     }
 
-    public void setSaldoUsuario(float saldoUsuario) {
-        this.saldoUsuario = saldoUsuario;
+    public void setSaldo(float saldo) {
+        this.saldo = saldo;
     }
 
     public boolean isBloqueado() {
