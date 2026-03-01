@@ -11,6 +11,8 @@ public class Evento {
     private LocalDate fecha;
     private int aforo;
     private int personasInscritas;
+    private int id;
+    private static int contadorId = 0; //aquí he puesto static para que todos los objetos compartan el mismo contador
 
 
     //Constructor
@@ -21,6 +23,8 @@ public class Evento {
         this.fecha = fecha;
         this.aforo = aforo;
         this.personasInscritas = personasInscritas;
+        this.id = contadorId;
+        contadorId++;
     }
 
     public String getNombre() {
@@ -71,5 +75,7 @@ public class Evento {
         this.aforo = aforo;
     }
 
+    public int getId() { return id; }
 
+    public void setId(int id) { this.id = id; }
 }

@@ -2,7 +2,6 @@ package FernanEvents.controlador;
 
 import FernanEvents.modelo.CategoriaEvento;
 import FernanEvents.modelo.Evento;
-import FernanEvents.modelo.Usuario;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
 
 import java.time.LocalDate;
@@ -215,10 +214,20 @@ public class GestionEvento {
         return true;
     }
 
+    //métodos adicionales que nos pueden servir
+    //nos vale para cuando queramos saber cuantas plazas libres quedan en un evento.
 
+     public int getAforoDisponible(String nombreEvento){
+        Evento evento = buscarEventoPorNombre(nombreEvento);
+        if (evento == null) return -1;
 
+        return evento.getAforo() - evento.getPersonasInscritas();
+    }
 
-
-
+    //verificar si se pueden comprar x entradas antes de que nos permita comprarlas
+    public boolean hayPlazasDisponibles (String nombreEvento, int plazasSolicitadas){
+        int disponibles = getAforoDisponible(nombreEvento);
+        return disponibles >= plazasSolicitadas;
+    }
 
 }
