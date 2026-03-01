@@ -147,6 +147,7 @@ public class ControladorFernan {
 
             switch(opcionMenu){
                 case 1:
+                    panelControlAdmin();
                     break;
 
                 case 2:
@@ -236,8 +237,47 @@ public class ControladorFernan {
         vista.cerrarSesion(usuarioLogueado.getRol());
     }
 
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.PANEL DE CONTROL DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    private void panelControlAdmin(){
+        if(!modelo.confirmaUsuariosBloqueados()){
+            vista.noHayUsuariosBloqueados();
+        }else{
+            if(gestionaUsuariosBloqueados()){
+                vista.mensajeConfirmacion();
+            }else{
+                vista.mensajeError();
+            }
+        }
+    }
+
+    private boolean gestionaUsuariosBloqueados(){
+        Scanner s = new Scanner(System.in);
+        Usuario[] listaUsuarios = modelo.getUsuarios();
+        vista.cabeceraUsuariosBloqueados();
+        for (int i = 0; i < modelo.getNumUsuarios(); i++) {
+            if(listaUsuarios[i] != null && listaUsuarios[i].isBloqueado()){
+                vista.mostrarUsuarioBloqueado(i, listaUsuarios[i].getNombre());
+            }
+        }
+        vista.pideNumeroUsuario();
+        int opcionPanelBloqueo = Integer.parseInt(s.nextLine());
+        if(opcionPanelBloqueo > 0 && opcionPanelBloqueo < listaUsuarios.length &&
+                listaUsuarios[opcionPanelBloqueo] != null){
+
+            if(listaUsuarios[opcionPanelBloqueo].isBloqueado()){
+                listaUsuarios[opcionPanelBloqueo].setBloqueado(false);
+                return true;
+            }
+        }
+        return false;
+    }
+
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CARTERA DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
 
+    /**
+     * Función que haciendo uso de otras subfunciones(consultaSaldo, sumaSaldo, retiraSaldo) permite al usuario gestionar las diferentes opciones que ofrece la cartera digital de FernanEvents
+     */
     private void gestionaCarteraDigital(){
         Scanner s = new Scanner(System.in);
         int opcionMenu;
@@ -252,11 +292,19 @@ public class ControladorFernan {
                     break;
 
                 case 2:
-                    sumaSaldo();
+                    if(sumaSaldo()){
+                        vista.sumaSaldoOK(usuarioLogueado.getSaldo());
+                    }else{
+                        vista.mensajeError();
+                    }
                     break;
 
                 case 3:
-                    retiraSaldo();
+                    if(retiraSaldo()){
+                        vista.retiraSaldoOK(usuarioLogueado.getSaldo());
+                    }else{
+                        vista.mensajeError();
+                    }
                     break;
 
                 case 4:
@@ -268,24 +316,31 @@ public class ControladorFernan {
         }while(opcionMenu != 4);
     }
 
-    private void sumaSaldo(){
+    /**
+     * Función que añade la cantidad de saldo que introduzca el usuario actual a su cartera digital
+     */
+    private boolean sumaSaldo(){
         Scanner s = new Scanner(System.in);
         vista.preguntaSumaSaldo();
         float saldoASumar = Float.parseFloat(s.nextLine());
         usuarioLogueado.setSaldo(usuarioLogueado.getSaldo() + saldoASumar);
-        vista.sumaSaldoOK(usuarioLogueado.getSaldo());
+        return true;
     }
 
-    private void retiraSaldo(){
+    /**
+     * Función que retira la cantidad de saldo que introduzca el usuario actual a su cartera digital
+     */
+    private boolean retiraSaldo(){
         Scanner s = new Scanner(System.in);
         vista.preguntaRetiraSaldo();
         float saldoARetirar = Float.parseFloat(s.nextLine());
 
         if(usuarioLogueado.getSaldo() == 0 || saldoARetirar > usuarioLogueado.getSaldo()){
-            vista.mensajeError();
+            return false;
         }else{
             usuarioLogueado.setSaldo(usuarioLogueado.getSaldo() - saldoARetirar);
-            vista.retiraSaldoOK(usuarioLogueado.getSaldo());
+            return true;
+
         }
     }
 

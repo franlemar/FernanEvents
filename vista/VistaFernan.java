@@ -103,19 +103,6 @@ public class VistaFernan{
     }
 
     /**
-     * Muestra el menú de cartera digital donde el usuario puede consultar el saldo que tiene actualmente, así como añadir o retirar saldo de su cartera
-     */
-    public void menucarteraDigital() {
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + estilo.UNDERLINE + "✦ CARTERA DIGITAL ✦" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.PASTEL_BLUE + "1. Mostrar saldo actual");
-        System.out.println("2. Añadir saldo");
-        System.out.println("3. Retirar saldo");
-        System.out.println(estilo.NEON_PINK + "4. Volver atrás" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_GREEN + "Elige la opción que deseas realizar: " + estilo.ANSI_RESET);
-    }
-
-    /**
      * Muestra el menú de panel de configuración para el organizador y los asistente. Desde aquí pueden cambiar el nombre de su usuario y su contraseña de acceso
      */
     public void menuConfiguracionGeneral() {
@@ -291,15 +278,20 @@ public class VistaFernan{
 
     public void mostrarDespedida(){
         System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "*** FIN DEL PROGRAMA ***" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_BLUE + "Gracias por utilizar FernanEvents. ¡Nos vemos en los escenarios! 😉" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE +
+                "Gracias por utilizar FernanEvents. ¡Nos vemos en los escenarios! 😉" + estilo.ANSI_RESET);
     }
 
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.NOTIFICACIONES GENERALES.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
     public void mensajeConfirmacion(){
-        System.out.println(" ✅ Operación realizada correctamente");
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD +
+                " ✅ Operación realizada correctamente" + estilo.ANSI_RESET);
     }
 
     public void mensajeError(){
-        System.out.println(" ❌ ERROR, no se ha podido completar la operación solicitada");
+        System.out.println(estilo.ANSI_RED + estilo.BOLD +
+                " ❌ ERROR, no se ha podido completar la operación solicitada" + estilo.ANSI_RESET);
     }
 
     public void notificacion(String mensaje){
@@ -310,8 +302,11 @@ public class VistaFernan{
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Opción no válida" + estilo.ANSI_RESET);
     }
 
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA LOGIN.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
     public void pedirCorreoLoguin(){
-        System.out.print(estilo.PASTEL_BLUE + "Introduzca su correo electrónico para iniciar sesión: " + estilo.ANSI_RESET);
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca su correo electrónico para iniciar sesión: "
+                + estilo.ANSI_RESET);
     }
 
     public void pedirPasswordLoguin(){
@@ -319,61 +314,113 @@ public class VistaFernan{
     }
 
     public void noExisteCorreo(){
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No existe ningún usuario con ese correo asociado" + estilo.ANSI_RESET);
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No existe ningún usuario con ese correo asociado"
+                + estilo.ANSI_RESET);
     }
 
     public void usuarioBloqueado(){
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Tu usuario está bloqueado, póngase en contacto con el administrador" + estilo.ANSI_RESET);
+        System.out.println(estilo.ANSI_RED + estilo.BOLD +
+                "Tu usuario está bloqueado, póngase en contacto con el administrador" + estilo.ANSI_RESET);
     }
 
     public void seBloqueaUsuario(){
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Has gastado los intentos, tu usuario ha sido bloqueado" + estilo.ANSI_RESET);
-
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Has gastado los intentos, tu usuario ha sido bloqueado"
+                + estilo.ANSI_RESET);
     }
 
     public void normalPassIncorrecta(int intentos){
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Los datos introducidos no son correctos. Le quedan " + intentos + " intentos restantes" + estilo.ANSI_RESET);
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Los datos introducidos no son correctos. Le quedan "
+                + intentos + " intentos restantes" + estilo.ANSI_RESET);
     }
 
     public void adminPassIncorrecta(){
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Los datos introducidos no son correctos. Inténtelo de nuevo" + estilo.ANSI_RESET);
+        System.out.println(estilo.ANSI_RED + estilo.BOLD +
+                "Los datos introducidos no son correctos. Inténtelo de nuevo" + estilo.ANSI_RESET);
     }
 
     public void correoVerificacionEnviado(){
-        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Código de verificación enviado a su correo electrónico." + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD +
+                "Código de verificación enviado a su correo electrónico." + estilo.ANSI_RESET);
     }
 
     public void pedirToken(){
-        System.out.println(estilo.BG_AZUL_PASTEL + estilo.ANSI_BLACK + estilo.BOLD + "Introduzca el código 2FA enviado a su correo" + estilo.ANSI_RESET);
+        System.out.println(estilo.BG_AZUL_PASTEL + estilo.ANSI_BLACK + estilo.BOLD +
+                "Introduzca el código 2FA enviado a su correo" + estilo.ANSI_RESET);
     }
 
     public void loginCorrecto(){
-        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Has iniciado sesión correctamente \n" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Has iniciado sesión correctamente \n"
+                + estilo.ANSI_RESET);
     }
 
     public void tokenIncorrecto(){
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "El código introducido no es correcto. Inténtelo de nuevo \n" + estilo.ANSI_RESET);
+        System.out.println(estilo.ANSI_RED + estilo.BOLD +
+                "El código introducido no es correcto. Inténtelo de nuevo \n" + estilo.ANSI_RESET);
     }
 
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CARTERA DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    /**
+     * Muestra el menú de cartera digital donde el usuario puede consultar el saldo que tiene actualmente, así como añadir o retirar saldo de su cartera
+     */
+    public void menucarteraDigital() {
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + estilo.UNDERLINE + "✦ CARTERA DIGITAL ✦" + estilo.ANSI_RESET);
+
+        System.out.println(estilo.PASTEL_BLUE + "1. Mostrar saldo actual");
+        System.out.println("2. Añadir saldo");
+        System.out.println("3. Retirar saldo");
+        System.out.println(estilo.NEON_PINK + "4. Volver atrás" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_GREEN + "Elige la opción que deseas realizar: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Muestra el saldo disponible de la cartera digital del usuario actual en FernanEvents
+     */
     public void consultaSaldo(float saldo){
         System.out.println(estilo.PASTEL_BLUE + "El saldo actual de su cartera digital es de: " + estilo.ANSI_RESET +
                 estilo.BOLD + estilo.PASTEL_GREEN + saldo + "€ \n" + estilo.ANSI_RESET);
     }
 
     public void preguntaSumaSaldo(){
-        System.out.println(estilo.PASTEL_BLUE + "¿Cuánto saldo quiere añadir a su cartera digital?" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "¿Cuánto saldo quiere añadir a su cartera digital?"
+                + estilo.ANSI_RESET);
     }
 
     public void preguntaRetiraSaldo(){
-        System.out.println(estilo.PASTEL_BLUE + "¿Cuánto saldo quiere retirar de su cartera digital?" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "¿Cuánto saldo quiere retirar de su cartera digital?"
+                + estilo.ANSI_RESET);
     }
 
     public void sumaSaldoOK(float saldo){
-        System.out.println(estilo.PASTEL_BLUE + "Saldo añadido con éxito. Su saldo actual es: " + estilo.ANSI_RESET + estilo.BOLD + estilo.PASTEL_YELLOW + saldo + "€ \n" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "Saldo añadido con éxito. Su saldo actual es: " + estilo.ANSI_RESET +
+                estilo.BOLD + estilo.PASTEL_YELLOW + saldo + "€ \n" + estilo.ANSI_RESET);
     }
 
     public void retiraSaldoOK(float saldo){
-        System.out.println(estilo.PASTEL_BLUE + "Saldo retirado con éxito. Su saldo actual es: " + estilo.ANSI_RESET + estilo.BOLD + estilo.PASTEL_YELLOW + saldo + "€ \n" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "Saldo retirado con éxito. Su saldo actual es: " + estilo.ANSI_RESET +
+                estilo.BOLD + estilo.PASTEL_YELLOW + saldo + "€ \n" + estilo.ANSI_RESET);
     }
+
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.PANEL DE CONTROL DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    public void noHayUsuariosBloqueados(){
+        System.out.println(estilo.PASTEL_BLUE + "No hay ningún usuario bloqueado \n" + estilo.ANSI_RESET);
+    }
+
+    public void cabeceraUsuariosBloqueados(){
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ USUARIOS BLOQUEADOS ✦" + estilo.ANSI_RESET);
+    }
+
+    public void mostrarUsuarioBloqueado(int indice, String nombre){
+        System.out.println(estilo.PASTEL_BLUE + nombre + " (" + indice + ")" + estilo.ANSI_RESET);
+    }
+
+    public void pideNumeroUsuario(){
+        System.out.println(estilo.PASTEL_GREEN + "Pulse el número que corresponde a cada usuario para desbloquearlo. " +
+                "Para salir, pulse cualquier otro numero: " + estilo.ANSI_RESET);
+    }
+
+
+
 
 }
