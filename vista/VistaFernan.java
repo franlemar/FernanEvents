@@ -199,8 +199,8 @@ public class VistaFernan{
     /**
      * Función que se encarga de mostrar de forma visual en consola el cierre de sesión de un perfil de usuario de FernanEvents. Aquí "thread.sleep" se encarga de hacer que aparezcan los puntos progresivamente con un tiempo ya predefinido.
      */
-    public void cerrarSesion(Rol rolUsuario) throws InterruptedException {
-        System.out.print(estilo.ANSI_RED + estilo.WARNING + estilo.BOLD +" Cerrando sesión como " + rolUsuario + estilo.ANSI_RESET );
+    public void cerrarSesion(String nombreUsuario) throws InterruptedException {
+        System.out.print(estilo.ANSI_RED + estilo.WARNING + estilo.BOLD +" Cerrando sesión como " + nombreUsuario + estilo.ANSI_RESET );
         for (int i = 1; i <=3 ; i++) {
             System.out.print(estilo.ANSI_RED + "."+ estilo.ANSI_RESET);
             Thread.sleep(1400);
@@ -286,12 +286,12 @@ public class VistaFernan{
 
     public void mensajeConfirmacion(){
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD +
-                " ✅ Operación realizada correctamente" + estilo.ANSI_RESET);
+                " ✅ Operación realizada correctamente" + estilo.ANSI_RESET + "\n");
     }
 
     public void mensajeError(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD +
-                " ❌ ERROR, no se ha podido completar la operación solicitada" + estilo.ANSI_RESET);
+                " ❌ ERROR, no se ha podido completar la operación solicitada" + estilo.ANSI_RESET  + "\n");
     }
 
     public void notificacion(String mensaje){
@@ -420,6 +420,28 @@ public class VistaFernan{
                 "Para salir, pulse cualquier otro numero: " + estilo.ANSI_RESET);
     }
 
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION CONFIGURACION DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    public void pedirNombreUsuario(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca el nombre del usuario al que desea cambiarle su nombre de usuario: " + estilo.ANSI_RESET);
+    }
+
+    public void pedirNuevoNombre(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca el nuevo nombre que tendrá a partir de ahora este usuario: " + estilo.ANSI_RESET);
+    }
+
+    public void nombreYaEnUso(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "El nuevo nombre que has introducido ya está en uso. Introduce otro distinto. " + estilo.ANSI_RESET);
+    }
+
+    public void errorAlBuscarNombre(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No se ha encontrado ningún usuario con el nombre que ha introducido" + estilo.ANSI_RESET);
+    }
+
+    public void pedirNuevaPassword(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca la nueva contraseña de acceso para el usuario que ha elegido: " + estilo.ANSI_RESET);
+
+    }
 
 
 

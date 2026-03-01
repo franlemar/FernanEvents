@@ -158,6 +158,7 @@ public class ControladorFernan {
                     break;
 
                 case 4:
+                    configuracionAdmin();
                     break;
 
                 case 5:
@@ -168,7 +169,7 @@ public class ControladorFernan {
 
             }
         }while(opcionMenu != 5);
-        vista.cerrarSesion(usuarioLogueado.getRol());
+        vista.cerrarSesion(usuarioLogueado.getNombre());
     }
 
     private void menuPrincipalOrganizador() throws InterruptedException {
@@ -198,7 +199,7 @@ public class ControladorFernan {
             }
 
         }while(opcionMenu != 4);
-        vista.cerrarSesion(usuarioLogueado.getRol());
+        vista.cerrarSesion(usuarioLogueado.getNombre());
     }
 
     private void menuPrincipalAsistente() throws InterruptedException {
@@ -234,7 +235,7 @@ public class ControladorFernan {
             }
 
         }while(opcionMenu != 6);
-        vista.cerrarSesion(usuarioLogueado.getRol());
+        vista.cerrarSesion(usuarioLogueado.getNombre());
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.PANEL DE CONTROL DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -344,5 +345,81 @@ public class ControladorFernan {
         }
     }
 
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION CONFIGURACION DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    private void configuracionAdmin(){
+        Scanner s = new Scanner(System.in);
+        int opcionMenuConfig;
+        do{
+            vista.menuConfiguracionGeneral();
+            opcionMenuConfig = Integer.parseInt(s.nextLine());
+
+            switch(opcionMenuConfig){
+                case 1:
+                    if(cambiaNombreUsuario()){
+                        vista.mensajeConfirmacion();
+                    }else{
+                        vista.mensajeError();
+                    }
+                    break;
+
+                case 2:
+                    if(cambiaPasswordUsuario()){
+                        vista.mensajeConfirmacion();
+                    }else{
+                        vista.mensajeError();
+                    }
+                    break;
+
+                case 3:
+                    break;
+
+                default:
+                    vista.opcionNoValida();
+            }
+        }while(opcionMenuConfig != 3);
+    }
+
+    private boolean cambiaNombreUsuario(){
+        Scanner s = new Scanner(System.in);
+        vista.pedirNombreUsuario();
+        String nombreUsuarioCambio = s.nextLine();
+
+        Usuario usuarioCambio = modelo.buscarPorNombre(nombreUsuarioCambio);
+
+        if(usuarioCambio == null){
+            vista.errorAlBuscarNombre();
+        }else{
+            vista.pedirNuevoNombre();
+            String nuevoNombreUsuario = s.nextLine();
+
+            if(modelo.buscarPorNombre(nuevoNombreUsuario) != null){
+                vista.nombreYaEnUso();
+            }else{
+                usuarioCambio.setNombre(nuevoNombreUsuario);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean cambiaPasswordUsuario(){
+        Scanner s = new Scanner(System.in);
+        vista.pedirNombreUsuario();
+        String nombreUsuarioCambio = s.nextLine();
+
+        Usuario usuarioCambio = modelo.buscarPorNombre(nombreUsuarioCambio);
+
+        if(usuarioCambio == null){
+            vista.errorAlBuscarNombre();
+        }else{
+            vista.pedirNuevaPassword();
+            String nuevaPassword = s.nextLine();
+
+            usuarioCambio.setPassword(nuevaPassword);
+            return true;
+        }
+        return false;
+    }
 
 }

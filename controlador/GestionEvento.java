@@ -140,7 +140,7 @@ public class GestionEvento {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
 
-        evento.setDescripcion(nuevaCategoria);
+//        evento.setDescripcion(nuevaCategoria);
         return true;
     }
 
