@@ -121,24 +121,6 @@ public class GestionUsuario implements Aumentable {
         return null;
     }
 
-    // buscar usuario por rol
-    protected Usuario[] buscarPorRol(Rol rol){
-        int contador = 0;
-        for (int i = 0; i < numUsuarios; i++) {
-            if (usuarios[i] != null && usuarios[i].getRol() == rol){
-                contador++;
-            }
-        }
-        Usuario[] resultado = new Usuario[contador];
-        int posicion = 0;
-        for (int i = 0; i < numUsuarios ; i++) {
-            if (usuarios[i] != null && usuarios[i].getRol() == rol) {
-                resultado[posicion++] = usuarios[i];
-            }
-        }
-        return resultado;
-    }
-
     //CRUD --> UPDATE
     //actualizar nombre de usuario
     public boolean actualizarNombre(String correo, String nuevoNombre){
