@@ -1,8 +1,10 @@
 package FernanEvents.controlador;
 
+import FernanEvents.modelo.Evento;
 import FernanEvents.modelo.Usuario;
 import FernanEvents.modelo.utilidades.Cadenas;
 import FernanEvents.modelo.utilidades.EnvioGMail;
+import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
 
 import java.util.Scanner;
@@ -11,11 +13,13 @@ public class ControladorFernan {
 
     private GestionUsuario modelo;
     private VistaFernan vista;
+    private GestionEvento evento;
     private Usuario usuarioLogueado;
 
-    public ControladorFernan(GestionUsuario modelo, VistaFernan vista){
+    public ControladorFernan(GestionUsuario modelo, VistaFernan vista, GestionEvento evento){
         this.modelo = modelo;
         this.vista = vista;
+        this.evento = evento;
     }
 
     public void iniciarFernan() throws InterruptedException {
@@ -420,6 +424,76 @@ public class ControladorFernan {
             return true;
         }
         return false;
+    }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.EVENTOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    // PARA ADMIN
+    private void verEventosAdmin(){
+        Evento[] eventos = this.evento.obtenerTodosLosEventos();
+
+        if (eventos.length == 0){
+            vista.noHayEventos();
+            return;
+        }
+
+        for (int i = 0; i < eventos.length; i++) {
+            Evento evento = eventos[i];
+            if (evento != null){
+                String fechaformateada = FuncionesFechas.convertirLocalDateString(evento.getFecha());
+                vista.mostrarEventoTabla(evento.getNombre(), evento.getCategoria().toString(), fechaformateada);
+
+
+            vista.mostrarEventoTabla(evento.getNombre(), evento.getCategoria().toString(), fechaformateada);
+            }
+        }
+    }
+
+    //PARA ORGANIZADOR
+    private void menuEventosOrganizador() throws InterruptedException{
+        Scanner s = new Scanner(System.in);
+        int opcionEvento;
+
+        do {
+            vista.menuOrganizadorEventos();
+            opcionEvento = Integer.parseInt(s.nextLine());
+
+            switch (opcionEvento){
+                case 1://ver eventos orgnizador
+                    break;
+
+                case 2://crear nuevo evento
+                    break;
+
+                case 3://modificar evento
+                    break;
+
+                case 4://eliminar evento
+                    break;
+
+                case 5:
+                    break;
+
+                default:
+                    vista.opcionNoValida();
+            }
+        }while (opcionEvento !=5);
+    }
+
+    private void verEventosOrganizador() {
+        Evento[] eventos = this.evento.obtenerTodosLosEventos();
+
+        if (eventos.length == 0) {
+            vista.noHayEventos();
+            return;
+        }
+
+        for (int i = 0; i < eventos.length; i++) {
+            Evento evento = eventos[i];
+            if (evento!= null) {
+                vista.mostrarEventoTabla(evento.getNombre(), evento.getCategoria().toString(), evento.getFecha().toString());
+                vista.mostrarEvento(evento.getNombre(), evento.getCategoria().toString(), evento.getFecha().toString());
+            }
+        }
     }
 
 }

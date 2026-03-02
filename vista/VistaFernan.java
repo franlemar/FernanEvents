@@ -443,6 +443,52 @@ public class VistaFernan{
 
     }
 
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA EVENTOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    public void noHayEventos(){
+        System.out.println("Actualmente no hay ningún evento disponible");
+    }
+
+    public void pedirDatosEvento(String dato) {
+        System.out.print(estilo.PASTEL_BLUE + "Introduce " + dato + " del evento: " + estilo.ANSI_RESET);
+    }
+
+    public void eventoYaExiste() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Ya existe un evento con ese nombre" + estilo.ANSI_RESET);
+    }
+
+    public void eventoGuardado() {
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Evento guardado correctamente \n" + estilo.ANSI_RESET);
+    }
+
+    public void mostrarEvento(String nombre, String categoria, String fecha) {
+        System.out.println(estilo.PASTEL_BLUE + "Nombre: " + estilo.ANSI_RESET + nombre);
+        System.out.println(estilo.PASTEL_BLUE + "Categoría: " + estilo.ANSI_RESET + categoria);
+        System.out.println(estilo.PASTEL_BLUE + "Fecha: " + estilo.ANSI_RESET + fecha);
+    }
+
+    public void mostrarOpcionesEvento() {
+        System.out.println(estilo.PASTEL_BLUE + "1. Nombre\n2. Descripción\n3. Categoría\n4. Fecha\n5. Aforo\n6. Inscritos\n" +
+                estilo.NEON_PINK + "7. Cancelar" + estilo.ANSI_RESET);
+        System.out.print(estilo.PASTEL_GREEN + "Elige: " + estilo.ANSI_RESET);
+    }
+
+    public void pedirNombreEvento() {
+        System.out.print(estilo.PASTEL_BLUE + "Nombre del evento: " + estilo.ANSI_RESET);
+    }
+
+    public void eventoEliminado() {
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Evento eliminado" + estilo.ANSI_RESET);
+    }
+
+    public void error(String mensaje) {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + mensaje + estilo.ANSI_RESET);
+    }
+
+    public void infoCompra(float total) {
+        System.out.println(estilo.PASTEL_BLUE + "Total: " + estilo.ANSI_RESET + total + "€");
+        System.out.print(estilo.PASTEL_GREEN + "¿Confirmar? (si/no): " + estilo.ANSI_RESET);
+    }
+
 
 
 }

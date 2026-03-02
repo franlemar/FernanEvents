@@ -113,6 +113,14 @@ public class GestionEvento {
         return -1;
     }
 
+    public Evento[] obtenerTodosLosEventos(){
+        Evento[] resultado = new Evento[numEventos];
+        for (int i = 0; i < numEventos; i++) {
+            resultado[i] = eventos[i];
+        }
+        return resultado;
+    }
+
     //----------------------------------------------------------------------------------------------------
     //U --> UPDATE
     public boolean actualizarNombre(String nombreActual, String nuevoNombre){
