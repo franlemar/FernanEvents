@@ -902,7 +902,40 @@ public class ControladorFernan {
         }
     }
 
+    // PARA ASISTENTES
+    private void menuMisEventosAsistente() throws InterruptedException{
+        Scanner s = new Scanner(System.in);
+        int opcion;
 
+        do {
+            vista.menuOrganizadorEventos();
+            opcion = Integer.parseInt(s.nextLine());
+
+            switch (opcion){
+                case 1:
+                    verEventosOrganizador();
+                    break;
+
+                case 2:
+                    crearNuevoEvento();
+                    break;
+
+                case 3:
+                    modificarEvento();
+                    break;
+
+                case 4:
+                    eliminarEvento();
+                    break;
+
+                case 5:
+                    break;
+
+                default:
+                    vista.opcionNoValida();
+            }
+        }while (opcionEvento !=5);
+    }
 
 
 
