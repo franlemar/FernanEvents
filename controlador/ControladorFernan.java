@@ -62,7 +62,7 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         int intentosRestantes = 3;
         boolean passwordCorrecta = false;
-        Usuario usuario = null;
+        Usuario usuario;
 
         while(true){
             vista.pedirCorreo();
@@ -97,7 +97,7 @@ public class ControladorFernan {
         }
 
         if(!passwordCorrecta){
-            usuario.setBloqueado(true);
+            modelo.actualizaEstadoBloqueo(usuario.getCorreo(), true);
             vista.seBloqueaUsuario();
             return false;
         }
@@ -365,10 +365,8 @@ public class ControladorFernan {
         if(opcionPanelBloqueo > 0 && opcionPanelBloqueo < listaUsuarios.length &&
                 listaUsuarios[opcionPanelBloqueo] != null){
 
-            if(listaUsuarios[opcionPanelBloqueo].isBloqueado()){
-                listaUsuarios[opcionPanelBloqueo].setBloqueado(false);
-                return true;
-            }
+            Usuario usuarioQuitarBloqueo = listaUsuarios[opcionPanelBloqueo];
+            return modelo.actualizaEstadoBloqueo(usuarioQuitarBloqueo.getCorreo(), false);
         }
         return false;
     }
@@ -393,6 +391,7 @@ public class ControladorFernan {
 
                 case 2:
                     if(sumaSaldo()){
+                        usuarioLogueado = modelo.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
                         vista.sumaSaldoOK(usuarioLogueado.getSaldo());
                     }else{
                         vista.mensajeError();
@@ -401,6 +400,7 @@ public class ControladorFernan {
 
                 case 3:
                     if(retiraSaldo()){
+                        usuarioLogueado = modelo.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
                         vista.retiraSaldoOK(usuarioLogueado.getSaldo());
                     }else{
                         vista.mensajeError();
@@ -423,8 +423,7 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.preguntaSumaSaldo();
         float saldoASumar = Float.parseFloat(s.nextLine());
-        usuarioLogueado.setSaldo(usuarioLogueado.getSaldo() + saldoASumar);
-        return true;
+        return modelo.aniadirSaldo(usuarioLogueado.getCorreo(), saldoASumar);
     }
 
     /**
@@ -434,14 +433,7 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.preguntaRetiraSaldo();
         float saldoARetirar = Float.parseFloat(s.nextLine());
-
-        if(usuarioLogueado.getSaldo() == 0 || saldoARetirar > usuarioLogueado.getSaldo()){
-            return false;
-        }else{
-            usuarioLogueado.setSaldo(usuarioLogueado.getSaldo() - saldoARetirar);
-            return true;
-
-        }
+        return modelo.quitarSaldo(usuarioLogueado.getCorreo(), saldoARetirar);
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION CONFIGURACION DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -487,37 +479,33 @@ public class ControladorFernan {
 
         if(usuarioCambio == null){
             vista.errorAlBuscarNombre();
-        }else{
-            vista.pedirNuevoNombre();
-            String nuevoNombreUsuario = s.nextLine();
-
-            if(modelo.buscarPorNombre(nuevoNombreUsuario) != null){
-                vista.nombreYaEnUso(nuevoNombreUsuario);
-            }else{
-                usuarioCambio.setNombre(nuevoNombreUsuario);
-                return true;
-            }
+            return false;
         }
-        return false;
+
+        vista.pedirNuevoNombre();
+        String nuevoNombreUsuario = s.nextLine();
+
+        if(modelo.buscarPorNombre(nuevoNombreUsuario) != null){
+            vista.nombreYaEnUso(nuevoNombreUsuario);
+            return false;
+        }
+        return modelo.actualizarNombre(usuarioCambio.getCorreo(), nuevoNombreUsuario);
     }
 
     private boolean cambiaPasswordAdmin(){
         Scanner s = new Scanner(System.in);
         vista.pedirNombreUsuario();
         String nombreUsuarioCambio = s.nextLine();
-
         Usuario usuarioCambio = modelo.buscarPorNombre(nombreUsuarioCambio);
 
         if(usuarioCambio == null){
             vista.errorAlBuscarNombre();
-        }else{
-            vista.pedirNuevaPassword();
-            String nuevaPassword = s.nextLine();
-
-            usuarioCambio.setPassword(nuevaPassword);
-            return true;
+            return false;
         }
-        return false;
+
+        vista.pedirNuevaPassword();
+        String nuevaPassword = s.nextLine();
+        return modelo.actualizarContrasena(usuarioCambio.getCorreo(), nuevaPassword);
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION CONFIGURACION RESTO DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -559,11 +547,13 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.pedirNuevoNombre();
         String nuevoNombre = s.nextLine();
-
         if(modelo.buscarPorNombre(nuevoNombre) != null){
             vista.nombreYaEnUso(nuevoNombre);
-        }else{
-            usuarioLogueado.setNombre(nuevoNombre);
+            return false;
+        }
+
+        if(modelo.actualizarNombre(usuarioLogueado.getCorreo(), nuevoNombre)){
+            usuarioLogueado = modelo.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
             return true;
         }
         return false;
@@ -579,9 +569,13 @@ public class ControladorFernan {
             return false;
         }else{
             String nuevaPassword = obtenerPasswordValida();
-            usuarioLogueado.setPassword(nuevaPassword);
-            return true;
+
+            if(modelo.actualizarContrasena(usuarioLogueado.getCorreo(), nuevaPassword)){
+                this.usuarioLogueado = modelo. buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
+                return true;
+            }
         }
+        return false;
     }
 
     private String obtenerPasswordValida(){

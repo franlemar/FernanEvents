@@ -144,12 +144,13 @@ public class GestionUsuario implements Aumentable {
         return true;
     }
 
-    public boolean cambiarRol (String correo, Rol nuevoRol){
-        Usuario usuario = buscaUsuarioPorCorreo(correo);
-        if (usuario == null) { return false; }
-
-        usuario.setRol(nuevoRol);
-        return true;
+    public boolean actualizaEstadoBloqueo(String correoUsuario, boolean estado){
+        Usuario usuario = buscaUsuarioPorCorreo(correoUsuario);
+        if(usuario != null){
+            usuario.setBloqueado(estado);
+            return true;
+        }
+        return false;
     }
 
     public boolean aniadirSaldo (String correo, float cantidad){
