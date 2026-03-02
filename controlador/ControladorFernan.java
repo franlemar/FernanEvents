@@ -1,7 +1,6 @@
 package FernanEvents.controlador;
 
-import FernanEvents.modelo.Evento;
-import FernanEvents.modelo.Usuario;
+import FernanEvents.modelo.*;
 import FernanEvents.modelo.utilidades.Cadenas;
 import FernanEvents.modelo.utilidades.EnvioGMail;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
@@ -39,7 +38,11 @@ public class ControladorFernan {
                     break;
 
                 case 2:
-                    //REGISTRO DE USUARIOS
+                    if(registrarUsuario()){
+                        vista.registroCorrecto();
+                    }else{
+                        vista.mensajeError();
+                    }
                     break;
 
                 case 3:
@@ -61,7 +64,7 @@ public class ControladorFernan {
         Usuario usuario = null;
 
         while(true){
-            vista.pedirCorreoLoguin();
+            vista.pedirCorreo();
             String correo = s.nextLine().toLowerCase();
             usuario = modelo.buscaUsuarioPorCorreo(correo);
 
@@ -123,6 +126,93 @@ public class ControladorFernan {
         }
         return false;
     }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.REGISTRO DE NUEVOS USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    private boolean registrarUsuario(){
+        Scanner s = new Scanner(System.in);
+        vista.tituloRegistro();
+        vista.pedirNombreRegistro();
+        String nombreRegistro = s.nextLine();
+        String correoRegistro = registroCorreo();
+        String passwordRegistro = obtenerPasswordValida();
+        Rol rolCorrecto = registroRol();
+
+        if(modelo.buscarPorNombre(nombreRegistro) != null || modelo.buscaUsuarioPorCorreo(correoRegistro) != null){
+            vista.nombreOCorreoEnUso();
+            return false;
+        }
+        String codigoVerificacion = Cadenas.generarCodigoVerificacion();
+        enviarTokenRegistro(nombreRegistro, correoRegistro, codigoVerificacion);
+        return verificaTokenYRegistro(codigoVerificacion, nombreRegistro, correoRegistro, passwordRegistro, rolCorrecto);
+    }
+
+    private String registroCorreo(){
+        Scanner s = new Scanner(System.in);
+        String correo = "";
+        boolean valido = false;
+        while (!valido) {
+            vista.pedirCorreo();
+            correo = s.nextLine();
+            if (!correo.contains("@")) {
+                vista.errorArroba();
+            } else {
+                valido = true;
+            }
+        }
+        return correo;
+    }
+
+    private Rol registroRol(){
+        Scanner s = new Scanner(System.in);
+        while(true){
+            vista.preguntaRol();
+            String entrada = s.nextLine().toUpperCase();
+            if(entrada.equals("ORGANIZADOR")) {
+                return Rol.ORGANIZADOR;
+            }else if(entrada.equals("ASISTENTE")){
+                return Rol.ASISTENTE;
+            }else{
+                vista.rolNoValido();
+            }
+        }
+    }
+
+    private void enviarTokenRegistro(String nombreRegistro, String correoRegistro, String codigoVerificacion){
+        String cuerpo = EnvioGMail.plantillaRegistroUsuario(nombreRegistro, codigoVerificacion);
+        EnvioGMail.enviarConGMail(correoRegistro, "Token único de inicio de sesión", cuerpo);
+        vista.correoVerificacionEnviado();
+    }
+
+    private boolean verificaTokenYRegistro(String codigoVerificacion, String nombreRegistro, String correoRegistro, String passwordRegistro, Rol rolCorrecto){
+        Scanner s = new Scanner(System.in);
+        boolean tokenVerificado = false;
+        while (!tokenVerificado) {
+            vista.pedirToken();
+            String tokenRegistro = s.nextLine();
+
+            if (!tokenRegistro.equals(codigoVerificacion)) {
+                vista.tokenIncorrecto();
+            } else {
+                if (modelo.getNumUsuarios() == modelo.getUsuarios().length) {
+                    modelo.aumentarCapacidad();
+                }
+
+                Usuario nuevoUsuario;
+                if (rolCorrecto.equals(Rol.ORGANIZADOR)) {
+                    nuevoUsuario = new Organizador(nombreRegistro, correoRegistro, passwordRegistro);
+                } else {
+                    nuevoUsuario = new Asistente(nombreRegistro, correoRegistro, passwordRegistro);
+                }
+
+                modelo.aniadirUsuario(nuevoUsuario);
+                tokenVerificado = true;
+            }
+        }
+        return true;
+    }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENÚS PRINCIPALES DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
 
     public void muestraMenuPorRol() throws InterruptedException {
         if(usuarioLogueado == null){ return; }
@@ -261,7 +351,7 @@ public class ControladorFernan {
     private boolean gestionaUsuariosBloqueados(){
         Scanner s = new Scanner(System.in);
         Usuario[] listaUsuarios = modelo.getUsuarios();
-        vista.cabeceraUsuariosBloqueados();
+        vista.tituloUsuariosBloqueados();
         for (int i = 0; i < modelo.getNumUsuarios(); i++) {
             if(listaUsuarios[i] != null && listaUsuarios[i].isBloqueado()){
                 vista.mostrarUsuarioBloqueado(i, listaUsuarios[i].getNombre());

@@ -1,7 +1,5 @@
 package FernanEvents.vista;
 
-import FernanEvents.modelo.Rol;
-
 public class VistaFernan{
 
     private  Estilos estilo = new Estilos();
@@ -304,8 +302,8 @@ public class VistaFernan{
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA LOGIN.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
 
-    public void pedirCorreoLoguin(){
-        System.out.print(estilo.PASTEL_BLUE + "Introduzca su correo electrónico para iniciar sesión: "
+    public void pedirCorreo(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca su correo electrónico: "
                 + estilo.ANSI_RESET);
     }
 
@@ -345,7 +343,7 @@ public class VistaFernan{
 
     public void pedirToken(){
         System.out.println(estilo.BG_AZUL_PASTEL + estilo.ANSI_BLACK + estilo.BOLD +
-                "Introduzca el código 2FA enviado a su correo" + estilo.ANSI_RESET);
+                "Introduzca el código de verificación enviado a su correo" + estilo.ANSI_RESET);
     }
 
     public void loginCorrecto(){
@@ -356,6 +354,37 @@ public class VistaFernan{
     public void tokenIncorrecto(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD +
                 "El código introducido no es correcto. Inténtelo de nuevo \n" + estilo.ANSI_RESET);
+    }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.REGISTRO DE NUEVOS USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    public void tituloRegistro(){
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + estilo.UNDERLINE + "✦ REGISTRO DE NUEVO USUARIO ✦" + estilo.ANSI_RESET);
+    }
+
+    public void pedirNombreRegistro(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca un nombre de usuario para su nueva cuenta: " + estilo.ANSI_RESET);
+    }
+
+    public void errorArroba(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Error: El correo electrónico debe contener el símbolo '@'" + estilo.ANSI_RESET + "\n");
+    }
+
+    public void preguntaRol(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca el tipo de usuario que desea para su cuenta (ORGANIZADOR o ASISTENTE): " + estilo.ANSI_RESET);
+    }
+
+    public void nombreOCorreoEnUso(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "El usuario o el correo que has introducido ya existe. Inténtelo de nuevo" + estilo.ANSI_RESET + "\n");
+    }
+
+    public void registroCorrecto(){
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "¡Te has registrado en FernanEvents correctamente!¡BIENVENIDO!" + estilo.ANSI_RESET + "\n");
+    }
+
+    public void rolNoValido(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "El rol que ha introducido no es válido" + estilo.ANSI_RESET + "\n");
+
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CARTERA DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -407,8 +436,8 @@ public class VistaFernan{
         System.out.println(estilo.PASTEL_BLUE + "No hay ningún usuario bloqueado \n" + estilo.ANSI_RESET);
     }
 
-    public void cabeceraUsuariosBloqueados(){
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ USUARIOS BLOQUEADOS ✦" + estilo.ANSI_RESET);
+    public void tituloUsuariosBloqueados(){
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + estilo.UNDERLINE + "✦ USUARIOS BLOQUEADOS ✦" + estilo.ANSI_RESET);
     }
 
     public void mostrarUsuarioBloqueado(int indice, String nombre){
