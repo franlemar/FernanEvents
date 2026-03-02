@@ -1,4 +1,5 @@
 package FernanEvents.vista;
+import FernanEvents.modelo.CategoriaEvento;
 
 public class VistaFernan{
 
@@ -539,6 +540,193 @@ public class VistaFernan{
     public void infoCompra(float total) {
         System.out.println(estilo.PASTEL_BLUE + "Total: " + estilo.ANSI_RESET + total + "€");
         System.out.print(estilo.PASTEL_GREEN + "¿Confirmar? (si/no): " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Muestra las categorías disponibles del enum
+     */
+    public void mostrarCategorias() {
+        System.out.println(estilo.PASTEL_YELLOW + "Categorías disponibles: " + estilo.ANSI_RESET);
+        CategoriaEvento[] categorias = CategoriaEvento.values();
+        for (int i = 0; i < categorias.length; i++) {
+            System.out.println(estilo.PASTEL_BLUE + "  " + (i+1) + ". " + categorias[i] + estilo.ANSI_RESET);
+        }
+    }
+
+    /**
+     * Pide seleccionar categoría por número
+     */
+    public void pedirCategoria() {
+        System.out.print(estilo.PASTEL_BLUE + "Selecciona categoría (número): " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Muestra el título de creación de evento
+     */
+    public void tituloCrearEvento() {
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "* DATOS DE EVENTO NUEVO *" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Muestra el título de modificación de evento
+     */
+    public void tituloModificarEvento(String nombreEvento) {
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "\n ✦ MODIFICANDO: " + nombreEvento + " ✦ " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Muestra el título de eventos disponibles
+     */
+    public void tituloEventosDisponibles() {
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ EVENTOS DISPONIBLES ✦" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Listar eventos para modificar
+     */
+    public void listarEventosParaModificar(String[] nombres, int total) {
+        System.out.println(estilo.PASTEL_BLUE + "Elige el evento del que deseas modificar los datos: " + estilo.ANSI_RESET);
+        for (int i = 0; i < total; i++) {
+            if (nombres[i] != null) {
+                System.out.println(estilo.PASTEL_BLUE + "(" + i + ") " + nombres[i] + estilo.ANSI_RESET);
+            }
+        }
+        System.out.println();
+    }
+
+    /**
+     * Pide el número del evento
+     */
+    public void pedirNumeroEvento() {
+        System.out.print(estilo.PASTEL_GREEN + "Pulse el número del evento: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de evento no válido
+     */
+    public void eventoNoValido() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Evento no válido" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de evento no encontrado
+     */
+    public void eventoNoEncontrado() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No se ha encontrado el evento" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de aforo insuficiente
+     */
+    public void aforoInsuficiente() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No hay suficiente aforo disponible" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de inscritos superan aforo
+     */
+    public void inscritosSuperanAforo() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Los inscritos no pueden superar el aforo" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de categoría no válida
+     */
+    public void categoriaNoValida() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Categoría no válida" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de fecha no válida
+     */
+    public void fechaNoValida() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Formato de fecha no válido" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de cantidad no válida
+     */
+    public void cantidadNoValida() {
+        System.out.println(estilo.ANSI_RED + "La cantidad introducida no es válida" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de límite de entradas excedido
+     */
+    public void limiteEntradasExcedido() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No puede comprar más de 4 entradas" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de entradas insuficientes
+     */
+    public void entradasInsuficientes(int disponibles) {
+        System.out.println(estilo.ANSI_RED + "Lo sentimos, solo hay " + disponibles + " entradas disponibles" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Muestra el total de la compra
+     */
+    public void mostrarTotalCompra(int cantidad, float total) {
+        System.out.println(estilo.PASTEL_BLUE + "Ha elegido comprar " + cantidad + " entradas. El precio total es de: " + estilo.ANSI_YELLOW + total + "€" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de saldo insuficiente para compra
+     */
+    public void saldoInsuficienteCompra() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Saldo insuficiente en tu cartera digital" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de compra exitosa
+     */
+    public void compraExitosa() {
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "¡Compra realizada con éxito!" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de operación cancelada
+     */
+    public void operacionCancelada() {
+        System.out.println(estilo.PASTEL_BLUE + "Operación cancelada" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Título de mis eventos inscritos
+     */
+    public void tituloMisEventosInscritos() {
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ MIS EVENTOS INSCRITOS ✦" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de no inscrito en eventos
+     */
+    public void noInscritoEnEventos() {
+        System.out.println(estilo.PASTEL_BLUE + "No te has inscrito en ningún evento todavía" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Pide nombre del evento para inscribirse
+     */
+    public void pedirNombreEventoInscribir() {
+        System.out.print(estilo.PASTEL_BLUE + "Escriba el nombre del evento al que desea inscribirse: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Muestra información de la entrada seleccionada
+     */
+    public void infoEntradaSeleccionada(String tipo, float precio) {
+        System.out.println(estilo.PASTEL_BLUE + "Has elegido la entrada: " + estilo.ANSI_RESET + estilo.PASTEL_PURPLE + estilo.BOLD + tipo + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "El precio por entrada es de: " + estilo.ANSI_RESET + estilo.PASTEL_YELLOW + estilo.BOLD + precio + "€" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Pide cantidad de entradas
+     */
+    public void pedirCantidadEntradas() {
+        System.out.println("¿Cuántas entradas deseas comprar? (Máximo 4 entradas)");
+        System.out.print(estilo.PASTEL_GREEN + "Cantidad: " + estilo.ANSI_RESET);
     }
 
 

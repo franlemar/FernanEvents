@@ -6,6 +6,7 @@ import FernanEvents.modelo.utilidades.EnvioGMail;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class ControladorFernan {
@@ -102,7 +103,7 @@ public class ControladorFernan {
         }
 
         String codigoVerificacion = Cadenas.generarCodigoVerificacion();
-        String destinatario = "flenmar918@g.educaand.es";
+        String destinatario = "jmorcam520@g.educaand.es";
         String asunto = "Código de verificación - Inicio de sesión";
         String cuerpo = EnvioGMail.plantillaLoginAdmin(usuario.getNombre(), codigoVerificacion);
 
@@ -245,6 +246,7 @@ public class ControladorFernan {
                     break;
 
                 case 2:
+                    verEventosAdmin();
                     break;
 
                 case 3:
@@ -276,6 +278,7 @@ public class ControladorFernan {
 
             switch(opcionMenu){
                 case 1:
+                    menuEventosOrganizador();
                     break;
 
                 case 2:
@@ -621,9 +624,6 @@ public class ControladorFernan {
             if (evento != null){
                 String fechaformateada = FuncionesFechas.convertirLocalDateString(evento.getFecha());
                 vista.mostrarEventoTabla(evento.getNombre(), evento.getCategoria().toString(), fechaformateada);
-
-
-            vista.mostrarEventoTabla(evento.getNombre(), evento.getCategoria().toString(), fechaformateada);
             }
         }
     }
@@ -638,16 +638,20 @@ public class ControladorFernan {
             opcionEvento = Integer.parseInt(s.nextLine());
 
             switch (opcionEvento){
-                case 1://ver eventos orgnizador
+                case 1:
+                    verEventosOrganizador();
                     break;
 
-                case 2://crear nuevo evento
+                case 2:
+                    crearNuevoEvento();
                     break;
 
-                case 3://modificar evento
+                case 3:
+                    modificarEvento();
                     break;
 
-                case 4://eliminar evento
+                case 4:
+                    eliminarEvento();
                     break;
 
                 case 5:
@@ -661,7 +665,6 @@ public class ControladorFernan {
 
     private void verEventosOrganizador() {
         Evento[] eventos = this.evento.obtenerTodosLosEventos();
-
         if (eventos.length == 0) {
             vista.noHayEventos();
             return;
@@ -670,10 +673,237 @@ public class ControladorFernan {
         for (int i = 0; i < eventos.length; i++) {
             Evento evento = eventos[i];
             if (evento!= null) {
-                vista.mostrarEventoTabla(evento.getNombre(), evento.getCategoria().toString(), evento.getFecha().toString());
-                vista.mostrarEvento(evento.getNombre(), evento.getCategoria().toString(), evento.getFecha().toString());
+                String fechaFormateada = FuncionesFechas.convertirLocalDateString(evento.getFecha());
+                vista.mostrarEventoTabla(evento.getNombre(), evento.getCategoria().toString(), fechaFormateada);
             }
         }
     }
+
+    /**
+     * Función para crear un evento nuevo
+     */
+
+    private void crearNuevoEvento(){
+        Scanner s = new Scanner(System.in);
+        vista.pedirDatosEvento("Nombre");
+        String nombre = s.nextLine();
+
+        if (evento.buscarEventoPorNombre(nombre) != null){
+            vista.eventoYaExiste();
+            return;
+        }
+
+        vista.pedirDatosEvento("Descripción");
+        String descripcion = s.nextLine();
+
+        //categorías disponibles
+        vista.mostrarCategorias();
+        vista.pedirCategoria();
+
+        int opcionCategoria =Integer.parseInt(s.nextLine()) -1;
+
+        if (opcionCategoria < 0 || opcionCategoria >= CategoriaEvento.values().length) {
+            vista.categoriaNoValida();
+            return;
+        }
+
+        CategoriaEvento categoria = CategoriaEvento.values()[opcionCategoria];
+
+        vista.pedirDatosEvento("fecha (dd/mm/aaaa)");
+        String fechaString = s.nextLine();
+
+        LocalDate fecha = FuncionesFechas.convertirStringEnFecha(fechaString);
+
+        if (fecha == null) {
+            vista.fechaNoValida();
+            return;
+        }
+
+        // validar que la fecha no se haya pasado
+        long diasRestantes = FuncionesFechas.diasRestantes(fecha);
+        if (diasRestantes < 0) {
+            vista.error("No se pueden crear eventos con fecha pasada");
+            return;
+        }
+
+        vista.pedirDatosEvento("aforo");
+        int aforo = Integer.parseInt(s.nextLine());
+
+        vista.pedirDatosEvento("número de inscritos");
+        int inscritos = Integer.parseInt(s.nextLine());
+
+        if (inscritos > aforo) {
+            vista.inscritosSuperanAforo();
+            return;
+        }
+
+        Evento nuevoEvento = evento.crearEvento(nombre, descripcion, categoria, fechaString, aforo, inscritos);
+
+        if (nuevoEvento != null) {
+            vista.eventoGuardado();
+        } else {
+            vista.mensajeError();
+        }
+    }
+
+    /**
+     * Función para modificar un evento
+     */
+
+    private void modificarEvento() {
+    Scanner s = new Scanner(System.in);
+
+    Evento[] eventos = this.evento.obtenerTodosLosEventos();
+    if (eventos.length == 0) {
+        vista.noHayEventos();
+        return;
+    }
+
+    String[] nombresEventos = new String[eventos.length];
+    for (int i = 0; i < eventos.length; i++) {
+        if (eventos[i] != null) {
+            nombresEventos[i] = eventos[i].getNombre();
+        }
+    }
+
+    vista.listarEventosParaModificar(nombresEventos, eventos.length);
+    vista.pedirNumeroEvento();
+    int opcion = Integer.parseInt(s.nextLine());
+
+    if (opcion < 0 || opcion >= eventos.length || eventos[opcion] == null) {
+        vista.eventoNoValido();
+        return;
+    }
+
+    Evento eventoModificar = eventos[opcion];
+    vista.tituloModificarEvento(eventoModificar.getNombre());
+    vista.mostrarOpcionesEvento();
+
+    int opcionModif = Integer.parseInt(s.nextLine());
+
+    switch (opcionModif) {
+        case 1:
+            vista.pedirDatosEvento("nuevo nombre");
+            String nuevoNombre = s.nextLine();
+            if (evento.actualizarNombre(eventoModificar.getNombre(), nuevoNombre)) {
+                vista.mensajeConfirmacion();
+            } else {
+                vista.mensajeError();
+            }
+            break;
+
+        case 2:
+            vista.pedirDatosEvento("nueva descripción");
+            String nuevaDesc = s.nextLine();
+            if (evento.actualizarDescripcion(eventoModificar.getNombre(), nuevaDesc)) {
+                vista.mensajeConfirmacion();
+            } else {
+                vista.mensajeError();
+            }
+            break;
+
+        case 3:
+            vista.mostrarCategorias();
+            vista.pedirCategoria();
+            int opcionCategoria = Integer.parseInt(s.nextLine()) - 1;
+
+            if (opcionCategoria < 0 || opcionCategoria >= CategoriaEvento.values().length) {
+                vista.categoriaNoValida();
+                break;
+            }
+
+            if (evento.actualizarCategoria(eventoModificar.getNombre(), CategoriaEvento.values()[opcionCategoria])) {
+                vista.mensajeConfirmacion();
+            } else {
+                vista.mensajeError();
+            }
+            break;
+
+        case 4:
+            vista.pedirDatosEvento("nueva fecha (dd/mm/aaaa)");
+            String nuevafechaString = s.nextLine();
+
+            // validar la fecha antes de poder actualizar
+            LocalDate nuevaFecha = FuncionesFechas.convertirStringEnFecha(nuevafechaString);
+            if (nuevaFecha == null) {
+                vista.fechaNoValida();
+                break;
+            }
+
+            if (evento.actualizarFecha(eventoModificar.getNombre(), nuevafechaString)) {
+                vista.mensajeConfirmacion();
+            } else {
+                vista.mensajeError();
+            }
+            break;
+
+        case 5:
+            vista.pedirDatosEvento("nuevo aforo");
+            int nuevoAforo = Integer.parseInt(s.nextLine());
+            if (evento.actualizarAforo(eventoModificar.getNombre(), nuevoAforo)) {
+                vista.mensajeConfirmacion();
+            } else {
+                vista.mensajeError();
+            }
+            break;
+
+        case 6:
+            vista.pedirDatosEvento("nuevo número de inscritos");
+            int nuevosInscritos = Integer.parseInt(s.nextLine());
+
+            int diferencia = nuevosInscritos - eventoModificar.getPersonasInscritas();
+
+            if (diferencia > 0) {
+                if (evento.actualizarInscritos(eventoModificar.getNombre(), diferencia)) {
+                    vista.mensajeConfirmacion();
+                } else {
+                    vista.aforoInsuficiente();
+                }
+            } else {
+                eventoModificar.setPersonasInscritas(nuevosInscritos);
+                vista.mensajeConfirmacion();
+            }
+            break;
+
+        case 7:
+            vista.operacionCancelada();
+            break;
+
+        default:
+            vista.opcionNoValida();
+        }
+    }
+
+    private void eliminarEvento() {
+        Scanner s = new Scanner(System.in);
+
+        Evento[] eventos = this.evento.obtenerTodosLosEventos();
+        if (eventos.length == 0) {
+            vista.noHayEventos();
+            return;
+        }
+
+        vista.tituloEventosDisponibles();
+        for (int i = 0; i < eventos.length; i++) {
+            if (eventos[i] != null) {
+
+                String fechaFormateada = FuncionesFechas.convertirLocalDateString(eventos[i].getFecha());
+                vista.mostrarEventoTabla(eventos[i].getNombre(), eventos[i].getCategoria().toString(), fechaFormateada);
+            }
+        }
+
+        vista.pedirNombreEvento();
+        String nombreEvento = s.nextLine();
+
+        if (evento.eliminarEvento(nombreEvento)) {
+            vista.eventoEliminado();
+        } else {
+            vista.eventoNoEncontrado();
+        }
+    }
+
+
+
+
 
 }
