@@ -174,20 +174,7 @@ public class GestionEvento {
         return true;
     }
 
-    public boolean actualizarInscritos (String nombreEvento, int nuevosInscritos){
-        Evento evento = buscarEventoPorNombre(nombreEvento);
-        if (evento== null) return false;
-
-        if (nuevosInscritos > evento.getAforo()){
-            return false;
-        }
-
-        evento.setPersonasInscritas(nuevosInscritos);
-        return true;
-    }
-
-    // Ver con Fran; porque no sé si se podría combinar con la función de actualizar inscritos para que quede más compacta
-    public boolean incrementarInscritos(String nombreEvento, int cantidad) {
+    public boolean actualizarInscritos(String nombreEvento, int cantidad) {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
 
