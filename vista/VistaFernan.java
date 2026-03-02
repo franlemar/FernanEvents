@@ -299,7 +299,7 @@ public class VistaFernan{
     }
 
     public void opcionNoValida(){
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Opción no válida" + estilo.ANSI_RESET);
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Opción no válida" + estilo.ANSI_RESET + "\n");
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA LOGIN.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -420,7 +420,7 @@ public class VistaFernan{
                 "Para salir, pulse cualquier otro numero: " + estilo.ANSI_RESET);
     }
 
-    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION CONFIGURACION DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION DE CONFIGURACION.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
 
     public void pedirNombreUsuario(){
         System.out.print(estilo.PASTEL_BLUE + "Introduzca el nombre del usuario al que desea cambiarle su nombre de usuario: " + estilo.ANSI_RESET);
@@ -430,17 +430,40 @@ public class VistaFernan{
         System.out.print(estilo.PASTEL_BLUE + "Introduzca el nuevo nombre que tendrá a partir de ahora este usuario: " + estilo.ANSI_RESET);
     }
 
-    public void nombreYaEnUso(){
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "El nuevo nombre que has introducido ya está en uso. Introduce otro distinto. " + estilo.ANSI_RESET);
+    public void nombreYaEnUso(String nuevoNombre){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Error: El nombre " + nuevoNombre + " ya está en uso. Introduce otro distinto." + estilo.ANSI_RESET + "\n");
     }
 
     public void errorAlBuscarNombre(){
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No se ha encontrado ningún usuario con el nombre que ha introducido" + estilo.ANSI_RESET);
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No se ha encontrado ningún usuario con el nombre que ha introducido" + estilo.ANSI_RESET + "\n");
     }
 
     public void pedirNuevaPassword(){
-        System.out.print(estilo.PASTEL_BLUE + "Introduzca la nueva contraseña de acceso para el usuario que ha elegido: " + estilo.ANSI_RESET);
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca la nueva contraseña de acceso: " + estilo.ANSI_RESET);
+    }
 
+    public void confirmarNuevaPassword(){
+        System.out.print(estilo.PASTEL_BLUE + "Confirme la nueva contraseña: " + estilo.ANSI_RESET);
+    }
+
+    public void pedirPasswordActual(){
+        System.out.print(estilo.BOLD + estilo.PASTEL_BLUE + "Introduce la contraseña actual: " + estilo.ANSI_RESET);
+    }
+
+    public void passwordActualIncorrecta(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Contraseña actual incorrecta. \n" + estilo.ANSI_RESET);
+    }
+
+    public void noCoincidenPassword(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "¡ERROR! Las contraseñas no coinciden \n" + estilo.ANSI_RESET);
+    }
+
+    public void requisitosPassSegura(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "La contraseña no es suficientemente segura. Debe tener:" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_YELLOW + "- Mínimo 8 caracteres");
+        System.out.println("- Al menos una letra mayúscula y una minúscula");
+        System.out.println("- Al menos un número");
+        System.out.println("- Al menos un símbolo (- _ . , * + @)" + estilo.ANSI_RESET + "\n");
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA EVENTOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*

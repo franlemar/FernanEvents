@@ -193,6 +193,7 @@ public class ControladorFernan {
                     break;
 
                 case 3:
+                    configuracionUsuario();
                     break;
 
                 case 4:
@@ -229,6 +230,7 @@ public class ControladorFernan {
                     break;
 
                 case 5:
+                    configuracionUsuario();
                     break;
 
                 case 6:
@@ -360,6 +362,81 @@ public class ControladorFernan {
 
             switch(opcionMenuConfig){
                 case 1:
+                    if(cambiaNombreAdmin()){
+                        vista.mensajeConfirmacion();
+                    }else{
+                        vista.mensajeError();
+                    }
+                    break;
+
+                case 2:
+                    if(cambiaPasswordAdmin()){
+                        vista.mensajeConfirmacion();
+                    }else{
+                        vista.mensajeError();
+                    }
+                    break;
+
+                case 3:
+                    break;
+
+                default:
+                    vista.opcionNoValida();
+            }
+        }while(opcionMenuConfig != 3);
+    }
+
+    private boolean cambiaNombreAdmin(){
+        Scanner s = new Scanner(System.in);
+        vista.pedirNombreUsuario();
+        String nombreUsuarioCambio = s.nextLine();
+        Usuario usuarioCambio = modelo.buscarPorNombre(nombreUsuarioCambio);
+
+        if(usuarioCambio == null){
+            vista.errorAlBuscarNombre();
+        }else{
+            vista.pedirNuevoNombre();
+            String nuevoNombreUsuario = s.nextLine();
+
+            if(modelo.buscarPorNombre(nuevoNombreUsuario) != null){
+                vista.nombreYaEnUso(nuevoNombreUsuario);
+            }else{
+                usuarioCambio.setNombre(nuevoNombreUsuario);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean cambiaPasswordAdmin(){
+        Scanner s = new Scanner(System.in);
+        vista.pedirNombreUsuario();
+        String nombreUsuarioCambio = s.nextLine();
+
+        Usuario usuarioCambio = modelo.buscarPorNombre(nombreUsuarioCambio);
+
+        if(usuarioCambio == null){
+            vista.errorAlBuscarNombre();
+        }else{
+            vista.pedirNuevaPassword();
+            String nuevaPassword = s.nextLine();
+
+            usuarioCambio.setPassword(nuevaPassword);
+            return true;
+        }
+        return false;
+    }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION CONFIGURACION RESTO DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    private void configuracionUsuario(){
+        Scanner s = new Scanner(System.in);
+        int opcionMenuConfig;
+        do{
+            vista.menuConfiguracionGeneral();
+            opcionMenuConfig = Integer.parseInt(s.nextLine());
+            switch(opcionMenuConfig){
+                case 1:
                     if(cambiaNombreUsuario()){
                         vista.mensajeConfirmacion();
                     }else{
@@ -381,49 +458,62 @@ public class ControladorFernan {
                 default:
                     vista.opcionNoValida();
             }
+
         }while(opcionMenuConfig != 3);
     }
 
     private boolean cambiaNombreUsuario(){
         Scanner s = new Scanner(System.in);
-        vista.pedirNombreUsuario();
-        String nombreUsuarioCambio = s.nextLine();
+        vista.pedirNuevoNombre();
+        String nuevoNombre = s.nextLine();
 
-        Usuario usuarioCambio = modelo.buscarPorNombre(nombreUsuarioCambio);
-
-        if(usuarioCambio == null){
-            vista.errorAlBuscarNombre();
+        if(modelo.buscarPorNombre(nuevoNombre) != null){
+            vista.nombreYaEnUso(nuevoNombre);
         }else{
-            vista.pedirNuevoNombre();
-            String nuevoNombreUsuario = s.nextLine();
-
-            if(modelo.buscarPorNombre(nuevoNombreUsuario) != null){
-                vista.nombreYaEnUso();
-            }else{
-                usuarioCambio.setNombre(nuevoNombreUsuario);
-                return true;
-            }
+            usuarioLogueado.setNombre(nuevoNombre);
+            return true;
         }
         return false;
     }
 
     private boolean cambiaPasswordUsuario(){
         Scanner s = new Scanner(System.in);
-        vista.pedirNombreUsuario();
-        String nombreUsuarioCambio = s.nextLine();
+        vista.pedirPasswordActual();
+        String passwordActual = s.nextLine();
 
-        Usuario usuarioCambio = modelo.buscarPorNombre(nombreUsuarioCambio);
-
-        if(usuarioCambio == null){
-            vista.errorAlBuscarNombre();
+        if(!usuarioLogueado.getPassword().equals(passwordActual)){
+            vista.passwordActualIncorrecta();
+            return false;
         }else{
-            vista.pedirNuevaPassword();
-            String nuevaPassword = s.nextLine();
-
-            usuarioCambio.setPassword(nuevaPassword);
+            String nuevaPassword = obtenerPasswordValida();
+            usuarioLogueado.setPassword(nuevaPassword);
             return true;
         }
-        return false;
+    }
+
+    private String obtenerPasswordValida(){
+        Scanner s = new Scanner(System.in);
+        String nuevaPassword = "";
+        boolean passwordValida = false;
+
+        while(!passwordValida){
+            vista.pedirNuevaPassword();
+            nuevaPassword = s.nextLine();
+
+            if(!Cadenas.esContraseniaFuerte(nuevaPassword)){
+                vista.requisitosPassSegura();
+            }else{
+                vista.confirmarNuevaPassword();
+                String confirmacionPassword = s.nextLine();
+
+                if(!Cadenas.esIgualContrasenia(nuevaPassword, confirmacionPassword)){
+                    vista.noCoincidenPassword();
+                }else{
+                    passwordValida = true;
+                }
+            }
+        }
+        return nuevaPassword;
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.EVENTOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
