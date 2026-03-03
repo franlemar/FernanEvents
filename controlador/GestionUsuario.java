@@ -191,6 +191,7 @@ public class GestionUsuario implements Aumentable {
         numUsuarios--;
     }
 
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS PARA COMPRAR ENTRADAS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
 
 
 

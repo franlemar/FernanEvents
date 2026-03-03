@@ -1,6 +1,7 @@
 package FernanEvents.controlador;
 
 import FernanEvents.modelo.CategoriaEvento;
+import FernanEvents.modelo.EntradasTipo;
 import FernanEvents.modelo.Evento;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
 
@@ -80,17 +81,16 @@ public class GestionEvento {
         return true;
     }
 
-    public Evento crearEvento (String nombre, String descripcion, CategoriaEvento categoria, String fecha, int aforo, int personasInscritas){
+    public Evento crearEvento (String nombre, String descripcion, CategoriaEvento categoria, String fecha, int aforo, int personasInscritas, String correoOrganizador){
         LocalDate fechaEvento = FuncionesFechas.convertirStringEnFecha(fecha);
         if (fechaEvento == null) return null;
 
-        Evento nuevoEvento = new Evento(nombre, descripcion, categoria, fechaEvento, aforo, personasInscritas);
+        Evento nuevoEvento = new Evento(nombre, descripcion, categoria, fechaEvento, aforo, personasInscritas, correoOrganizador);
 
         if (aniadirEvento(nuevoEvento)) {
             return nuevoEvento;
         }
         return null;
-
     }
 
     //----------------------------------------------------------------------------------------------------
@@ -224,5 +224,39 @@ public class GestionEvento {
         int disponibles = getAforoDisponible(nombreEvento);
         return disponibles >= plazasSolicitadas;
     }
+
+    //METODOS PARA ENTRADAS
+    public float getPrecioTipo(String nombreEvento, String nombreTipo) {
+        Evento evento = buscarEventoPorNombre(nombreEvento);
+        if (evento == null) {
+            return -1;
+        }
+        EntradasTipo tipo = evento.getTipoEntrada(nombreTipo);
+        if (tipo == null) {
+            return -1;
+        }
+        return tipo.getPrecio();
+    }
+
+    public int getCantidadDisponible(String nombreEvento, String nombreTipo) {
+        Evento evento = buscarEventoPorNombre(nombreEvento);
+        if (evento == null) {
+            return -1;
+        }
+        EntradasTipo tipo = evento.getTipoEntrada(nombreTipo);
+
+        if (tipo == null) {
+            return -1;
+        }
+        return tipo.getCantidadDisponible();
+    }
+
+    public boolean comprarEntradas (String nombreEvento, String nombreTipo, int cantidad){
+        Evento evento = buscarEventoPorNombre(nombreEvento);
+        if (evento == null) return false;
+        return evento.venderEntradas(nombreTipo, cantidad);
+    }
+
+
 
 }
