@@ -612,7 +612,7 @@ public class ControladorFernan {
             opcionMenu = Integer.parseInt(s.nextLine());
             switch(opcionMenu){
                 case 1:
-                    //eventos disponibles --> mostrar los eventos
+                    modeloEve.mostrarEventos();
                     break;
 
                 case 2:

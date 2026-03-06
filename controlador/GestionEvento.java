@@ -132,6 +132,33 @@ public class GestionEvento {
         return -1;
     }
 
+    public void mostrarEventos(){
+        if (numEventos == 0) vista.noHayEventos();
+        
+        vista.tituloEventosDisponibles();
+
+        for (int i = 0; i < numEventos; i++) {
+            Evento evento = eventos[i];
+            if (evento != null){
+                vista.mostrarEventoTabla(
+                        evento.getNombre(),
+                        evento.getCategoria().toString(),
+                        FuncionesFechas.convertirLocalDateString(evento.getFecha())
+                );
+
+                vista.mostrarVistaDetalladaEvento(
+                        evento.getNombre(),
+                        evento.getCategoria().toString(),
+                        FuncionesFechas.convertirLocalDateString(evento.getFecha()),
+                        evento.getDescripcion(),
+                        evento.getAforo(),
+                        evento.getPersonasInscritas()
+                );
+            }
+        }
+        
+    }
+
 
 
     //----------------------------------------------------------------------------------------------------
