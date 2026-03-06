@@ -4,17 +4,21 @@ import FernanEvents.modelo.CategoriaEvento;
 import FernanEvents.modelo.EntradasTipo;
 import FernanEvents.modelo.Evento;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
+import FernanEvents.vista.VistaFernan;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class GestionEvento {
 
     private Evento[] eventos;
     private int numEventos;
+    private VistaFernan vista;
 
-    public GestionEvento(int tamanio){
+    public GestionEvento(int tamanio, VistaFernan vista){
         eventos = new Evento[tamanio];
         numEventos = 0;
+        this.vista = vista;
     }
 
     public Evento[] getEventos() {
@@ -66,32 +70,47 @@ public class GestionEvento {
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CRUD.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     //C --> CREATE
-    public boolean aniadirEvento (Evento nuevoEvento){
-        if (nuevoEvento == null) return false;
+    public Evento crearEvento(){
+        Scanner s = new Scanner(System.in);
+        vista.pedirDatosEvento("nombre");
+        String nombreEvento = s.nextLine();
+        vista.pedirDatosEvento("descripción");
+        String descripcionEvento = s.nextLine();
+        vista.pedirDatosEventoCategoria("categoría");
+        String categoriaEvento = s.nextLine().toUpperCase();
+        CategoriaEvento categoriaEve = switch (categoriaEvento){
+            case "ARTE" -> CategoriaEvento.ARTE;
+            case "TECNOLOGIA" -> CategoriaEvento.TECNOLOGIA;
+            case "CINE" -> CategoriaEvento.CINE;
+            case "MUSICA" -> CategoriaEvento.MUSICA;
+            case "MODA" -> CategoriaEvento.MODA;
+            case "JUEGOS" -> CategoriaEvento.JUEGOS;
+            default -> null;
+        };
+        vista.pedirDatosEvento("fecha");
+        String fechaEvento = s.nextLine();
+        LocalDate fechaEve = FuncionesFechas.convertirStringEnFecha(fechaEvento);
+        vista.pedirDatosEvento("aforo");
+        int aforoEvento = Integer.parseInt(s.nextLine());
+        vista.pedirDatosEvento("número de inscritos");
+        int numInscritosEvento = Integer.parseInt(s.nextLine());
 
-        if (buscarEventoPorNombre(nuevoEvento.getNombre()) != null){
+        return new Evento (nombreEvento,descripcionEvento,categoriaEve,fechaEve,aforoEvento,numInscritosEvento);
+    }
+
+    public boolean aniadirEvento (Evento nuevoEvento){
+        if (numEventos == eventos.length){
+            aumentarCapacidad(1);
+        }
+
+        if(numEventos < eventos.length){
+            eventos[numEventos++] = nuevoEvento;
+            return true;
+        }else{
             return false;
         }
-
-        if (numEventos == eventos.length){
-            aumentarCapacidad(5);
-        }
-
-        eventos[numEventos++] = nuevoEvento;
-        return true;
     }
 
-    public Evento crearEvento (String nombre, String descripcion, CategoriaEvento categoria, String fecha, int aforo, int personasInscritas, String correoOrganizador){
-        LocalDate fechaEvento = FuncionesFechas.convertirStringEnFecha(fecha);
-        if (fechaEvento == null) return null;
-
-        Evento nuevoEvento = new Evento(nombre, descripcion, categoria, fechaEvento, aforo, personasInscritas, correoOrganizador);
-
-        if (aniadirEvento(nuevoEvento)) {
-            return nuevoEvento;
-        }
-        return null;
-    }
 
     //----------------------------------------------------------------------------------------------------
     //R --> READ
@@ -113,13 +132,7 @@ public class GestionEvento {
         return -1;
     }
 
-    public Evento[] obtenerTodosLosEventos(){
-        Evento[] resultado = new Evento[numEventos];
-        for (int i = 0; i < numEventos; i++) {
-            resultado[i] = eventos[i];
-        }
-        return resultado;
-    }
+
 
     //----------------------------------------------------------------------------------------------------
     //U --> UPDATE
@@ -226,36 +239,36 @@ public class GestionEvento {
     }
 
     //METODOS PARA ENTRADAS
-    public float getPrecioTipo(String nombreEvento, String nombreTipo) {
-        Evento evento = buscarEventoPorNombre(nombreEvento);
-        if (evento == null) {
-            return -1;
-        }
-        EntradasTipo tipo = evento.getTipoEntrada(nombreTipo);
-        if (tipo == null) {
-            return -1;
-        }
-        return tipo.getPrecio();
-    }
-
-    public int getCantidadDisponible(String nombreEvento, String nombreTipo) {
-        Evento evento = buscarEventoPorNombre(nombreEvento);
-        if (evento == null) {
-            return -1;
-        }
-        EntradasTipo tipo = evento.getTipoEntrada(nombreTipo);
-
-        if (tipo == null) {
-            return -1;
-        }
-        return tipo.getCantidadDisponible();
-    }
-
-    public boolean comprarEntradas (String nombreEvento, String nombreTipo, int cantidad){
-        Evento evento = buscarEventoPorNombre(nombreEvento);
-        if (evento == null) return false;
-        return evento.venderEntradas(nombreTipo, cantidad);
-    }
+//    public float getPrecioTipo(String nombreEvento, String nombreTipo) {
+//        Evento evento = buscarEventoPorNombre(nombreEvento);
+//        if (evento == null) {
+//            return -1;
+//        }
+//        EntradasTipo tipo = evento.getTipoEntrada(nombreTipo);
+//        if (tipo == null) {
+//            return -1;
+//        }
+//        return tipo.getPrecio();
+//    }
+//
+//    public int getCantidadDisponible(String nombreEvento, String nombreTipo) {
+//        Evento evento = buscarEventoPorNombre(nombreEvento);
+//        if (evento == null) {
+//            return -1;
+//        }
+//        EntradasTipo tipo = evento.getTipoEntrada(nombreTipo);
+//
+//        if (tipo == null) {
+//            return -1;
+//        }
+//        return tipo.getCantidadDisponible();
+//    }
+//
+//    public boolean comprarEntradas (String nombreEvento, String nombreTipo, int cantidad){
+//        Evento evento = buscarEventoPorNombre(nombreEvento);
+//        if (evento == null) return false;
+//        return evento.venderEntradas(nombreTipo, cantidad);
+//    }
 
 
 

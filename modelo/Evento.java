@@ -11,24 +11,15 @@ public class Evento {
     private LocalDate fecha;
     private int aforo;
     private int personasInscritas;
-    private int id;
-    private static int contadorId = 0; //aquí he puesto static para que todos los objetos compartan el mismo contador
-    private String correoOrganizador;
-
-
 
     //Constructor
-    public Evento(String nombre, String descripcion, CategoriaEvento categoriaEvento, LocalDate fecha, int aforo, int personasInscritas, String correoOrganizador) {
+    public Evento(String nombre, String descripcion, CategoriaEvento categoria, LocalDate fecha, int aforo, int personasInscritas) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.categoriaEvento = categoriaEvento;
+        this.categoriaEvento = categoria;
         this.fecha = fecha;
         this.aforo = aforo;
         this.personasInscritas = personasInscritas;
-        this.id = contadorId;
-        contadorId++;
-        this.correoOrganizador = correoOrganizador;
-        this.tiposEntrada = new EntradasTipo[3];
     }
 
     public String getNombre() {
@@ -78,22 +69,5 @@ public class Evento {
     public void setAforo(int aforo) {
         this.aforo = aforo;
     }
-
-    public int getId() { return id; }
-
-    public void setId(int id) { this.id = id; }
-
-    public EntradasTipo[] getTiposEntrada() {return tiposEntrada;}
-
-    public void setTiposEntrada(EntradasTipo[] tiposEntrada) {this.tiposEntrada = tiposEntrada;}
-
-    public int getNumTipos() {return numTipos;}
-
-    public void setNumTipos(int numTipos) {this.numTipos = numTipos;}
-
-    public String getCorreoOrganizador() {return correoOrganizador;}
-
-    public void setCorreoOrganizador(String correoOrganizador) {this.correoOrganizador = correoOrganizador;}
-
 
 }

@@ -6,20 +6,19 @@ import FernanEvents.modelo.utilidades.EnvioGMail;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
 
-import java.time.LocalDate;
 import java.util.Scanner;
 
 public class ControladorFernan {
 
-    private GestionUsuario modelo;
+    private GestionUsuario modeloUsu;
     private VistaFernan vista;
-    private GestionEvento evento;
+    private GestionEvento modeloEve;
     private Usuario usuarioLogueado;
 
-    public ControladorFernan(GestionUsuario modelo, VistaFernan vista, GestionEvento evento){
-        this.modelo = modelo;
+    public ControladorFernan(GestionUsuario modeloUsu, VistaFernan vista, GestionEvento modeloEve){
+        this.modeloUsu = modeloUsu;
         this.vista = vista;
-        this.evento = evento;
+        this.modeloEve = modeloEve;
     }
 
     public void iniciarFernan() throws InterruptedException {
@@ -67,7 +66,7 @@ public class ControladorFernan {
         while(true){
             vista.pedirCorreo();
             String correo = s.nextLine().toLowerCase();
-            usuario = modelo.buscaUsuarioPorCorreo(correo);
+            usuario = modeloUsu.buscaUsuarioPorCorreo(correo);
 
             if(usuario == null){
                 vista.noExisteCorreo();
@@ -97,7 +96,7 @@ public class ControladorFernan {
         }
 
         if(!passwordCorrecta){
-            modelo.actualizaEstadoBloqueo(usuario.getCorreo(), true);
+            modeloUsu.actualizaEstadoBloqueo(usuario.getCorreo(), true);
             vista.seBloqueaUsuario();
             return false;
         }
@@ -139,7 +138,7 @@ public class ControladorFernan {
         String passwordRegistro = obtenerPasswordValida();
         Rol rolCorrecto = registroRol();
 
-        if(modelo.buscarPorNombre(nombreRegistro) != null || modelo.buscaUsuarioPorCorreo(correoRegistro) != null){
+        if(modeloUsu.buscarPorNombre(nombreRegistro) != null || modeloUsu.buscaUsuarioPorCorreo(correoRegistro) != null){
             vista.nombreOCorreoEnUso();
             return false;
         }
@@ -195,8 +194,8 @@ public class ControladorFernan {
             if (!tokenRegistro.equals(codigoVerificacion)) {
                 vista.tokenIncorrecto();
             } else {
-                if (modelo.getNumUsuarios() == modelo.getUsuarios().length) {
-                    modelo.aumentarCapacidad();
+                if (modeloUsu.getNumUsuarios() == modeloUsu.getUsuarios().length) {
+                    modeloUsu.aumentarCapacidad();
                 }
 
                 Usuario nuevoUsuario;
@@ -206,7 +205,7 @@ public class ControladorFernan {
                     nuevoUsuario = new Asistente(nombreRegistro, correoRegistro, passwordRegistro);
                 }
 
-                modelo.aniadirUsuario(nuevoUsuario);
+                modeloUsu.aniadirUsuario(nuevoUsuario);
                 tokenVerificado = true;
             }
         }
@@ -246,7 +245,7 @@ public class ControladorFernan {
                     break;
 
                 case 2:
-                    verEventosAdmin();
+
                     break;
 
                 case 3:
@@ -340,7 +339,7 @@ public class ControladorFernan {
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.PANEL DE CONTROL DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
 
     private void panelControlAdmin(){
-        if(!modelo.confirmaUsuariosBloqueados()){
+        if(!modeloUsu.confirmaUsuariosBloqueados()){
             vista.noHayUsuariosBloqueados();
         }else{
             if(gestionaUsuariosBloqueados()){
@@ -353,9 +352,9 @@ public class ControladorFernan {
 
     private boolean gestionaUsuariosBloqueados(){
         Scanner s = new Scanner(System.in);
-        Usuario[] listaUsuarios = modelo.getUsuarios();
+        Usuario[] listaUsuarios = modeloUsu.getUsuarios();
         vista.tituloUsuariosBloqueados();
-        for (int i = 0; i < modelo.getNumUsuarios(); i++) {
+        for (int i = 0; i < modeloUsu.getNumUsuarios(); i++) {
             if(listaUsuarios[i] != null && listaUsuarios[i].isBloqueado()){
                 vista.mostrarUsuarioBloqueado(i, listaUsuarios[i].getNombre());
             }
@@ -366,7 +365,7 @@ public class ControladorFernan {
                 listaUsuarios[opcionPanelBloqueo] != null){
 
             Usuario usuarioQuitarBloqueo = listaUsuarios[opcionPanelBloqueo];
-            return modelo.actualizaEstadoBloqueo(usuarioQuitarBloqueo.getCorreo(), false);
+            return modeloUsu.actualizaEstadoBloqueo(usuarioQuitarBloqueo.getCorreo(), false);
         }
         return false;
     }
@@ -391,7 +390,7 @@ public class ControladorFernan {
 
                 case 2:
                     if(sumaSaldo()){
-                        usuarioLogueado = modelo.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
+                        usuarioLogueado = modeloUsu.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
                         vista.sumaSaldoOK(usuarioLogueado.getSaldo());
                     }else{
                         vista.mensajeError();
@@ -400,7 +399,7 @@ public class ControladorFernan {
 
                 case 3:
                     if(retiraSaldo()){
-                        usuarioLogueado = modelo.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
+                        usuarioLogueado = modeloUsu.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
                         vista.retiraSaldoOK(usuarioLogueado.getSaldo());
                     }else{
                         vista.mensajeError();
@@ -423,7 +422,7 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.preguntaSumaSaldo();
         float saldoASumar = Float.parseFloat(s.nextLine());
-        return modelo.aniadirSaldo(usuarioLogueado.getCorreo(), saldoASumar);
+        return modeloUsu.aniadirSaldo(usuarioLogueado.getCorreo(), saldoASumar);
     }
 
     /**
@@ -433,7 +432,7 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.preguntaRetiraSaldo();
         float saldoARetirar = Float.parseFloat(s.nextLine());
-        return modelo.quitarSaldo(usuarioLogueado.getCorreo(), saldoARetirar);
+        return modeloUsu.quitarSaldo(usuarioLogueado.getCorreo(), saldoARetirar);
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION CONFIGURACION DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -475,7 +474,7 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.pedirNombreUsuario();
         String nombreUsuarioCambio = s.nextLine();
-        Usuario usuarioCambio = modelo.buscarPorNombre(nombreUsuarioCambio);
+        Usuario usuarioCambio = modeloUsu.buscarPorNombre(nombreUsuarioCambio);
 
         if(usuarioCambio == null){
             vista.errorAlBuscarNombre();
@@ -485,18 +484,18 @@ public class ControladorFernan {
         vista.pedirNuevoNombre();
         String nuevoNombreUsuario = s.nextLine();
 
-        if(modelo.buscarPorNombre(nuevoNombreUsuario) != null){
+        if(modeloUsu.buscarPorNombre(nuevoNombreUsuario) != null){
             vista.nombreYaEnUso(nuevoNombreUsuario);
             return false;
         }
-        return modelo.actualizarNombre(usuarioCambio.getCorreo(), nuevoNombreUsuario);
+        return modeloUsu.actualizarNombre(usuarioCambio.getCorreo(), nuevoNombreUsuario);
     }
 
     private boolean cambiaPasswordAdmin(){
         Scanner s = new Scanner(System.in);
         vista.pedirNombreUsuario();
         String nombreUsuarioCambio = s.nextLine();
-        Usuario usuarioCambio = modelo.buscarPorNombre(nombreUsuarioCambio);
+        Usuario usuarioCambio = modeloUsu.buscarPorNombre(nombreUsuarioCambio);
 
         if(usuarioCambio == null){
             vista.errorAlBuscarNombre();
@@ -505,7 +504,7 @@ public class ControladorFernan {
 
         vista.pedirNuevaPassword();
         String nuevaPassword = s.nextLine();
-        return modelo.actualizarContrasena(usuarioCambio.getCorreo(), nuevaPassword);
+        return modeloUsu.actualizarContrasena(usuarioCambio.getCorreo(), nuevaPassword);
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION CONFIGURACION RESTO DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -547,13 +546,13 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.pedirNuevoNombre();
         String nuevoNombre = s.nextLine();
-        if(modelo.buscarPorNombre(nuevoNombre) != null){
+        if(modeloUsu.buscarPorNombre(nuevoNombre) != null){
             vista.nombreYaEnUso(nuevoNombre);
             return false;
         }
 
-        if(modelo.actualizarNombre(usuarioLogueado.getCorreo(), nuevoNombre)){
-            usuarioLogueado = modelo.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
+        if(modeloUsu.actualizarNombre(usuarioLogueado.getCorreo(), nuevoNombre)){
+            usuarioLogueado = modeloUsu.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
             return true;
         }
         return false;
@@ -570,8 +569,8 @@ public class ControladorFernan {
         }else{
             String nuevaPassword = obtenerPasswordValida();
 
-            if(modelo.actualizarContrasena(usuarioLogueado.getCorreo(), nuevaPassword)){
-                this.usuarioLogueado = modelo. buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
+            if(modeloUsu.actualizarContrasena(usuarioLogueado.getCorreo(), nuevaPassword)){
+                this.usuarioLogueado = modeloUsu. buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
                 return true;
             }
         }
@@ -604,48 +603,37 @@ public class ControladorFernan {
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.EVENTOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-    // PARA ADMIN
-    private void verEventosAdmin(){
-        Evento[] eventos = this.evento.obtenerTodosLosEventos();
 
-        if (eventos.length == 0){
-            vista.noHayEventos();
-            return;
-        }
-
-        for (int i = 0; i < eventos.length; i++) {
-            Evento evento = eventos[i];
-            if (evento != null){
-                String fechaformateada = FuncionesFechas.convertirLocalDateString(evento.getFecha());
-                vista.mostrarEventoTabla(evento.getNombre(), evento.getCategoria().toString(), fechaformateada);
-            }
-        }
-    }
-
-    //PARA ORGANIZADOR
-    private void menuEventosOrganizador() throws InterruptedException{
+    private void menuEventosOrganizador(){
         Scanner s = new Scanner(System.in);
-        int opcionEvento;
-
-        do {
+        int opcionMenu;
+        do{
             vista.menuOrganizadorEventos();
-            opcionEvento = Integer.parseInt(s.nextLine());
-
-            switch (opcionEvento){
+            opcionMenu = Integer.parseInt(s.nextLine());
+            switch(opcionMenu){
                 case 1:
-                    verEventosOrganizador();
+                    //eventos disponibles --> mostrar los eventos
                     break;
 
                 case 2:
-                    crearNuevoEvento();
+                    Evento nuevoEvento = modeloEve.crearEvento();
+                    if(modeloEve.aniadirEvento(nuevoEvento)){
+                        vista.mensajeConfirmacion();
+                    }else{
+                        vista.mensajeError();
+                    }
                     break;
 
                 case 3:
-                    modificarEvento();
+                    //modificar un evento --> llamar a métodos de gestión de eventos (CRUD)
+
                     break;
 
                 case 4:
-                    eliminarEvento();
+                    //eliminar un evento --> llamar a métodos de gestión de eventos (CRUD)
+                    // en vista hay un metodo
+
+                    //reordenar eventos al eliminar uno. tema 5 hay ejemplos
                     break;
 
                 case 5:
@@ -654,282 +642,13 @@ public class ControladorFernan {
                 default:
                     vista.opcionNoValida();
             }
-        }while (opcionEvento !=5);
+        }while(opcionMenu != 5);
     }
 
-    private void verEventosOrganizador() {
-        Evento[] eventos = this.evento.obtenerTodosLosEventos();
-        if (eventos.length == 0) {
-            vista.noHayEventos();
-            return;
-        }
 
-        for (int i = 0; i < eventos.length; i++) {
-            Evento evento = eventos[i];
-            if (evento!= null) {
-                String fechaFormateada = FuncionesFechas.convertirLocalDateString(evento.getFecha());
-                vista.mostrarEventoTabla(evento.getNombre(), evento.getCategoria().toString(), fechaFormateada);
-            }
-        }
-    }
 
-    /**
-     * Función para crear un evento nuevo
-     */
 
-    private void crearNuevoEvento(){
-        Scanner s = new Scanner(System.in);
-        vista.pedirDatosEvento("Nombre");
-        String nombre = s.nextLine();
 
-        if (evento.buscarEventoPorNombre(nombre) != null){
-            vista.eventoYaExiste();
-            return;
-        }
-
-        vista.pedirDatosEvento("Descripción");
-        String descripcion = s.nextLine();
-
-        //categorías disponibles
-        vista.mostrarCategorias();
-        vista.pedirCategoria();
-
-        int opcionCategoria =Integer.parseInt(s.nextLine()) -1;
-
-        if (opcionCategoria < 0 || opcionCategoria >= CategoriaEvento.values().length) {
-            vista.categoriaNoValida();
-            return;
-        }
-
-        CategoriaEvento categoria = CategoriaEvento.values()[opcionCategoria];
-
-        vista.pedirDatosEvento("fecha (dd/mm/aaaa)");
-        String fechaString = s.nextLine();
-
-        LocalDate fecha = FuncionesFechas.convertirStringEnFecha(fechaString);
-
-        if (fecha == null) {
-            vista.fechaNoValida();
-            return;
-        }
-
-        // validar que la fecha no se haya pasado
-        long diasRestantes = FuncionesFechas.diasRestantes(fecha);
-        if (diasRestantes < 0) {
-            vista.error("No se pueden crear eventos con fecha pasada");
-            return;
-        }
-
-        vista.pedirDatosEvento("aforo");
-        int aforo = Integer.parseInt(s.nextLine());
-
-        vista.pedirDatosEvento("número de inscritos");
-        int inscritos = Integer.parseInt(s.nextLine());
-
-        if (inscritos > aforo) {
-            vista.inscritosSuperanAforo();
-            return;
-        }
-
-        Evento nuevoEvento = evento.crearEvento(nombre, descripcion, categoria, fechaString, aforo, inscritos);
-
-        if (nuevoEvento != null) {
-            vista.eventoGuardado();
-        } else {
-            vista.mensajeError();
-        }
-    }
-
-    /**
-     * Función para modificar un evento
-     */
-
-    private void modificarEvento() {
-    Scanner s = new Scanner(System.in);
-
-    Evento[] eventos = this.evento.obtenerTodosLosEventos();
-    if (eventos.length == 0) {
-        vista.noHayEventos();
-        return;
-    }
-
-    String[] nombresEventos = new String[eventos.length];
-    for (int i = 0; i < eventos.length; i++) {
-        if (eventos[i] != null) {
-            nombresEventos[i] = eventos[i].getNombre();
-        }
-    }
-
-    vista.listarEventosParaModificar(nombresEventos, eventos.length);
-    vista.pedirNumeroEvento();
-    int opcion = Integer.parseInt(s.nextLine());
-
-    if (opcion < 0 || opcion >= eventos.length || eventos[opcion] == null) {
-        vista.eventoNoValido();
-        return;
-    }
-
-    Evento eventoModificar = eventos[opcion];
-    vista.tituloModificarEvento(eventoModificar.getNombre());
-    vista.mostrarOpcionesEvento();
-
-    int opcionModif = Integer.parseInt(s.nextLine());
-
-    switch (opcionModif) {
-        case 1:
-            vista.pedirDatosEvento("nuevo nombre");
-            String nuevoNombre = s.nextLine();
-            if (evento.actualizarNombre(eventoModificar.getNombre(), nuevoNombre)) {
-                vista.mensajeConfirmacion();
-            } else {
-                vista.mensajeError();
-            }
-            break;
-
-        case 2:
-            vista.pedirDatosEvento("nueva descripción");
-            String nuevaDesc = s.nextLine();
-            if (evento.actualizarDescripcion(eventoModificar.getNombre(), nuevaDesc)) {
-                vista.mensajeConfirmacion();
-            } else {
-                vista.mensajeError();
-            }
-            break;
-
-        case 3:
-            vista.mostrarCategorias();
-            vista.pedirCategoria();
-            int opcionCategoria = Integer.parseInt(s.nextLine()) - 1;
-
-            if (opcionCategoria < 0 || opcionCategoria >= CategoriaEvento.values().length) {
-                vista.categoriaNoValida();
-                break;
-            }
-
-            if (evento.actualizarCategoria(eventoModificar.getNombre(), CategoriaEvento.values()[opcionCategoria])) {
-                vista.mensajeConfirmacion();
-            } else {
-                vista.mensajeError();
-            }
-            break;
-
-        case 4:
-            vista.pedirDatosEvento("nueva fecha (dd/mm/aaaa)");
-            String nuevafechaString = s.nextLine();
-
-            // validar la fecha antes de poder actualizar
-            LocalDate nuevaFecha = FuncionesFechas.convertirStringEnFecha(nuevafechaString);
-            if (nuevaFecha == null) {
-                vista.fechaNoValida();
-                break;
-            }
-
-            if (evento.actualizarFecha(eventoModificar.getNombre(), nuevafechaString)) {
-                vista.mensajeConfirmacion();
-            } else {
-                vista.mensajeError();
-            }
-            break;
-
-        case 5:
-            vista.pedirDatosEvento("nuevo aforo");
-            int nuevoAforo = Integer.parseInt(s.nextLine());
-            if (evento.actualizarAforo(eventoModificar.getNombre(), nuevoAforo)) {
-                vista.mensajeConfirmacion();
-            } else {
-                vista.mensajeError();
-            }
-            break;
-
-        case 6:
-            vista.pedirDatosEvento("nuevo número de inscritos");
-            int nuevosInscritos = Integer.parseInt(s.nextLine());
-
-            int diferencia = nuevosInscritos - eventoModificar.getPersonasInscritas();
-
-            if (diferencia > 0) {
-                if (evento.actualizarInscritos(eventoModificar.getNombre(), diferencia)) {
-                    vista.mensajeConfirmacion();
-                } else {
-                    vista.aforoInsuficiente();
-                }
-            } else {
-                eventoModificar.setPersonasInscritas(nuevosInscritos);
-                vista.mensajeConfirmacion();
-            }
-            break;
-
-        case 7:
-            vista.operacionCancelada();
-            break;
-
-        default:
-            vista.opcionNoValida();
-        }
-    }
-
-    private void eliminarEvento() {
-        Scanner s = new Scanner(System.in);
-
-        Evento[] eventos = this.evento.obtenerTodosLosEventos();
-        if (eventos.length == 0) {
-            vista.noHayEventos();
-            return;
-        }
-
-        vista.tituloEventosDisponibles();
-        for (int i = 0; i < eventos.length; i++) {
-            if (eventos[i] != null) {
-
-                String fechaFormateada = FuncionesFechas.convertirLocalDateString(eventos[i].getFecha());
-                vista.mostrarEventoTabla(eventos[i].getNombre(), eventos[i].getCategoria().toString(), fechaFormateada);
-            }
-        }
-
-        vista.pedirNombreEvento();
-        String nombreEvento = s.nextLine();
-
-        if (evento.eliminarEvento(nombreEvento)) {
-            vista.eventoEliminado();
-        } else {
-            vista.eventoNoEncontrado();
-        }
-    }
-
-    // PARA ASISTENTES
-    private void menuMisEventosAsistente() throws InterruptedException{
-        Scanner s = new Scanner(System.in);
-        int opcion;
-
-        do {
-            vista.menuOrganizadorEventos();
-            opcion = Integer.parseInt(s.nextLine());
-
-            switch (opcion){
-                case 1:
-                    verEventosOrganizador();
-                    break;
-
-                case 2:
-                    crearNuevoEvento();
-                    break;
-
-                case 3:
-                    modificarEvento();
-                    break;
-
-                case 4:
-                    eliminarEvento();
-                    break;
-
-                case 5:
-                    break;
-
-                default:
-                    vista.opcionNoValida();
-            }
-        }while (opcionEvento !=5);
-    }
 
 
 

@@ -29,29 +29,29 @@ public class GestionEntrada {
 
     public void setEntrada(Entrada entrada) {this.entrada = entrada;}
 
-    public void aniadirTipoEntrada(String nombre, float precio, int cantidad){
-        if (numTipos < 3){
-            tiposEntrada[numTipos++] = new EntradasTipo(nombre, precio, cantidad);
-        }
-    }
-
-    public EntradasTipo getTipoEntrada(String nombreTipo) {
-        for (int i = 0; i < numTipos; i++) {
-            if (tiposEntrada[i].getNombre().equalsIgnoreCase(nombreTipo)) {
-                return tiposEntrada[i];
-            }
-        }
-        return null;
-    }
-
-    public boolean venderEntradas(String nombreTipo, int cantidad){
-        EntradasTipo tipo = getTipoEntrada(nombreTipo);
-        if (tipo != null && tipo.getCantidadDisponible() >= cantidad){
-            tipo.setCantidadDisponible(tipo.getCantidadDisponible() - cantidad);
-
-            this.personasInscritas = personasInscritas + cantidad;
-            return true;
-        }
-        return false;
-    }
+//    public void aniadirTipoEntrada(String nombre, float precio, int cantidad){
+//        if (numTipos < 3){
+//            tiposEntrada[numTipos++] = new EntradasTipo(nombre, precio, cantidad);
+//        }
+//    }
+//
+//    public EntradasTipo getTipoEntrada(String nombreTipo) {
+//        for (int i = 0; i < numTipos; i++) {
+//            if (tiposEntrada[i].getNombre().equalsIgnoreCase(nombreTipo)) {
+//                return tiposEntrada[i];
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public boolean venderEntradas(String nombreTipo, int cantidad){
+//        EntradasTipo tipo = getTipoEntrada(nombreTipo);
+//        if (tipo != null && tipo.getCantidadDisponible() >= cantidad){
+//            tipo.setCantidadDisponible(tipo.getCantidadDisponible() - cantidad);
+//
+//            this.personasInscritas = personasInscritas + cantidad;
+//            return true;
+//        }
+//        return false;
+//    }
 }

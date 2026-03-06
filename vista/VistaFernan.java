@@ -17,21 +17,6 @@ public class VistaFernan{
     }
 
     /**
-     * Muestra el menú principal cuando se inicia el programa enseñando los distintos tipos de perfiles con los que puede interactuar el usuario
-     */
-    public void menuOpcionesUsuario() {
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + estilo.ITALIC + "✦ ELIGE TU TIPO DE USUARIO ✦" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.PASTEL_BLUE + "1. Administrador");
-        System.out.println("2. Organizador");
-        System.out.println("3. Asistente");
-        System.out.println(estilo.NEON_PINK + "4. Salir" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.SILVER + "────────────────────────────────────────────" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
-    }
-
-    /**
      * Muestra el menú de opciones disponibles que tiene el usuario cuando accede a FernanEvents como administrador
      */
     public void menuAdministrador() {
@@ -61,18 +46,6 @@ public class VistaFernan{
     }
 
     /**
-     * Muestra un menú que aparece cuando se intenta iniciar sesión como asistente, permitiendo al usuario elegir qué tipo de asistente es.
-     */
-    public void menuTipoAsistente() {
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ ¿QUÉ TIPO DE ASISTENTE ERES? ✦" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.PASTEL_BLUE + "1. Asistente 1");
-        System.out.println("2. Asistente 2");
-        System.out.println(estilo.NEON_PINK + "3. Volver atrás" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
-    }
-
-    /**
      * Muestra el menú de opciones disponibles que tiene el usuario cuando accede a FernanEvents como asistente
      */
     public void menuAsistente() {
@@ -86,19 +59,6 @@ public class VistaFernan{
         System.out.println(estilo.NEON_PINK + "6. Cerrar sesión" + estilo.ANSI_RESET);
 
         System.out.println(estilo.PASTEL_GREEN + "Seleccione la opción deseada: " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Muestra el menú de panel de control donde el administrador puede elegir sobre qué perfil trabajar pudiendo cambiar el nombre de usuario y contraseña de dicho perfil
-     */
-    public void OpcionesUsuariosPanelSoloAdmin() {
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ PANEL DE CONTROL ✦" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.PASTEL_BLUE + "1. Organizador");
-        System.out.println("2. Asistente 1");
-        System.out.println("3. Asistente 2" + estilo.ANSI_RESET);
-        System.out.println(estilo.NEON_PINK + "4. Volver atrás" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
     }
 
     /**
@@ -130,7 +90,7 @@ public class VistaFernan{
     }
 
     /**
-     * Muestra un menú con los tipos de detalles de los que cosnta un evento. Aparece cuando el organizador quiere modiciar un evento que ya se ha creado anteriormente.
+     * Muestra un menú con los tipos de detalles de los que consta un evento. Aparece cuando el organizador quiere modificar un evento que ya se ha creado anteriormente.
      */
     public void datosEventos() {
         System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ DATOS DEL EVENTO ✦" + estilo.ANSI_RESET);
@@ -252,6 +212,56 @@ public class VistaFernan{
         System.out.printf(estilo.PASTEL_PURPLE + "║ " + estilo.PASTEL_BLUE + "Categoría" + estilo.PASTEL_PURPLE + ": %-" + (50 - "Categoría".length() - 2) + "s ║%n", categoria);
         System.out.printf(estilo.PASTEL_PURPLE + "║ " + estilo.PASTEL_BLUE + "Fecha" + estilo.PASTEL_PURPLE + ": %-" + (50 - "Fecha".length() - 2) + "s ║%n", fecha);
         System.out.println(estilo.PASTEL_PURPLE + "╚════════════════════════════════════════════════════╝");
+    }
+
+    /**
+     * Muestra todos los detalles de los eventos que han sido creados en FernanEvents así como un pequeño gráfico de barra horizontal donde poder ver de forma gráfica la cantidad de inscritos a los eventos en función del aforo disponible.
+     */
+    public void mostrarVistaDetalladaEvento(String nombre, String categoria, String fecha, String descripcion, int aforo, int inscritos) {
+
+        System.out.println(estilo.PASTEL_PURPLE + "\n===== VISTA DETALLADA DEL EVENTO =====" + estilo.ANSI_RESET);
+
+        System.out.println(estilo.PASTEL_BLUE + "Nombre del evento: " + estilo.ANSI_RESET + nombre);
+        System.out.println(estilo.PASTEL_BLUE + "Categoría: " + estilo.ANSI_RESET + categoria);
+        System.out.println(estilo.PASTEL_BLUE + "Fecha: " + estilo.ANSI_RESET + fecha);
+        System.out.println(estilo.PASTEL_BLUE + "Descripción: " + estilo.ANSI_RESET + descripcion);
+
+        int aforoRestante = aforo - inscritos;
+        System.out.println(estilo.PASTEL_BLUE + "Aforo total: " + estilo.ANSI_RESET + aforo + " personas");
+        System.out.println(estilo.PASTEL_BLUE + "Inscritos actualmente: " + estilo.ANSI_RESET + inscritos + " personas");
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Aforo disponible (Total): " + estilo.ANSI_RESET + aforoRestante + " plazas libres");
+
+
+        double porcentaje = 0;
+        if (aforo > 0) {
+            porcentaje = ((double) inscritos / aforo) * 100;
+        }
+
+        int barras = (int) (porcentaje / 5); // Máx. 20 barras
+
+        String grafico = "";
+        for (int i = 0; i < barras; i++) {
+            grafico += estilo.PASTEL_PURPLE + "█" + estilo.ANSI_RESET;
+        }
+
+        System.out.println(estilo.PASTEL_BLUE + "\nGráfico de inscritos:" + estilo.ANSI_RESET);
+        System.out.println("[" + grafico + estilo.ANSI_RESET + "] " + String.format("%.1f", porcentaje) + "%\n");
+    }
+
+    //MODIFICAR CUANDO TENGAMOS ENTRADAS LOS VALORES QUE LE LLEGAN POR PARÁMETRO
+    public void mostrarVistaDetalladaEntradas(String[] nombreTipoEntrada, int[] cantidadEntradas, float[] precioEntrada){
+        System.out.println(estilo.PASTEL_YELLOW + "\n=== ENTRADAS DISPONIBLES ===" + estilo.ANSI_RESET);
+
+        for (int i = 0; i < 3; i++) {
+            System.out.print(estilo.PASTEL_BLUE + "Tipo: " + estilo.ANSI_RESET + nombreTipoEntrada[i]);
+            System.out.print(" | " + estilo.PASTEL_BLUE + "Precio: " + estilo.ANSI_RESET + precioEntrada[i] + " euros");
+
+            if (cantidadEntradas[i] <= 0) {
+                System.out.println(" | " + estilo.ANSI_RED + "AGOTADAS" + estilo.ANSI_RESET);
+            } else {
+                System.out.println(" | " + estilo.PASTEL_GREEN + "Disponibles: " + estilo.ANSI_RESET + cantidadEntradas[i]);
+            }
+        }
     }
 
     /**
@@ -505,18 +515,17 @@ public class VistaFernan{
         System.out.print(estilo.PASTEL_BLUE + "Introduce " + dato + " del evento: " + estilo.ANSI_RESET);
     }
 
+    public void pedirDatosEventoCategoria(String dato){
+        System.out.print(estilo.PASTEL_BLUE + "Introduce " + dato + " del evento (Arte, Tecnologia, Cine, Musica, Moda, " +
+                "Juegos): " + estilo.ANSI_RESET);
+    }
+
     public void eventoYaExiste() {
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Ya existe un evento con ese nombre" + estilo.ANSI_RESET);
     }
 
     public void eventoGuardado() {
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Evento guardado correctamente \n" + estilo.ANSI_RESET);
-    }
-
-    public void mostrarEvento(String nombre, String categoria, String fecha) {
-        System.out.println(estilo.PASTEL_BLUE + "Nombre: " + estilo.ANSI_RESET + nombre);
-        System.out.println(estilo.PASTEL_BLUE + "Categoría: " + estilo.ANSI_RESET + categoria);
-        System.out.println(estilo.PASTEL_BLUE + "Fecha: " + estilo.ANSI_RESET + fecha);
     }
 
     public void mostrarOpcionesEvento() {
