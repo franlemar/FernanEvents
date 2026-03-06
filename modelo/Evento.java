@@ -15,8 +15,7 @@ public class Evento {
     private static int contadorId = 0; //aquí he puesto static para que todos los objetos compartan el mismo contador
     private String correoOrganizador;
 
-    private EntradasTipo[] tiposEntrada;
-    private int numTipos;
+
 
     //Constructor
     public Evento(String nombre, String descripcion, CategoriaEvento categoriaEvento, LocalDate fecha, int aforo, int personasInscritas, String correoOrganizador) {
@@ -96,31 +95,5 @@ public class Evento {
 
     public void setCorreoOrganizador(String correoOrganizador) {this.correoOrganizador = correoOrganizador;}
 
-    //añadir un tipo, solo se usa al crear el evento
-    public void aniadirTipoEntrada(String nombre, float precio, int cantidad){
-        if (numTipos < 3){
-            tiposEntrada[numTipos++] = new EntradasTipo(nombre, precio, cantidad);
-        }
-    }
-
-    public EntradasTipo getTipoEntrada(String nombreTipo) {
-        for (int i = 0; i < numTipos; i++) {
-            if (tiposEntrada[i].getNombre().equalsIgnoreCase(nombreTipo)) {
-                return tiposEntrada[i];
-            }
-        }
-        return null;
-    }
-
-    public boolean venderEntradas(String nombreTipo, int cantidad){
-        EntradasTipo tipo = getTipoEntrada(nombreTipo);
-        if (tipo != null && tipo.getCantidadDisponible() >= cantidad){
-            tipo.setCantidadDisponible(tipo.getCantidadDisponible() - cantidad);
-
-            this.personasInscritas = personasInscritas + cantidad;
-            return true;
-        }
-        return false;
-    }
 
 }
