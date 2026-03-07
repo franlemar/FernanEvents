@@ -509,6 +509,34 @@ public class VistaFernan{
         System.out.println("- Al menos un símbolo (- _ . , * + @)" + estilo.ANSI_RESET + "\n");
     }
 
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES INVITAR UN AMIGO (ASISTENTE)   .*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    public void noHayAmigosReferidos(){
+        System.out.println(estilo.PASTEL_BLUE + "No tienes ningún amigo referido añadido en tu lista \n" + estilo.ANSI_RESET);
+    }
+
+    public void cabeceraListadoAmigosReferidos(int totalAmigos){
+        System.out.println(estilo.PASTEL_BLUE + "Tus amigos referidos (" + totalAmigos + "): " + estilo.ANSI_RESET);
+    }
+
+    public void listarAmigo(int indice, String correo){
+        System.out.println(estilo.PASTEL_BLUE + "  " + indice + ". " + correo + estilo.ANSI_RESET);
+    }
+
+    public void pedirCorreoAmigoReferido(){
+        System.out.print(estilo.PASTEL_BLUE + "Escribe el correo electrónico del amigo que quieres añadir: " + estilo.ANSI_RESET);
+    }
+
+    public void correoMalEscrito(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Has escrito mal el correo electrónico. Asegúrate de que " +
+                "tiene un @ en la dirección y sigue la estructura ejemplo@dominio.com \n" + estilo.ANSI_RESET);
+    }
+
+    public void registroAmigoReferidoOK(String correo){
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Has añadido a " + correo + " a tu lista de amigos" +
+                " correctamente \n" + "Hemos enviado un correo electrónico notificando a tu amigo/a \n"  + estilo.ANSI_RESET);
+    }
+
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA EVENTOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     public void noHayEventos(){
         System.out.println(estilo.ANSI_RED + estilo.WARNING + " Actualmente no hay ningún evento disponible" + estilo.ANSI_RESET);

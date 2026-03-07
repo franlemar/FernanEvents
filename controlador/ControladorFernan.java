@@ -2,8 +2,7 @@ package FernanEvents.controlador;
 
 import FernanEvents.modelo.*;
 import FernanEvents.modelo.utilidades.Cadenas;
-import FernanEvents.modelo.utilidades.EnvioGMail;
-import FernanEvents.modelo.utilidades.FuncionesFechas;
+import FernanEvents.modelo.utilidades.EnvioGmail;
 import FernanEvents.vista.VistaFernan;
 
 import java.util.Scanner;
@@ -102,11 +101,11 @@ public class ControladorFernan {
         }
 
         String codigoVerificacion = Cadenas.generarCodigoVerificacion();
-        String destinatario = "jmorcam520@g.educaand.es";
+        String destinatario = "flenmar918@g.educaand.es";
         String asunto = "Código de verificación - Inicio de sesión";
-        String cuerpo = EnvioGMail.plantillaLoginAdmin(usuario.getNombre(), codigoVerificacion);
+        String cuerpo = EnvioGmail.plantillaLoginAdmin(usuario.getNombre(), codigoVerificacion);
 
-        EnvioGMail.enviarConGMail(destinatario, asunto, cuerpo);
+        EnvioGmail.enviarConGMail(destinatario, asunto, cuerpo);
         vista.correoVerificacionEnviado();
 
         boolean logueado = false;
@@ -179,8 +178,8 @@ public class ControladorFernan {
     }
 
     private void enviarTokenRegistro(String nombreRegistro, String correoRegistro, String codigoVerificacion){
-        String cuerpo = EnvioGMail.plantillaRegistroUsuario(nombreRegistro, codigoVerificacion);
-        EnvioGMail.enviarConGMail(correoRegistro, "Token único de inicio de sesión", cuerpo);
+        String cuerpo = EnvioGmail.plantillaRegistroUsuario(nombreRegistro, codigoVerificacion);
+        EnvioGmail.enviarConGMail(correoRegistro, "Token único de inicio de sesión", cuerpo);
         vista.correoVerificacionEnviado();
     }
 
@@ -319,6 +318,7 @@ public class ControladorFernan {
                     break;
 
                 case 4:
+                    invitarAmigos();
                     break;
 
                 case 5:
@@ -507,7 +507,7 @@ public class ControladorFernan {
         return modeloUsu.actualizarContrasena(usuarioCambio.getCorreo(), nuevaPassword);
     }
 
-    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION CONFIGURACION RESTO DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCIÓN CONFIGURACIÓN RESTO DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
 
     private void configuracionUsuario(){
         Scanner s = new Scanner(System.in);
@@ -600,6 +600,57 @@ public class ControladorFernan {
             }
         }
         return nuevaPassword;
+    }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.INVITAR A UN AMIGO A FERNANEVENTS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    private void invitarAmigos(){
+        Scanner s = new Scanner(System.in);
+        int opcionMenu;
+
+        do{
+            vista.menuInvitarAmigo();
+            opcionMenu = Integer.parseInt(s.nextLine());
+            switch(opcionMenu){
+                case 1:
+                    if(!modeloUsu.tieneAmigosReferidos(usuarioLogueado)){
+                        vista.noHayAmigosReferidos();
+                    }else{
+                        listarAmigosReferidos();
+                    }
+                    break;
+
+                case 2:
+                    vista.pedirCorreoAmigoReferido();
+                    String correoAmigoReferido = s.nextLine().trim();
+                    if(!modeloUsu.aniadirAmigoReferido(usuarioLogueado, correoAmigoReferido)){
+                        vista.correoMalEscrito();
+                    }else{
+                        String destinatario = correoAmigoReferido;
+                        String asunto = "Un amigo/a te ha invitado a formar parte de FernanEvents";
+                        String cuerpo = EnvioGmail.plantillaInvitarAmigo(correoAmigoReferido, usuarioLogueado.getNombre());
+                        EnvioGmail.enviarConGMail(destinatario, asunto, cuerpo);
+                        vista.registroAmigoReferidoOK(correoAmigoReferido);
+                    }
+                    break;
+
+                case 3:
+                    break;
+
+                default:
+                    vista.opcionNoValida();
+            }
+        }while(opcionMenu != 3);
+    }
+
+    private void listarAmigosReferidos(){
+        Asistente asistente = (Asistente) usuarioLogueado;
+        String[] listadoAmigosReferidos = asistente.getAmigosReferidos();
+        int totalAmigos = asistente.getNumAmigosReferidos();
+        vista.cabeceraListadoAmigosReferidos(totalAmigos);
+        for (int i = 0; i < totalAmigos; i++) {
+            vista.listarAmigo(i + 1, listadoAmigosReferidos[i]);
+        }
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.EVENTOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
