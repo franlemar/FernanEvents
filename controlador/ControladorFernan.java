@@ -629,10 +629,7 @@ public class ControladorFernan {
                     break;
 
                 case 4:
-                    //eliminar un evento --> llamar a métodos de gestión de eventos (CRUD)
-                    // en vista hay un metodo
-
-                    //reordenar eventos al eliminar uno. tema 5 hay ejemplos
+                    modeloEve.eliminarEvento();
                     break;
 
                 case 5:

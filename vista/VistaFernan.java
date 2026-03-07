@@ -2,6 +2,8 @@ package FernanEvents.vista;
 import FernanEvents.modelo.CategoriaEvento;
 import FernanEvents.modelo.Evento;
 
+import java.util.Scanner;
+
 public class VistaFernan{
 
     private  Estilos estilo = new Estilos();
@@ -739,11 +741,20 @@ public class VistaFernan{
         System.out.print(estilo.PASTEL_GREEN + "Cantidad: " + estilo.ANSI_RESET);
     }
 
-    public void mostrarListaEventosParaModificar(Evento[] eventos, int total) {
+    public void mostrarListaEventos(Evento[] eventos, int total) {
         System.out.println("Eventos disponibles:");
         for (int i = 0; i < total; i++) {
-            System.out.println(i + " - " + eventos[i].getNombre());
+            System.out.println(" - " + eventos[i].getNombre());
         }
+    }
+
+    /**
+     *Pide confirmacion con un mensaje y espera respuesta de si -> "s" o no -> "n"
+     */
+    public boolean pedirConfirmacion(String mensaje) {
+        System.out.print(estilo.PASTEL_GREEN + mensaje + " (s/n): " + estilo.ANSI_RESET);
+        Scanner s = new Scanner(System.in);
+        return s.nextLine().equalsIgnoreCase("s");
     }
 
 

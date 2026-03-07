@@ -1,7 +1,6 @@
 package FernanEvents.controlador;
 
 import FernanEvents.modelo.CategoriaEvento;
-import FernanEvents.modelo.EntradasTipo;
 import FernanEvents.modelo.Evento;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
@@ -162,13 +161,15 @@ public class GestionEvento {
     //----------------------------------------------------------------------------------------------------
     //U --> UPDATE
     public void modificarEvento(){
-        if (numEventos == 0) vista.noHayEventos();
+        if (numEventos == 0){
+            vista.noHayEventos();
+        }
 
         Scanner s = new Scanner(System.in);
 
-        vista.mostrarListaEventosParaModificar(eventos, numEventos);
+        vista.mostrarListaEventos(eventos, numEventos);
 
-        vista.pedirDatosEvento("Escribe el nombre del evento que quieres modificar:");
+        vista.pedirDatosEvento("Escribe el nombre del evento que quieres modificar: ");
         String nombreActual = s.nextLine();
 
         Evento evento = buscarEventoPorNombre(nombreActual);
@@ -310,21 +311,48 @@ public class GestionEvento {
         return true;
     }
 
-    //métodos adicionales que nos pueden servir
-    //nos vale para cuando queramos saber cuantas plazas libres quedan en un evento.
+    public void eliminarEvento(){
+        if (numEventos== 0) vista.noHayEventos();
 
-     public int getAforoDisponible(String nombreEvento){
+        Scanner s = new Scanner(System.in);
+
+        vista.mostrarListaEventos(eventos, numEventos);
+
+        vista.pedirDatosEvento("Escribe el nombre del evento que quieres modificar: ");
+        String nombreEvento = s.nextLine();
+
         Evento evento = buscarEventoPorNombre(nombreEvento);
-        if (evento == null) return -1;
+        if (evento== null){
+            vista.eventoNoEncontrado();
+        }
 
-        return evento.getAforo() - evento.getPersonasInscritas();
+        if (vista.pedirConfirmacion("Estas seguro que que quieres eliminar "  + nombreEvento + " ?")) {
+            if (eliminarEvento(nombreEvento)) {
+                vista.mensajeConfirmacion();
+            } else {
+                vista.mensajeError();
+            }
+        } else {
+                vista.operacionCancelada();
+            }
+        }
     }
 
-    //verificar si se pueden comprar x entradas antes de que nos permita comprarlas
-    public boolean hayPlazasDisponibles (String nombreEvento, int plazasSolicitadas){
-        int disponibles = getAforoDisponible(nombreEvento);
-        return disponibles >= plazasSolicitadas;
-    }
+//    //métodos adicionales que nos pueden servir
+//    //nos vale para cuando queramos saber cuantas plazas libres quedan en un evento.
+//
+//     public int getAforoDisponible(String nombreEvento){
+//        Evento evento = buscarEventoPorNombre(nombreEvento);
+//        if (evento == null) return -1;
+//
+//        return evento.getAforo() - evento.getPersonasInscritas();
+//    }
+
+//    //verificar si se pueden comprar x entradas antes de que nos permita comprarlas
+//    public boolean hayPlazasDisponibles (String nombreEvento, int plazasSolicitadas){
+//        int disponibles = getAforoDisponible(nombreEvento);
+//        return disponibles >= plazasSolicitadas;
+//    }
 
     //METODOS PARA ENTRADAS
 //    public float getPrecioTipo(String nombreEvento, String nombreTipo) {
@@ -357,7 +385,3 @@ public class GestionEvento {
 //        if (evento == null) return false;
 //        return evento.venderEntradas(nombreTipo, cantidad);
 //    }
-
-
-
-}
