@@ -71,24 +71,34 @@ public class GestionEvento {
     //C --> CREATE
     public Evento crearEvento(){
         Scanner s = new Scanner(System.in);
+
         vista.pedirDatosEvento("nombre");
         String nombreEvento = s.nextLine();
+
         vista.pedirDatosEvento("descripción");
         String descripcionEvento = s.nextLine();
-        vista.pedirDatosEventoCategoria("categoría");
-        String categoriaEvento = s.nextLine().toUpperCase();
-        CategoriaEvento categoriaEve = switch (categoriaEvento){
-            case "ARTE" -> CategoriaEvento.ARTE;
-            case "TECNOLOGIA" -> CategoriaEvento.TECNOLOGIA;
-            case "CINE" -> CategoriaEvento.CINE;
-            case "MUSICA" -> CategoriaEvento.MUSICA;
-            case "MODA" -> CategoriaEvento.MODA;
-            case "JUEGOS" -> CategoriaEvento.JUEGOS;
-            default -> null;
-        };
-        vista.pedirDatosEvento("fecha");
-        String fechaEvento = s.nextLine();
-        LocalDate fechaEve = FuncionesFechas.convertirStringEnFecha(fechaEvento);
+
+        CategoriaEvento categoriaEve = null;
+        while (categoriaEve == null){
+            vista.pedirDatosEventoCategoria("categoría");
+            String categoriaEvento = s.nextLine().toUpperCase();
+            categoriaEve = switch (categoriaEvento){
+                case "ARTE" -> CategoriaEvento.ARTE;
+                case "TECNOLOGIA" -> CategoriaEvento.TECNOLOGIA;
+                case "CINE" -> CategoriaEvento.CINE;
+                case "MUSICA" -> CategoriaEvento.MUSICA;
+                case "MODA" -> CategoriaEvento.MODA;
+                case "JUEGOS" -> CategoriaEvento.JUEGOS;
+                default -> null;
+            };
+
+            if (categoriaEve == null){
+                vista.categoriaNoValida();
+            }
+        }
+
+        LocalDate fechaEve = FuncionesFechas.pedirFechaValida(s, vista);
+
         vista.pedirDatosEvento("aforo");
         int aforoEvento = Integer.parseInt(s.nextLine());
         vista.pedirDatosEvento("número de inscritos");
@@ -163,6 +173,7 @@ public class GestionEvento {
     public void modificarEvento(){
         if (numEventos == 0){
             vista.noHayEventos();
+            return;
         }
 
         Scanner s = new Scanner(System.in);
@@ -173,56 +184,67 @@ public class GestionEvento {
         String nombreActual = s.nextLine();
 
         Evento evento = buscarEventoPorNombre(nombreActual);
-        if (evento == null) vista.eventoNoEncontrado();
+        if (evento == null){
+            vista.eventoNoEncontrado();
+            return;
+        }
 
         vista.mostrarOpcionesEvento();
         int opcion = Integer.parseInt(s.nextLine());
+        boolean funciona = false;
 
         switch (opcion){
             case 1:
                 vista.pedirDatosEvento("Escriba el nuevo nombre: ");
-                actualizarNombre(nombreActual, s.nextLine());
+                funciona= actualizarNombre(nombreActual, s.nextLine());
                 break;
             case 2:
                 vista.pedirDatosEvento("Escriba la nueva descripción: ");
+                funciona= actualizarDescripcion(nombreActual, s.nextLine());
                 break;
             case 3:
-                vista.pedirDatosEvento("Escriba la nueva categoría: ");
-                String nuevaCategoria = s.nextLine().toUpperCase();
-                CategoriaEvento categoriaEve = switch (nuevaCategoria){
-                    case "ARTE" -> CategoriaEvento.ARTE;
-                    case "TECNOLOGIA" -> CategoriaEvento.TECNOLOGIA;
-                    case "CINE" -> CategoriaEvento.CINE;
-                    case "MUSICA" -> CategoriaEvento.MUSICA;
-                    case "MODA" -> CategoriaEvento.MODA;
-                    case "JUEGOS" -> CategoriaEvento.JUEGOS;
-                    default -> null;
-                };
+                CategoriaEvento categoriaEve = null;
+                while (categoriaEve == null){
+                    vista.pedirDatosEvento("Escriba la nueva categoría: ");
+                    String nuevaCategoria = s.nextLine().toUpperCase();
+                    categoriaEve = switch (nuevaCategoria){
+                        case "ARTE" -> CategoriaEvento.ARTE;
+                        case "TECNOLOGIA" -> CategoriaEvento.TECNOLOGIA;
+                        case "CINE" -> CategoriaEvento.CINE;
+                        case "MUSICA" -> CategoriaEvento.MUSICA;
+                        case "MODA" -> CategoriaEvento.MODA;
+                        case "JUEGOS" -> CategoriaEvento.JUEGOS;
+                        default -> null;
+                    };
 
-                if (categoriaEve !=null){
-                    actualizarCategoria(nombreActual,categoriaEve);
-                }else {
-                    vista.cantidadNoValida();
+                    if (categoriaEve !=null){
+                        funciona= actualizarCategoria(nombreActual,categoriaEve);
+                    }else {
+                        vista.cantidadNoValida();
+                    }
+                    break;
                 }
-                break;
 
             case 4:
                 vista.pedirDatosEvento("Escriba la nueva fecha (dd/MM/yyyy): ");
-                actualizarFecha(nombreActual,s.nextLine());
+                funciona= actualizarFecha(nombreActual,s.nextLine());
                 break;
             case 5:
                 vista.pedirDatosEvento("Escriba el nuevo aforo: ");
-                actualizarAforo(nombreActual,Integer.parseInt(s.nextLine()));
+                funciona= actualizarAforo(nombreActual,Integer.parseInt(s.nextLine()));
                 break;
             case 6:
                 vista.pedirDatosEvento("Escriba los inscritos: ");
-                actualizarInscritos(nombreActual, Integer.parseInt(s.nextLine()));
+                funciona= actualizarInscritos(nombreActual, Integer.parseInt(s.nextLine()));
                 break;
             default:
                 vista.opcionNoValida();
                 return;
         }
-        vista.mensajeConfirmacion();
+        if (funciona){
+            vista.mensajeConfirmacion();
+        }
+
     }
 
     public boolean actualizarNombre(String nombreActual, String nuevoNombre){
