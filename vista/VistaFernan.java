@@ -511,11 +511,11 @@ public class VistaFernan{
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA EVENTOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     public void noHayEventos(){
-        System.out.println("Actualmente no hay ningún evento disponible");
+        System.out.println(estilo.ANSI_RED + estilo.WARNING + " Actualmente no hay ningún evento disponible" + estilo.ANSI_RESET);
     }
 
     public void pedirDatosEvento(String dato) {
-        System.out.print(estilo.PASTEL_BLUE + "Introduce " + dato + " del evento: " + estilo.ANSI_RESET);
+        System.out.print(estilo.PASTEL_BLUE + dato  + estilo.ANSI_RESET);
     }
 
     public void pedirDatosEventoCategoria(String dato){

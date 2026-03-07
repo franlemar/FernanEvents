@@ -6,6 +6,7 @@ import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class GestionEvento {
@@ -72,10 +73,10 @@ public class GestionEvento {
     public Evento crearEvento(){
         Scanner s = new Scanner(System.in);
 
-        vista.pedirDatosEvento("nombre");
+        vista.pedirDatosEvento("Introduce el nombre del evento: ");
         String nombreEvento = s.nextLine();
 
-        vista.pedirDatosEvento("descripción");
+        vista.pedirDatosEvento("Introduce la descripción del evento: ");
         String descripcionEvento = s.nextLine();
 
         CategoriaEvento categoriaEve = null;
@@ -99,9 +100,9 @@ public class GestionEvento {
 
         LocalDate fechaEve = FuncionesFechas.pedirFechaValida(s, vista);
 
-        vista.pedirDatosEvento("aforo");
+        vista.pedirDatosEvento("Introduce el aforo del evento: ");
         int aforoEvento = Integer.parseInt(s.nextLine());
-        vista.pedirDatosEvento("número de inscritos");
+        vista.pedirDatosEvento("Introduce el número de inscritos: ");
         int numInscritosEvento = Integer.parseInt(s.nextLine());
 
         return new Evento (nombreEvento,descripcionEvento,categoriaEve,fechaEve,aforoEvento,numInscritosEvento);
@@ -142,7 +143,10 @@ public class GestionEvento {
     }
 
     public void mostrarEventos(){
-        if (numEventos == 0) vista.noHayEventos();
+        if (numEventos == 0){
+            vista.noHayEventos();
+            return;
+        }
 
         vista.tituloEventosDisponibles();
 
@@ -180,7 +184,7 @@ public class GestionEvento {
 
         vista.mostrarListaEventos(eventos, numEventos);
 
-        vista.pedirDatosEvento("Escribe el nombre del evento que quieres modificar: ");
+        vista.pedirDatosEvento("Introduce el nombre del evento que quieres modificar: ");
         String nombreActual = s.nextLine();
 
         Evento evento = buscarEventoPorNombre(nombreActual);
@@ -195,17 +199,17 @@ public class GestionEvento {
 
         switch (opcion){
             case 1:
-                vista.pedirDatosEvento("Escriba el nuevo nombre: ");
+                vista.pedirDatosEvento("Introduce el nuevo nombre: ");
                 funciona= actualizarNombre(nombreActual, s.nextLine());
                 break;
             case 2:
-                vista.pedirDatosEvento("Escriba la nueva descripción: ");
+                vista.pedirDatosEvento("Introduce la nueva descripción: ");
                 funciona= actualizarDescripcion(nombreActual, s.nextLine());
                 break;
             case 3:
                 CategoriaEvento categoriaEve = null;
                 while (categoriaEve == null){
-                    vista.pedirDatosEvento("Escriba la nueva categoría: ");
+                    vista.pedirDatosEvento("Introduce la nueva categoría (ARTE, TECNOLOGIA, CINE, MUSICA, MODA, JUEGOS): ");
                     String nuevaCategoria = s.nextLine().toUpperCase();
                     categoriaEve = switch (nuevaCategoria){
                         case "ARTE" -> CategoriaEvento.ARTE;
@@ -220,23 +224,26 @@ public class GestionEvento {
                     if (categoriaEve !=null){
                         funciona= actualizarCategoria(nombreActual,categoriaEve);
                     }else {
-                        vista.cantidadNoValida();
+                        vista.categoriaNoValida();
                     }
-                    break;
                 }
+                break;
 
             case 4:
-                vista.pedirDatosEvento("Escriba la nueva fecha (dd/MM/yyyy): ");
-                funciona= actualizarFecha(nombreActual,s.nextLine());
+                LocalDate nuevaFecha = FuncionesFechas.pedirFechaValida(s, vista);
+                funciona = actualizarFecha(nombreActual, FuncionesFechas.convertirLocalDateString(nuevaFecha));
                 break;
             case 5:
-                vista.pedirDatosEvento("Escriba el nuevo aforo: ");
+                vista.pedirDatosEvento("Introduce el nuevo aforo: ");
                 funciona= actualizarAforo(nombreActual,Integer.parseInt(s.nextLine()));
                 break;
             case 6:
-                vista.pedirDatosEvento("Escriba los inscritos: ");
+                vista.pedirDatosEvento("Introduce los inscritos: ");
                 funciona= actualizarInscritos(nombreActual, Integer.parseInt(s.nextLine()));
                 break;
+            case 7:
+                vista.operacionCancelada();
+                return;
             default:
                 vista.opcionNoValida();
                 return;
@@ -275,13 +282,11 @@ public class GestionEvento {
         return true;
     }
 
-    public boolean actualizarFecha (String nombreEvento, String nuevaFecha){
+    public boolean actualizarFecha(String nombreEvento, String nuevaFecha){
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
 
         LocalDate fecha = FuncionesFechas.convertirStringEnFecha(nuevaFecha);
-        if (fecha == null) return false;
-
         evento.setFecha(fecha);
         return true;
     }

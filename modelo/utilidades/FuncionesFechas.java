@@ -32,7 +32,7 @@ public class FuncionesFechas {
     public static LocalDate pedirFechaValida(Scanner s, VistaFernan vista) {
         LocalDate fecha = null;
         while (fecha == null) {
-            vista.pedirDatosEvento("fecha (dd/MM/yyyy)");
+            vista.pedirDatosEvento("Introduce la fecha (dd/MM/yyyy): ");
             String fechaStr = s.nextLine();
             try {
                 fecha = LocalDate.parse(fechaStr, FORMATO_FECHA);
