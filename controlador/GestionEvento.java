@@ -175,83 +175,80 @@ public class GestionEvento {
     //----------------------------------------------------------------------------------------------------
     //U --> UPDATE
     public void modificarEvento(){
+        Scanner s = new Scanner(System.in);
         if (numEventos == 0){
             vista.noHayEventos();
             return;
         }
 
-        Scanner s = new Scanner(System.in);
-
         vista.mostrarListaEventos(eventos, numEventos);
-
         vista.pedirDatosEvento("Introduce el nombre del evento que quieres modificar: ");
         String nombreActual = s.nextLine();
 
         Evento evento = buscarEventoPorNombre(nombreActual);
-        if (evento == null){
-            vista.eventoNoEncontrado();
-            return;
-        }
 
-        vista.mostrarOpcionesEvento();
-        int opcion = Integer.parseInt(s.nextLine());
-        boolean funciona = false;
+        if(evento != null){
+            vista.mostrarOpcionesEvento();
+            int opcion = Integer.parseInt(s.nextLine());
+            boolean funciona = false;
 
-        switch (opcion){
-            case 1:
-                vista.pedirDatosEvento("Introduce el nuevo nombre: ");
-                funciona= actualizarNombre(nombreActual, s.nextLine());
-                break;
-            case 2:
-                vista.pedirDatosEvento("Introduce la nueva descripción: ");
-                funciona= actualizarDescripcion(nombreActual, s.nextLine());
-                break;
-            case 3:
-                CategoriaEvento categoriaEve = null;
-                while (categoriaEve == null){
-                    vista.pedirDatosEvento("Introduce la nueva categoría (ARTE, TECNOLOGIA, CINE, MUSICA, MODA, JUEGOS): ");
-                    String nuevaCategoria = s.nextLine().toUpperCase();
-                    categoriaEve = switch (nuevaCategoria){
-                        case "ARTE" -> CategoriaEvento.ARTE;
-                        case "TECNOLOGIA" -> CategoriaEvento.TECNOLOGIA;
-                        case "CINE" -> CategoriaEvento.CINE;
-                        case "MUSICA" -> CategoriaEvento.MUSICA;
-                        case "MODA" -> CategoriaEvento.MODA;
-                        case "JUEGOS" -> CategoriaEvento.JUEGOS;
-                        default -> null;
-                    };
+            switch (opcion){
+                case 1:
+                    vista.pedirDatosEvento("Introduce el nuevo nombre: ");
+                    funciona= actualizarNombre(nombreActual, s.nextLine());
+                    break;
+                case 2:
+                    vista.pedirDatosEvento("Introduce la nueva descripción: ");
+                    funciona= actualizarDescripcion(nombreActual, s.nextLine());
+                    break;
+                case 3:
+                    CategoriaEvento categoriaEve = null;
+                    while (categoriaEve == null){
+                        vista.pedirDatosEvento("Introduce la nueva categoría (ARTE, TECNOLOGIA, CINE, MUSICA, MODA, JUEGOS): ");
+                        String nuevaCategoria = s.nextLine().toUpperCase();
+                        categoriaEve = switch (nuevaCategoria){
+                            case "ARTE" -> CategoriaEvento.ARTE;
+                            case "TECNOLOGIA" -> CategoriaEvento.TECNOLOGIA;
+                            case "CINE" -> CategoriaEvento.CINE;
+                            case "MUSICA" -> CategoriaEvento.MUSICA;
+                            case "MODA" -> CategoriaEvento.MODA;
+                            case "JUEGOS" -> CategoriaEvento.JUEGOS;
+                            default -> null;
+                        };
 
-                    if (categoriaEve !=null){
-                        funciona= actualizarCategoria(nombreActual,categoriaEve);
-                    }else {
-                        vista.categoriaNoValida();
+                        if (categoriaEve !=null){
+                            funciona= actualizarCategoria(nombreActual,categoriaEve);
+                        }else {
+                            vista.categoriaNoValida();
+                        }
                     }
-                }
-                break;
+                    break;
 
-            case 4:
-                LocalDate nuevaFecha = FuncionesFechas.pedirFechaValida(s, vista);
-                funciona = actualizarFecha(nombreActual, FuncionesFechas.convertirLocalDateString(nuevaFecha));
-                break;
-            case 5:
-                vista.pedirDatosEvento("Introduce el nuevo aforo: ");
-                funciona= actualizarAforo(nombreActual,Integer.parseInt(s.nextLine()));
-                break;
-            case 6:
-                vista.pedirDatosEvento("Introduce los inscritos: ");
-                funciona= actualizarInscritos(nombreActual, Integer.parseInt(s.nextLine()));
-                break;
-            case 7:
-                vista.operacionCancelada();
-                return;
-            default:
-                vista.opcionNoValida();
-                return;
+                case 4:
+                    LocalDate nuevaFecha = FuncionesFechas.pedirFechaValida(s, vista);
+                    funciona = actualizarFecha(nombreActual, FuncionesFechas.convertirLocalDateString(nuevaFecha));
+                    break;
+                case 5:
+                    vista.pedirDatosEvento("Introduce el nuevo aforo: ");
+                    funciona= actualizarAforo(nombreActual,Integer.parseInt(s.nextLine()));
+                    break;
+                case 6:
+                    vista.pedirDatosEvento("Introduce los inscritos: ");
+                    funciona= actualizarInscritos(nombreActual, Integer.parseInt(s.nextLine()));
+                    break;
+                case 7:
+                    vista.operacionCancelada();
+                    return;
+                default:
+                    vista.opcionNoValida();
+                    return;
+            }
+            if (funciona){
+                vista.mensajeConfirmacion();
+            }
+        }else{
+            vista.eventoNoEncontrado();
         }
-        if (funciona){
-            vista.mensajeConfirmacion();
-        }
-
     }
 
     public boolean actualizarNombre(String nombreActual, String nuevoNombre){
@@ -338,32 +335,31 @@ public class GestionEvento {
         return true;
     }
 
-    public void eliminarEvento(){
-        if (numEventos== 0) vista.noHayEventos();
-
+    public void eliminarEvento() {
         Scanner s = new Scanner(System.in);
-
-        vista.mostrarListaEventos(eventos, numEventos);
-
-        vista.pedirDatosEvento("Escribe el nombre del evento que quieres modificar: ");
-        String nombreEvento = s.nextLine();
-
-        Evento evento = buscarEventoPorNombre(nombreEvento);
-        if (evento== null){
-            vista.eventoNoEncontrado();
-        }
-
-        if (vista.pedirConfirmacion("Estas seguro que que quieres eliminar "  + nombreEvento + " ?")) {
-            if (eliminarEvento(nombreEvento)) {
-                vista.mensajeConfirmacion();
-            } else {
-                vista.mensajeError();
-            }
+        if (numEventos == 0) {
+            vista.noHayEventos();
         } else {
-                vista.operacionCancelada();
+            vista.mostrarListaEventos(eventos, numEventos);
+            vista.pedirDatosEvento("Escribe el nombre del evento que quieres eliminar: ");
+            String nombreEvento = s.nextLine();
+            Evento evento = buscarEventoPorNombre(nombreEvento);
+
+            if (evento != null) {
+                if (vista.pedirConfirmacion("¿Estás seguro de que quieres eliminar " + nombreEvento + " ?")) {
+                    if (eliminarEvento(nombreEvento)) {
+                        vista.mensajeConfirmacion();
+                    } else {
+                        vista.mensajeError();
+                    }
+                } else {
+                    vista.operacionCancelada();
+                }
+            } else {
+                vista.eventoNoEncontrado();
             }
         }
-    }
+    }}
 
 //    //métodos adicionales que nos pueden servir
 //    //nos vale para cuando queramos saber cuantas plazas libres quedan en un evento.

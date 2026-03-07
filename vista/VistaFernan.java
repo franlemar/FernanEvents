@@ -539,7 +539,7 @@ public class VistaFernan{
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA EVENTOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     public void noHayEventos(){
-        System.out.println(estilo.ANSI_RED + estilo.WARNING + " Actualmente no hay ningún evento disponible" + estilo.ANSI_RESET);
+        System.out.println(estilo.ANSI_RED + estilo.WARNING + " Actualmente no hay ningún evento disponible \n" + estilo.ANSI_RESET);
     }
 
     public void pedirDatosEvento(String dato) {
@@ -652,7 +652,7 @@ public class VistaFernan{
      * Mensaje de evento no encontrado
      */
     public void eventoNoEncontrado() {
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No se ha encontrado el evento" + estilo.ANSI_RESET);
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No se ha encontrado el evento" + estilo.ANSI_RESET + "\n");
     }
 
     /**
@@ -729,7 +729,7 @@ public class VistaFernan{
      * Mensaje de operación cancelada
      */
     public void operacionCancelada() {
-        System.out.println(estilo.PASTEL_BLUE + "Operación cancelada" + estilo.ANSI_RESET);
+        System.out.println(estilo.ANSI_RED + "Operación cancelada" + estilo.ANSI_RESET + "\n");
     }
 
     /**
@@ -770,7 +770,7 @@ public class VistaFernan{
     }
 
     public void mostrarListaEventos(Evento[] eventos, int total) {
-        System.out.println("Eventos disponibles:");
+        System.out.println(estilo.PASTEL_BLUE + "Eventos disponibles:" + estilo.ANSI_RESET);
         for (int i = 0; i < total; i++) {
             System.out.println(" - " + eventos[i].getNombre());
         }
@@ -780,8 +780,8 @@ public class VistaFernan{
      *Pide confirmacion con un mensaje y espera respuesta de si -> "s" o no -> "n"
      */
     public boolean pedirConfirmacion(String mensaje) {
-        System.out.print(estilo.PASTEL_GREEN + mensaje + " (s/n): " + estilo.ANSI_RESET);
         Scanner s = new Scanner(System.in);
+        System.out.print(estilo.ANSI_RED + mensaje + " (s/n): " + estilo.ANSI_RESET);
         return s.nextLine().equalsIgnoreCase("s");
     }
 
