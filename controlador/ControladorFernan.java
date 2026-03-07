@@ -625,8 +625,7 @@ public class ControladorFernan {
                     break;
 
                 case 3:
-                    //modificar un evento --> llamar a métodos de gestión de eventos (CRUD)
-
+                    modeloEve.modificarEvento();
                     break;
 
                 case 4:

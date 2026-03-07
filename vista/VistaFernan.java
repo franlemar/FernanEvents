@@ -1,5 +1,6 @@
 package FernanEvents.vista;
 import FernanEvents.modelo.CategoriaEvento;
+import FernanEvents.modelo.Evento;
 
 public class VistaFernan{
 
@@ -309,6 +310,10 @@ public class VistaFernan{
 
     public void opcionNoValida(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Opción no válida" + estilo.ANSI_RESET + "\n");
+    }
+
+    public void mensajePersonalizado(String textoamostrar) {
+        System.out.print(textoamostrar);
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA LOGIN.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -736,6 +741,13 @@ public class VistaFernan{
     public void pedirCantidadEntradas() {
         System.out.println("¿Cuántas entradas deseas comprar? (Máximo 4 entradas)");
         System.out.print(estilo.PASTEL_GREEN + "Cantidad: " + estilo.ANSI_RESET);
+    }
+
+    public void mostrarListaEventosParaModificar(Evento[] eventos, int total) {
+        System.out.println("Eventos disponibles:");
+        for (int i = 0; i < total; i++) {
+            System.out.println(i + " - " + eventos[i].getNombre());
+        }
     }
 
 
