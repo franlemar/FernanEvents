@@ -19,7 +19,9 @@ public class ControladorFernan {
         this.vista = vista;
         this.modeloEve = modeloEve;
     }
-
+    /**
+     * Inicia FernanEvents mostrando las animaciones de carga del programa
+     */
     public void iniciarFernan() throws InterruptedException {
         Scanner s = new Scanner(System.in);
         int opcionMenu;
@@ -56,6 +58,9 @@ public class ControladorFernan {
         vista.mostrarDespedida();
     }
 
+    /**
+     * Gestiona el proceso de login del Usuario y envia el correspondiente correo de verificacion con el token
+     */
     private boolean LoginUsuario(){
         Scanner s = new Scanner(System.in);
         int intentosRestantes = 3;
@@ -127,7 +132,9 @@ public class ControladorFernan {
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.REGISTRO DE NUEVOS USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Gestiona el proceso necesario para registrar un usuario nuevo pidiendo los datos necesarios
+     */
     private boolean registrarUsuario(){
         Scanner s = new Scanner(System.in);
         vista.tituloRegistro();
@@ -146,6 +153,9 @@ public class ControladorFernan {
         return verificaTokenYRegistro(codigoVerificacion, nombreRegistro, correoRegistro, passwordRegistro, rolCorrecto);
     }
 
+    /**
+     * Pide y valida el correo durante el registro del usuario
+     */
     private String registroCorreo(){
         Scanner s = new Scanner(System.in);
         String correo = "";
@@ -162,6 +172,9 @@ public class ControladorFernan {
         return correo;
     }
 
+    /**
+     * Pide el rol del usuario durante el registro
+     */
     private Rol registroRol(){
         Scanner s = new Scanner(System.in);
         while(true){
@@ -177,11 +190,19 @@ public class ControladorFernan {
         }
     }
 
+    /**
+     * Se encarga de enviar el token de verificacion por correo necesario para el registro
+     */
+
     private void enviarTokenRegistro(String nombreRegistro, String correoRegistro, String codigoVerificacion){
         String cuerpo = EnvioGmail.plantillaRegistroUsuario(nombreRegistro, codigoVerificacion);
         EnvioGmail.enviarConGMail(correoRegistro, "Token único de inicio de sesión", cuerpo);
         vista.correoVerificacionEnviado();
     }
+
+    /**
+     * Verifica el token y completa el registro del usuario
+     */
 
     private boolean verificaTokenYRegistro(String codigoVerificacion, String nombreRegistro, String correoRegistro, String passwordRegistro, Rol rolCorrecto){
         Scanner s = new Scanner(System.in);
@@ -213,6 +234,9 @@ public class ControladorFernan {
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENÚS PRINCIPALES DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
 
+    /**
+     * Según el rol del usuario logueado muestra su menú correspondiente
+     */
     public void muestraMenuPorRol() throws InterruptedException {
         if(usuarioLogueado == null){ return; }
         switch(usuarioLogueado.getRol()){
@@ -229,6 +253,10 @@ public class ControladorFernan {
                 break;
         }
     }
+
+    /**
+     * Muestra el menú principal del usuario Administrador
+     */
 
     private void menuPrincipalAdmin() throws InterruptedException {
         Scanner s = new Scanner(System.in);
@@ -266,6 +294,10 @@ public class ControladorFernan {
         vista.cerrarSesion(usuarioLogueado.getNombre());
     }
 
+    /**
+     * Muestra el menú principal del usuario Organizador
+     */
+
     private void menuPrincipalOrganizador() throws InterruptedException {
         Scanner s = new Scanner(System.in);
         int opcionMenu;
@@ -298,6 +330,9 @@ public class ControladorFernan {
         vista.cerrarSesion(usuarioLogueado.getNombre());
     }
 
+    /**
+     * Muestra el menú principal del usuario Asistente
+     */
     private void menuPrincipalAsistente() throws InterruptedException {
         Scanner s = new Scanner(System.in);
         int opcionMenu;
@@ -337,7 +372,9 @@ public class ControladorFernan {
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.PANEL DE CONTROL DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Controla el panel de administrador para usuarios bloqueados
+     */
     private void panelControlAdmin(){
         if(!modeloUsu.confirmaUsuariosBloqueados()){
             vista.noHayUsuariosBloqueados();
@@ -350,6 +387,9 @@ public class ControladorFernan {
         }
     }
 
+    /**
+     * Permite gestionar el desbloqueo de usuarios
+     */
     private boolean gestionaUsuariosBloqueados(){
         Scanner s = new Scanner(System.in);
         Usuario[] listaUsuarios = modeloUsu.getUsuarios();
@@ -371,7 +411,6 @@ public class ControladorFernan {
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CARTERA DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
     /**
      * Función que haciendo uso de otras subfunciones(consultaSaldo, sumaSaldo, retiraSaldo) permite al usuario gestionar las diferentes opciones que ofrece la cartera digital de FernanEvents
      */
@@ -436,7 +475,9 @@ public class ControladorFernan {
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION CONFIGURACION DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Gestiona el menú de configuración del administrador
+     */
     private void configuracionAdmin(){
         Scanner s = new Scanner(System.in);
         int opcionMenuConfig;
@@ -470,6 +511,9 @@ public class ControladorFernan {
         }while(opcionMenuConfig != 3);
     }
 
+    /**
+     * Función que nos permite cambiar el nombre de un usuario
+     */
     private boolean cambiaNombreAdmin(){
         Scanner s = new Scanner(System.in);
         vista.pedirNombreUsuario();
@@ -491,6 +535,9 @@ public class ControladorFernan {
         return modeloUsu.actualizarNombre(usuarioCambio.getCorreo(), nuevoNombreUsuario);
     }
 
+    /**
+     * Función que nos permite cambiar el nombre de un usuario
+     */
     private boolean cambiaPasswordAdmin(){
         Scanner s = new Scanner(System.in);
         vista.pedirNombreUsuario();
@@ -508,7 +555,9 @@ public class ControladorFernan {
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCIÓN CONFIGURACIÓN RESTO DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Gestiona el menú de configuracion del usuario logueado
+     */
     private void configuracionUsuario(){
         Scanner s = new Scanner(System.in);
         int opcionMenuConfig;
@@ -542,6 +591,9 @@ public class ControladorFernan {
         }while(opcionMenuConfig != 3);
     }
 
+    /**
+     * Función que le permite al usuario cambiar su propio nombre
+     */
     private boolean cambiaNombreUsuario(){
         Scanner s = new Scanner(System.in);
         vista.pedirNuevoNombre();
@@ -558,6 +610,9 @@ public class ControladorFernan {
         return false;
     }
 
+    /**
+     * Función que le permite al usuario cambiar su contraseña
+     */
     private boolean cambiaPasswordUsuario(){
         Scanner s = new Scanner(System.in);
         vista.pedirPasswordActual();
@@ -576,6 +631,10 @@ public class ControladorFernan {
         }
         return false;
     }
+
+    /**
+     * Función que pide una contraseña que sea segura
+     */
 
     private String obtenerPasswordValida(){
         Scanner s = new Scanner(System.in);
@@ -603,7 +662,9 @@ public class ControladorFernan {
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.INVITAR A UN AMIGO A FERNANEVENTS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Gestiona el menú para invitar amigos a la plataforma
+     */
     private void invitarAmigos(){
         Scanner s = new Scanner(System.in);
         int opcionMenu;
@@ -643,6 +704,9 @@ public class ControladorFernan {
         }while(opcionMenu != 3);
     }
 
+    /**
+     * Muestra la lista de amigos referidos
+     */
     private void listarAmigosReferidos(){
         Asistente asistente = (Asistente) usuarioLogueado;
         String[] listadoAmigosReferidos = asistente.getAmigosReferidos();
@@ -654,7 +718,9 @@ public class ControladorFernan {
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.EVENTOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Gestiona el menú de eventos para el organizador
+     */
     private void menuEventosOrganizador(){
         Scanner s = new Scanner(System.in);
         int opcionMenu;

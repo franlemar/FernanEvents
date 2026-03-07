@@ -21,27 +21,46 @@ public class GestionEvento {
         this.vista = vista;
     }
 
+    /**
+     * Obtiene el array de eventos
+     */
     public Evento[] getEventos() {
         return eventos;
     }
 
+    /**
+     * Establece el array de eventos
+     */
     public void setEventos(Evento[] eventos) {
         this.eventos = eventos;
     }
 
+    /**
+     * Obtiene el número de eventos almacenados
+     */
     public int getNumEventos() {
         return numEventos;
     }
 
+    /**
+     * Establece el número de eventos almacenados
+     */
     public void setNumEventos(int numEventos) {
         this.numEventos = numEventos;
     }
 
+
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS INTERFAZ AUMENTABLE.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    /**
+     * Aumenta la capacidad del array de eventos en 1
+     */
     public void aumentarCapacidad() {
         aumentarCapacidad(1);
     }
 
+    /**
+     * Aumenta la capacidad del array de eventos en la cantidad que se le pase
+     */
     public void aumentarCapacidad(int cantidad) {
         Evento[] nuevoArray = new Evento[eventos.length + cantidad];
         for (int i = 0; i < numEventos; i++) {
@@ -50,10 +69,16 @@ public class GestionEvento {
         this.eventos = nuevoArray;
     }
 
+    /**
+     * Disminuye la capacidad del array de eventos en 1
+     */
     public void disminuirCapacidad() {
         disminuirCapacidad(1);
     }
 
+    /**
+     * Disminuye la capacidad del array en la cantidad que se le pase
+     */
     public void disminuirCapacidad(int cantidad) {
         int nuevoTamanio = eventos.length - cantidad;
         if (nuevoTamanio < numEventos) {
@@ -70,6 +95,9 @@ public class GestionEvento {
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CRUD.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     //C --> CREATE
+    /**
+     * Crea un nuevo evento pidiendo los datos
+     */
     public Evento crearEvento() {
         Scanner s = new Scanner(System.in);
 
@@ -108,6 +136,9 @@ public class GestionEvento {
         return new Evento(nombreEvento, descripcionEvento, categoriaEve, fechaEve, aforoEvento, numInscritosEvento);
     }
 
+    /**
+     * Añade un nuevo evento al array
+     */
     public boolean aniadirEvento(Evento nuevoEvento) {
         if (numEventos == eventos.length) {
             aumentarCapacidad(1);
@@ -124,6 +155,9 @@ public class GestionEvento {
 
     //----------------------------------------------------------------------------------------------------
     //R --> READ
+    /**
+     * Busca un evento por su nombre
+     */
     public Evento buscarEventoPorNombre(String nombre) {
         for (int i = 0; i < numEventos; i++) {
             if (eventos[i] != null && eventos[i].getNombre().equalsIgnoreCase(nombre)) {
@@ -133,6 +167,9 @@ public class GestionEvento {
         return null;
     }
 
+    /**
+     * Busca la posición de un evento en el array por su nombre
+     */
     public int buscarPosicionPorNombre(String nombre) {
         for (int i = 0; i < numEventos; i++) {
             if (eventos[i] != null && eventos[i].getNombre().equalsIgnoreCase(nombre.trim())) {
@@ -142,6 +179,9 @@ public class GestionEvento {
         return -1;
     }
 
+    /**
+     * Muestra todos los eventos disponibles
+     */
     public void mostrarEventos() {
         if (numEventos == 0) {
             vista.noHayEventos();
@@ -174,6 +214,9 @@ public class GestionEvento {
 
     //----------------------------------------------------------------------------------------------------
     //U --> UPDATE
+    /**
+     * Gestiona la modificación de un evento
+     */
     public void modificarEvento() {
         Scanner s = new Scanner(System.in);
         if (numEventos == 0) {
@@ -251,6 +294,9 @@ public class GestionEvento {
         }
     }
 
+    /**
+     * Actualiza el nombre de un evento
+     */
     public boolean actualizarNombre(String nombreActual, String nuevoNombre) {
         Evento evento = buscarEventoPorNombre(nombreActual);
         if (evento == null) return false;
@@ -263,6 +309,9 @@ public class GestionEvento {
         return true;
     }
 
+    /**
+     * Actualiza la descripción de un evento
+     */
     public boolean actualizarDescripcion(String nombreEvento, String nuevaDescripcion) {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
@@ -271,6 +320,9 @@ public class GestionEvento {
         return true;
     }
 
+    /**
+     * Actualiza la categoria de un evento
+     */
     public boolean actualizarCategoria(String nombreEvento, CategoriaEvento nuevaCategoria) {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
@@ -279,6 +331,9 @@ public class GestionEvento {
         return true;
     }
 
+    /**
+     * Actualiza la fecha de un evento
+     */
     public boolean actualizarFecha(String nombreEvento, String nuevaFecha) {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
@@ -288,6 +343,9 @@ public class GestionEvento {
         return true;
     }
 
+    /**
+     * Actualiza el aforo de un evento
+     */
     public boolean actualizarAforo(String nombreEvento, int nuevoAforo) {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
@@ -300,6 +358,9 @@ public class GestionEvento {
         return true;
     }
 
+    /**
+     * Actualiza las personas inscritas de un evento
+     */
     public boolean actualizarInscritos(String nombreEvento, int cantidad) {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
@@ -314,6 +375,9 @@ public class GestionEvento {
     }
 
     //D --> DELETE
+    /**
+     * Elimina un evento por su nombre
+     */
     public boolean eliminarEvento(String nombre) {
         int posicion = buscarPosicionPorNombre(nombre);
         if (posicion == -1) return false;
@@ -325,6 +389,9 @@ public class GestionEvento {
         return true;
     }
 
+    /**
+     * Gestiona la eliminación de un evento pidiendo confirmación
+     */
     public void eliminarEvento() {
         Scanner s = new Scanner(System.in);
         if (numEventos == 0) {
