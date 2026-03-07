@@ -15,7 +15,7 @@ public class GestionEvento {
     private int numEventos;
     private VistaFernan vista;
 
-    public GestionEvento(int tamanio, VistaFernan vista){
+    public GestionEvento(int tamanio, VistaFernan vista) {
         eventos = new Evento[tamanio];
         numEventos = 0;
         this.vista = vista;
@@ -38,11 +38,11 @@ public class GestionEvento {
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS INTERFAZ AUMENTABLE.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-    public void aumentarCapacidad(){
+    public void aumentarCapacidad() {
         aumentarCapacidad(1);
     }
 
-    public void aumentarCapacidad(int cantidad){
+    public void aumentarCapacidad(int cantidad) {
         Evento[] nuevoArray = new Evento[eventos.length + cantidad];
         for (int i = 0; i < numEventos; i++) {
             nuevoArray[i] = eventos[i];
@@ -50,13 +50,13 @@ public class GestionEvento {
         this.eventos = nuevoArray;
     }
 
-    public void disminuirCapacidad(){
+    public void disminuirCapacidad() {
         disminuirCapacidad(1);
     }
 
-    public void disminuirCapacidad(int cantidad){
+    public void disminuirCapacidad(int cantidad) {
         int nuevoTamanio = eventos.length - cantidad;
-        if(nuevoTamanio < numEventos){
+        if (nuevoTamanio < numEventos) {
             System.out.println("ERROR, no se puede reducir ese espacio");
             return;
         }
@@ -70,7 +70,7 @@ public class GestionEvento {
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CRUD.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     //C --> CREATE
-    public Evento crearEvento(){
+    public Evento crearEvento() {
         Scanner s = new Scanner(System.in);
 
         vista.pedirDatosEvento("Introduce el nombre del evento: ");
@@ -80,10 +80,10 @@ public class GestionEvento {
         String descripcionEvento = s.nextLine();
 
         CategoriaEvento categoriaEve = null;
-        while (categoriaEve == null){
+        while (categoriaEve == null) {
             vista.pedirDatosEventoCategoria("categoría");
             String categoriaEvento = s.nextLine().toUpperCase();
-            categoriaEve = switch (categoriaEvento){
+            categoriaEve = switch (categoriaEvento) {
                 case "ARTE" -> CategoriaEvento.ARTE;
                 case "TECNOLOGIA" -> CategoriaEvento.TECNOLOGIA;
                 case "CINE" -> CategoriaEvento.CINE;
@@ -93,7 +93,7 @@ public class GestionEvento {
                 default -> null;
             };
 
-            if (categoriaEve == null){
+            if (categoriaEve == null) {
                 vista.categoriaNoValida();
             }
         }
@@ -105,18 +105,18 @@ public class GestionEvento {
         vista.pedirDatosEvento("Introduce el número de inscritos: ");
         int numInscritosEvento = Integer.parseInt(s.nextLine());
 
-        return new Evento (nombreEvento,descripcionEvento,categoriaEve,fechaEve,aforoEvento,numInscritosEvento);
+        return new Evento(nombreEvento, descripcionEvento, categoriaEve, fechaEve, aforoEvento, numInscritosEvento);
     }
 
-    public boolean aniadirEvento (Evento nuevoEvento){
-        if (numEventos == eventos.length){
+    public boolean aniadirEvento(Evento nuevoEvento) {
+        if (numEventos == eventos.length) {
             aumentarCapacidad(1);
         }
 
-        if(numEventos < eventos.length){
+        if (numEventos < eventos.length) {
             eventos[numEventos++] = nuevoEvento;
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -124,9 +124,9 @@ public class GestionEvento {
 
     //----------------------------------------------------------------------------------------------------
     //R --> READ
-    public Evento buscarEventoPorNombre (String nombre){
+    public Evento buscarEventoPorNombre(String nombre) {
         for (int i = 0; i < numEventos; i++) {
-            if (eventos[i] != null && eventos[i].getNombre().equalsIgnoreCase(nombre)){
+            if (eventos[i] != null && eventos[i].getNombre().equalsIgnoreCase(nombre)) {
                 return eventos[i];
             }
         }
@@ -142,8 +142,8 @@ public class GestionEvento {
         return -1;
     }
 
-    public void mostrarEventos(){
-        if (numEventos == 0){
+    public void mostrarEventos() {
+        if (numEventos == 0) {
             vista.noHayEventos();
             return;
         }
@@ -152,7 +152,7 @@ public class GestionEvento {
 
         for (int i = 0; i < numEventos; i++) {
             Evento evento = eventos[i];
-            if (evento != null){
+            if (evento != null) {
                 vista.mostrarEventoTabla(
                         evento.getNombre(),
                         evento.getCategoria().toString(),
@@ -169,14 +169,14 @@ public class GestionEvento {
                 );
             }
         }
-        
+
     }
 
     //----------------------------------------------------------------------------------------------------
     //U --> UPDATE
-    public void modificarEvento(){
+    public void modificarEvento() {
         Scanner s = new Scanner(System.in);
-        if (numEventos == 0){
+        if (numEventos == 0) {
             vista.noHayEventos();
             return;
         }
@@ -187,26 +187,26 @@ public class GestionEvento {
 
         Evento evento = buscarEventoPorNombre(nombreActual);
 
-        if(evento != null){
+        if (evento != null) {
             vista.mostrarOpcionesEvento();
             int opcion = Integer.parseInt(s.nextLine());
             boolean funciona = false;
 
-            switch (opcion){
+            switch (opcion) {
                 case 1:
                     vista.pedirDatosEvento("Introduce el nuevo nombre: ");
-                    funciona= actualizarNombre(nombreActual, s.nextLine());
+                    funciona = actualizarNombre(nombreActual, s.nextLine());
                     break;
                 case 2:
                     vista.pedirDatosEvento("Introduce la nueva descripción: ");
-                    funciona= actualizarDescripcion(nombreActual, s.nextLine());
+                    funciona = actualizarDescripcion(nombreActual, s.nextLine());
                     break;
                 case 3:
                     CategoriaEvento categoriaEve = null;
-                    while (categoriaEve == null){
+                    while (categoriaEve == null) {
                         vista.pedirDatosEvento("Introduce la nueva categoría (ARTE, TECNOLOGIA, CINE, MUSICA, MODA, JUEGOS): ");
                         String nuevaCategoria = s.nextLine().toUpperCase();
-                        categoriaEve = switch (nuevaCategoria){
+                        categoriaEve = switch (nuevaCategoria) {
                             case "ARTE" -> CategoriaEvento.ARTE;
                             case "TECNOLOGIA" -> CategoriaEvento.TECNOLOGIA;
                             case "CINE" -> CategoriaEvento.CINE;
@@ -216,9 +216,9 @@ public class GestionEvento {
                             default -> null;
                         };
 
-                        if (categoriaEve !=null){
-                            funciona= actualizarCategoria(nombreActual,categoriaEve);
-                        }else {
+                        if (categoriaEve != null) {
+                            funciona = actualizarCategoria(nombreActual, categoriaEve);
+                        } else {
                             vista.categoriaNoValida();
                         }
                     }
@@ -230,11 +230,11 @@ public class GestionEvento {
                     break;
                 case 5:
                     vista.pedirDatosEvento("Introduce el nuevo aforo: ");
-                    funciona= actualizarAforo(nombreActual,Integer.parseInt(s.nextLine()));
+                    funciona = actualizarAforo(nombreActual, Integer.parseInt(s.nextLine()));
                     break;
                 case 6:
                     vista.pedirDatosEvento("Introduce los inscritos: ");
-                    funciona= actualizarInscritos(nombreActual, Integer.parseInt(s.nextLine()));
+                    funciona = actualizarInscritos(nombreActual, Integer.parseInt(s.nextLine()));
                     break;
                 case 7:
                     vista.operacionCancelada();
@@ -243,19 +243,19 @@ public class GestionEvento {
                     vista.opcionNoValida();
                     return;
             }
-            if (funciona){
+            if (funciona) {
                 vista.mensajeConfirmacion();
             }
-        }else{
+        } else {
             vista.eventoNoEncontrado();
         }
     }
 
-    public boolean actualizarNombre(String nombreActual, String nuevoNombre){
+    public boolean actualizarNombre(String nombreActual, String nuevoNombre) {
         Evento evento = buscarEventoPorNombre(nombreActual);
         if (evento == null) return false;
 
-        if (buscarEventoPorNombre(nuevoNombre) != null && !nombreActual.equalsIgnoreCase(nuevoNombre)){
+        if (buscarEventoPorNombre(nuevoNombre) != null && !nombreActual.equalsIgnoreCase(nuevoNombre)) {
             return false;
         }
 
@@ -263,7 +263,7 @@ public class GestionEvento {
         return true;
     }
 
-    public boolean actualizarDescripcion(String nombreEvento, String nuevaDescripcion){
+    public boolean actualizarDescripcion(String nombreEvento, String nuevaDescripcion) {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
 
@@ -271,7 +271,7 @@ public class GestionEvento {
         return true;
     }
 
-    public boolean actualizarCategoria(String nombreEvento, CategoriaEvento nuevaCategoria){
+    public boolean actualizarCategoria(String nombreEvento, CategoriaEvento nuevaCategoria) {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
 
@@ -279,7 +279,7 @@ public class GestionEvento {
         return true;
     }
 
-    public boolean actualizarFecha(String nombreEvento, String nuevaFecha){
+    public boolean actualizarFecha(String nombreEvento, String nuevaFecha) {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
 
@@ -288,11 +288,11 @@ public class GestionEvento {
         return true;
     }
 
-    public boolean actualizarAforo (String nombreEvento, int nuevoAforo){
+    public boolean actualizarAforo(String nombreEvento, int nuevoAforo) {
         Evento evento = buscarEventoPorNombre(nombreEvento);
-        if (evento==null) return false;
+        if (evento == null) return false;
 
-        if (nuevoAforo < evento.getPersonasInscritas()){
+        if (nuevoAforo < evento.getPersonasInscritas()) {
             return false;
         }
 
@@ -314,22 +314,12 @@ public class GestionEvento {
     }
 
     //D --> DELETE
-    public boolean eliminarEvento (String nombre){
+    public boolean eliminarEvento(String nombre) {
         int posicion = buscarPosicionPorNombre(nombre);
         if (posicion == -1) return false;
 
-        eventos[posicion] = eventos[numEventos-1];
-        eventos[numEventos-1] = null;
-        numEventos--;
-
-        return true;
-    }
-
-    public boolean eliminarEventoPorPosicion(int posicion){
-        if (posicion < 0 || posicion >= numEventos) return false;
-
-        eventos[posicion] = eventos[numEventos-1];
-        eventos[numEventos-1]= null;
+        eventos[posicion] = eventos[numEventos - 1];
+        eventos[numEventos - 1] = null;
         numEventos--;
 
         return true;
@@ -359,7 +349,15 @@ public class GestionEvento {
                 vista.eventoNoEncontrado();
             }
         }
-    }}
+    }
+
+
+
+
+
+
+
+}
 
 //    //métodos adicionales que nos pueden servir
 //    //nos vale para cuando queramos saber cuantas plazas libres quedan en un evento.
