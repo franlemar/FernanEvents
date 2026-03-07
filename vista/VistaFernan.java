@@ -312,10 +312,6 @@ public class VistaFernan{
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Opción no válida" + estilo.ANSI_RESET + "\n");
     }
 
-    public void mensajePersonalizado(String textoamostrar) {
-        System.out.print(textoamostrar);
-    }
-
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA LOGIN.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
 
     public void pedirCorreo(){
