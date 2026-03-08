@@ -878,13 +878,6 @@ public class VistaFernan{
     }
 
     /**
-     * Mensaje de saldo insuficiente para compra
-     */
-    public void saldoInsuficienteCompra() {
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Saldo insuficiente en tu cartera digital" + estilo.ANSI_RESET);
-    }
-
-    /**
      * Mensaje de compra exitosa
      */
     public void compraExitosa() {
@@ -970,6 +963,61 @@ public class VistaFernan{
                 "(introduzca la cantidad en euros)" + estilo.ANSI_RESET);
     }
 
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.COMPRA DE ENTRADAS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
 
+    public void cabeceraMisEventos() {
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ MIS EVENTOS INSCRITOS ✦" + estilo.ANSI_RESET);
+    }
 
+    public void mensajeEntradasCompradas(int cantidad) {
+        String texto = (cantidad == 1) ? "entrada comprada" : "entradas compradas";
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Tiene " + cantidad + " " + texto + " para este evento"
+                + estilo.ANSI_RESET + "\n");
+    }
+
+    public void mensajeNoInscrito() {
+        System.out.println(estilo.ANSI_RED + "No se ha inscrito en ningún evento todavía" + estilo.ANSI_RESET + "\n");
+    }
+
+    public void menuEntradaTipo() {
+        System.out.println(estilo.PASTEL_BLUE + "\nSeleccione el tipo de entrada:");
+        System.out.println("1. General \n2. VIP \n3. Infantil" + estilo.ANSI_RESET);
+        System.out.print(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
+    }
+
+    public void mostrarDetallePreCompra(String tipo, float precio) {
+        System.out.println(estilo.PASTEL_BLUE + "Has elegido la entrada: " + estilo.ANSI_RESET + estilo.PASTEL_PURPLE + estilo.BOLD + tipo + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "El precio por entrada es de: " + estilo.ANSI_RESET + estilo.PASTEL_YELLOW + estilo.BOLD + precio + " euros" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "¿Cuántas entradas deseas comprar? (Máximo 4 entradas)" + estilo.ANSI_RESET);
+    }
+
+    public void errorLimiteEntradas(int entradas) {
+        if (entradas >= 4) {
+            System.out.println(estilo.ANSI_RED + estilo.BOLD + "No puede comprar más entradas para este evento" + estilo.ANSI_RESET);
+        } else {
+            System.out.println(estilo.ANSI_RED + "No puede adquirir más de 4 entradas en total (Ya tiene: " + entradas + ")" + estilo.ANSI_RESET + "\n");
+        }
+    }
+
+    public void preguntaConfirmacionCompra(float saldoActual) {
+        System.out.println(estilo.PASTEL_BLUE + "Su saldo actual es de " + estilo.ANSI_RESET + estilo.PASTEL_GREEN +
+                estilo.BOLD + saldoActual + " euros" + estilo.ANSI_RESET + estilo.PASTEL_BLUE +
+                ". ¿Desea realizar la compra?" + estilo.ANSI_RESET);
+        System.out.print(estilo.PASTEL_GREEN + "SI/NO: " + estilo.ANSI_RESET);
+    }
+
+    public void noHayStockEntradas(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Lo sentimos, no quedan entradas disponibles de este tipo" + estilo.ANSI_RESET);
+    }
+
+    public void saldoInsuficiente(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No dispone de saldo suficiente en su cartera digital para realizar esta operación" + estilo.ANSI_RESET + "\n");
+    }
+
+    public void avisoPrecioTotal(int cantidadCompraEntrada, float precioTotal){
+        System.out.println(estilo.PASTEL_BLUE + "Ha elegido comprar " + cantidadCompraEntrada + " entradas. " +
+                "El precio total de la compra es de: " + estilo.ANSI_YELLOW + precioTotal + estilo.PASTEL_BLUE +
+                " euros" + estilo.ANSI_RESET);
+
+    }
 }

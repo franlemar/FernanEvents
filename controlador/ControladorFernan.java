@@ -3,6 +3,7 @@ package FernanEvents.controlador;
 import FernanEvents.modelo.*;
 import FernanEvents.modelo.utilidades.Cadenas;
 import FernanEvents.modelo.utilidades.EnvioGmail;
+import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
 
 import java.util.Scanner;
@@ -343,9 +344,82 @@ public class ControladorFernan {
 
             switch(opcionMenu){
                 case 1:
+                    Asistente asistenteActual = (Asistente) usuarioLogueado;
+                    vista.cabeceraMisEventos();
+                    int totalEventosInscritos = asistenteActual.getContadorInscripciones();
+
+                    if(totalEventosInscritos == 0){
+                        vista.mensajeNoInscrito();
+                    }else{
+                        for (int i = 0; i < totalEventosInscritos; i++) {
+                            String nombreEvento = asistenteActual.getEventosInscrito()[i];
+                            int cantidadEntradas = asistenteActual.getCantidadEntradasEvento()[i];
+
+                            Evento evento = modeloEve.buscarEventoPorNombre(nombreEvento);
+
+                            if(evento != null){
+                                vista.mostrarEventoTabla(nombreEvento, evento.getCategoria().toString(),
+                                        FuncionesFechas.convertirLocalDateString(evento.getFecha()));
+                                vista.mensajeEntradasCompradas(cantidadEntradas);
+                            }
+                        }
+                    }
+
                     break;
 
                 case 2:
+                    modeloEve.mostrarEventos();
+                    vista.pedirNombreEventoInscribir();
+                    String eventoAInscribir = s.nextLine();
+                    Evento eventoSeleccionado = modeloEve.buscarEventoPorNombre(eventoAInscribir);
+
+                    if(eventoSeleccionado != null){
+                        vista.menuEntradaTipo();
+                        int opcionTipoEntrada = Integer.parseInt(s.nextLine()) - 1;
+
+                        if(opcionTipoEntrada < 0 || opcionTipoEntrada > 3){
+                            vista.opcionNoValida();
+                        }else{
+                            EntradasTipo tipoEntradaElegido = eventoSeleccionado.getTiposDeEntrada()[opcionTipoEntrada];
+                            vista.mostrarDetallePreCompra(tipoEntradaElegido.getCategoria().toString(), tipoEntradaElegido.getPrecio());
+                            int cantidadEntradas = Integer.parseInt(s.nextLine());
+
+                            Asistente asistente = (Asistente) usuarioLogueado;
+                            int entradasYaCompradas = asistente.getNumEntradasEvento(eventoSeleccionado.getNombre());
+
+                            if(entradasYaCompradas + cantidadEntradas > 4){
+                                vista.errorLimiteEntradas(entradasYaCompradas);
+                            }else if(cantidadEntradas <= 0){
+                                vista.errorCantidadNoValida();
+                            }else{
+                                float precioTotal = cantidadEntradas * tipoEntradaElegido.getPrecio();
+
+                                if(tipoEntradaElegido.getCantidadDisponible() < cantidadEntradas){
+                                    vista.noHayStockEntradas();
+                                }else if(usuarioLogueado.getSaldo() < precioTotal){
+                                    vista.saldoInsuficiente();
+                                }else{
+                                    vista.avisoPrecioTotal(cantidadEntradas, precioTotal);
+                                    vista.preguntaConfirmacionCompra(usuarioLogueado.getSaldo());
+                                    String mensajeConfirmaCompra = s.nextLine();
+
+                                    if(mensajeConfirmaCompra.equalsIgnoreCase("si")){
+                                        modeloUsu.quitarSaldo(usuarioLogueado.getCorreo(), precioTotal);
+                                        modeloUsu.aniadirSaldo(eventoSeleccionado.getOrganizador().getCorreo(), precioTotal * 0.90f);
+                                        modeloUsu.aniadirSaldo("admin@fernanevents.com", precioTotal * 0.10f);
+                                        modeloEve.controlaStockCorrecto(eventoSeleccionado, opcionTipoEntrada, cantidadEntradas);
+                                        asistente.registraCompraEntrada(eventoSeleccionado.getNombre(), cantidadEntradas);
+                                        vista.mensajeConfirmacion();
+
+                                    }else{
+                                        vista.operacionCancelada();
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        vista.eventoNoEncontrado();
+                    }
                     break;
 
                 case 3:
@@ -734,6 +808,8 @@ public class ControladorFernan {
 
                 case 2:
                     Evento nuevoEvento = modeloEve.crearEvento();
+                    nuevoEvento.setOrganizador(usuarioLogueado);
+
                     if(modeloEve.aniadirEvento(nuevoEvento)){
                         vista.mensajeConfirmacion();
                     }else{

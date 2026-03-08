@@ -4,46 +4,44 @@ import FernanEvents.modelo.utilidades.interfaces.Bloqueable;
 
 public class Asistente extends Usuario implements Bloqueable {
 
-    private Entrada[] misEntradas;
-    private int numEntradas;
     private boolean bloqueado = false;
     private String[] amigosReferidos;
     private int numAmigosReferidos;
+    private String[] eventosInscrito;
+    private int[] cantidadEntradasEvento;
+    private int contadorInscripciones;
 
     public Asistente(String nombre, String correo, String password){
         super(nombre, correo, password, Rol.ASISTENTE);
-        misEntradas = new Entrada[10];
-        numEntradas = 0;
         amigosReferidos = new String[10];
         numAmigosReferidos = 0;
+        eventosInscrito = new String[100];
+        cantidadEntradasEvento = new int[100];
+        contadorInscripciones = 0;
     }
 
     /**
-     * Obtiene el array de entradas del asistente
+     * Consulta cuántas entradas para un evento tiene un asistente y devuelve el valor. Si no tiene ninguna, devuelve 0
      */
-    public Entrada[] getMisEntradas() {
-        return misEntradas;
+    public int getNumEntradasEvento(String nombreEvento) {
+        for (int i = 0; i < contadorInscripciones; i++) {
+            if (eventosInscrito[i].trim().equalsIgnoreCase(nombreEvento.trim())) {
+                return cantidadEntradasEvento[i];
+            }
+        }
+        return 0;
     }
 
-    /**
-     * Establece el array de entradas del asistente
-     */
-    public void setMisEntradas(Entrada[] misEntradas) {
-        this.misEntradas = misEntradas;
+    public String[] getEventosInscrito() {
+        return eventosInscrito;
     }
 
-    /**
-     * Obtiene el número de entradas del asistente
-     */
-    public int getNumEntradas() {
-        return numEntradas;
+    public int[] getCantidadEntradasEvento() {
+        return cantidadEntradasEvento;
     }
 
-    /**
-     * Establece el número de entradas del asistente
-     */
-    public void setNumEntradas(int numEntradas) {
-        this.numEntradas = numEntradas;
+    public int getContadorInscripciones() {
+        return contadorInscripciones;
     }
 
     /**
@@ -97,21 +95,23 @@ public class Asistente extends Usuario implements Bloqueable {
         return this.bloqueado;
     }
 
-    //metodos para las entradas
-//    public void aniadirEntrada(Entrada entrada){
-//        if (numEntradas < misEntradas.length){
-//            misEntradas[numEntradas] = entrada;
-//            numEntradas++;
-//        }
-//    }
-//
-//    //obtener el total de entradas
-//    public int getTotalEntradasCompradas(){
-//        int total=0;
-//        for (int i = 0; i < numEntradas; i++) {
-//            total= total+ misEntradas[i].getCantidad();
-//        }
-//        return total;
-//    }
+    /**
+     * Registra la compra de entradas a un evento en el historial del asistente
+     */
+    public void registraCompraEntrada(String nombreEvento, int cantidadEntradas){
+        boolean eventoEncontrado = false;
+        for (int i = 0; i < contadorInscripciones; i++) {
+            if(eventosInscrito[i].equalsIgnoreCase(nombreEvento.trim())){
+                cantidadEntradasEvento[i] += cantidadEntradas;
+                eventoEncontrado = true;
+                break;
+            }
+        }
+
+        if(!eventoEncontrado && contadorInscripciones < eventosInscrito.length){
+            eventosInscrito[contadorInscripciones] = nombreEvento;
+            cantidadEntradasEvento[contadorInscripciones++] = cantidadEntradas;
+        }
+    }
 
 }

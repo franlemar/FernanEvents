@@ -13,6 +13,7 @@ public class Evento {
     private int personasInscritas;
     private EntradasTipo[] tiposDeEntrada;
     private int contadorTipos;
+    private Usuario organizador;
 
     //Constructor
     public Evento(String nombre, String descripcion, CategoriaEvento categoria, LocalDate fecha, int aforo, int personasInscritas) {
@@ -24,6 +25,14 @@ public class Evento {
         this.personasInscritas = personasInscritas;
         tiposDeEntrada = new EntradasTipo[3];
         contadorTipos = 0;
+    }
+
+    public Usuario getOrganizador() {
+        return organizador;
+    }
+
+    public void setOrganizador(Usuario organizador) {
+        this.organizador = organizador;
     }
 
     public int getAforoRestante(){

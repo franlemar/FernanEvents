@@ -482,6 +482,17 @@ public class GestionEvento {
     }
 
 
+    public boolean controlaStockCorrecto(Evento evento, int indiceEntrada, int cantidad) {
+        EntradasTipo entrada = evento.getTiposDeEntrada()[indiceEntrada];
+
+        if (entrada != null && entrada.getCantidadDisponible() >= cantidad) {
+            entrada.setCantidadDisponible(entrada.getCantidadDisponible() - cantidad);
+            evento.setPersonasInscritas(evento.getPersonasInscritas() + cantidad);
+            return true;
+        }
+        return false;
+    }
+
 
 
 
