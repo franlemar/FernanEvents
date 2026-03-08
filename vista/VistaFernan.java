@@ -288,6 +288,9 @@ public class VistaFernan{
         );
     }
 
+    /**
+     * Muestra un mensaje de despedida al finalizar el programa
+     */
     public void mostrarDespedida(){
         System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "*** FIN DEL PROGRAMA ***" + estilo.ANSI_RESET);
         System.out.println(estilo.PASTEL_BLUE +
@@ -295,107 +298,170 @@ public class VistaFernan{
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.NOTIFICACIONES GENERALES.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Muestra un mensaje de confirmacion de operación exitosa
+     */
     public void mensajeConfirmacion(){
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD +
                 " ✅ Operación realizada correctamente" + estilo.ANSI_RESET + "\n");
     }
 
+    /**
+     * Muestra un mensaje de error en la operación
+     */
     public void mensajeError(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD +
                 " ❌ ERROR, no se ha podido completar la operación solicitada" + estilo.ANSI_RESET  + "\n");
     }
 
+    /**
+     * Muestra un mensaje personalizado
+     */
     public void notificacion(String mensaje){
         System.out.println(mensaje);
     }
 
+    /**
+     * Muestra un mensaje indicando que la opción seleccionada no es válida
+     */
     public void opcionNoValida(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Opción no válida" + estilo.ANSI_RESET + "\n");
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA LOGIN.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Solicita al usuario que introduzca su correo
+     */
     public void pedirCorreo(){
         System.out.print(estilo.PASTEL_BLUE + "Introduzca su correo electrónico: "
                 + estilo.ANSI_RESET);
     }
 
+    /**
+     * Solicita al usuario que introduzca su contraseña
+     */
     public void pedirPasswordLoguin(){
         System.out.print(estilo.PASTEL_BLUE + "Introduzca su contraseña de acceso: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Informa que no existe ningun usuario con el correo que ha proporcionado
+     */
     public void noExisteCorreo(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "No existe ningún usuario con ese correo asociado"
                 + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica al usuario que su cuenta está bloqueada
+     */
     public void usuarioBloqueado(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD +
                 "Tu usuario está bloqueado, póngase en contacto con el administrador" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el usuario ha sido bloqueado por superar los intentos
+     */
     public void seBloqueaUsuario(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Has gastado los intentos, tu usuario ha sido bloqueado"
                 + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que la contraseña es incorrecta y muestra los intentos restantes
+     */
     public void normalPassIncorrecta(int intentos){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Los datos introducidos no son correctos. Le quedan "
                 + intentos + " intentos restantes" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que la contraseña para administrador es incorrecta
+     */
     public void adminPassIncorrecta(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD +
                 "Los datos introducidos no son correctos. Inténtelo de nuevo" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el codigo de verificacion ha sido enviado al correo
+     */
     public void correoVerificacionEnviado(){
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD +
                 "Código de verificación enviado a su correo electrónico." + estilo.ANSI_RESET);
     }
 
+    /**
+     * Solicita al usuario que introduzca el código de verificación
+     */
     public void pedirToken(){
         System.out.println(estilo.BG_AZUL_PASTEL + estilo.ANSI_BLACK + estilo.BOLD +
                 "Introduzca el código de verificación enviado a su correo" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el inicio de sesion ha sido correcto
+     */
     public void loginCorrecto(){
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Has iniciado sesión correctamente \n"
                 + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el código de verificación es incorrecto
+     */
     public void tokenIncorrecto(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD +
                 "El código introducido no es correcto. Inténtelo de nuevo \n" + estilo.ANSI_RESET);
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.REGISTRO DE NUEVOS USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Mensaje que muestra el título de la seccion de registro de usuarios
+     */
     public void tituloRegistro(){
         System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + estilo.UNDERLINE + "✦ REGISTRO DE NUEVO USUARIO ✦" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que solicita al usuario que introduzca un nombre para su nueva cuenta
+     */
     public void pedirNombreRegistro(){
         System.out.print(estilo.PASTEL_BLUE + "Introduzca un nombre de usuario para su nueva cuenta: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el correo debe contener el símbolo '@'
+     */
     public void errorArroba(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Error: El correo electrónico debe contener el símbolo '@'" + estilo.ANSI_RESET + "\n");
     }
 
+    /**
+     * Mensaje que indica que tipo de rol desea para su cuenta
+     */
     public void preguntaRol(){
         System.out.print(estilo.PASTEL_BLUE + "Introduzca el tipo de usuario que desea para su cuenta (ORGANIZADOR o ASISTENTE): " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el correo o el nombre de usuario ya están en uso
+     */
     public void nombreOCorreoEnUso(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "El usuario o el correo que has introducido ya existe. Inténtelo de nuevo" + estilo.ANSI_RESET + "\n");
     }
 
+    /**
+     * Mensaje que confirma que el registro se ha completado correctamente
+     */
     public void registroCorrecto(){
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "¡Te has registrado en FernanEvents correctamente!¡BIENVENIDO!" + estilo.ANSI_RESET + "\n");
     }
 
+    /**
+     * Mensaje que indica que el rol introducido no es válido
+     */
     public void rolNoValido(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "El rol que ha introducido no es válido" + estilo.ANSI_RESET + "\n");
 
@@ -423,21 +489,33 @@ public class VistaFernan{
                 estilo.BOLD + estilo.PASTEL_GREEN + saldo + "€ \n" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que pregunta cuanto saldo se quiere añadir a la cartera digital
+     */
     public void preguntaSumaSaldo(){
         System.out.println(estilo.PASTEL_BLUE + "¿Cuánto saldo quiere añadir a su cartera digital?"
                 + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que pregunta cuanto saldo se quiere retirar de la cartera digital
+     */
     public void preguntaRetiraSaldo(){
         System.out.println(estilo.PASTEL_BLUE + "¿Cuánto saldo quiere retirar de su cartera digital?"
                 + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el saldo se ha añadido correctamente mostrando el nuevo saldo
+     */
     public void sumaSaldoOK(float saldo){
         System.out.println(estilo.PASTEL_BLUE + "Saldo añadido con éxito. Su saldo actual es: " + estilo.ANSI_RESET +
                 estilo.BOLD + estilo.PASTEL_YELLOW + saldo + "€ \n" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el saldo se ha retirado correctamente mostrando el saldo actualizado
+     */
     public void retiraSaldoOK(float saldo){
         System.out.println(estilo.PASTEL_BLUE + "Saldo retirado con éxito. Su saldo actual es: " + estilo.ANSI_RESET +
                 estilo.BOLD + estilo.PASTEL_YELLOW + saldo + "€ \n" + estilo.ANSI_RESET);
@@ -445,62 +523,102 @@ public class VistaFernan{
 
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.PANEL DE CONTROL DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Mensaje que indica que no hay usuarios bloqueados en el sistema
+     */
     public void noHayUsuariosBloqueados(){
         System.out.println(estilo.PASTEL_BLUE + "No hay ningún usuario bloqueado \n" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica el título de la seccion de usuarios bloqueados
+     */
     public void tituloUsuariosBloqueados(){
         System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + estilo.UNDERLINE + "✦ USUARIOS BLOQUEADOS ✦" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica un usuario bloqueado con su índice y nombre
+     */
     public void mostrarUsuarioBloqueado(int indice, String nombre){
         System.out.println(estilo.PASTEL_BLUE + nombre + " (" + indice + ")" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que se pulse en el número correspondiente al usuario para desbloquearlo
+     */
     public void pideNumeroUsuario(){
         System.out.println(estilo.PASTEL_GREEN + "Pulse el número que corresponde a cada usuario para desbloquearlo. " +
                 "Para salir, pulse cualquier otro numero: " + estilo.ANSI_RESET);
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION DE CONFIGURACION.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Mensaje que indica que escribamos el nombre de usuario de la persona a la que se quiere cambiar el nombre
+     */
     public void pedirNombreUsuario(){
         System.out.print(estilo.PASTEL_BLUE + "Introduzca el nombre del usuario al que desea cambiarle su nombre de usuario: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que escribamos el nuevo nombre para el usuario
+     */
     public void pedirNuevoNombre(){
         System.out.print(estilo.PASTEL_BLUE + "Introduzca el nuevo nombre que tendrá a partir de ahora este usuario: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el nombre introducido ya está en uso
+     */
     public void nombreYaEnUso(String nuevoNombre){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Error: El nombre " + nuevoNombre + " ya está en uso. Introduce otro distinto." + estilo.ANSI_RESET + "\n");
     }
 
+    /**
+     * Mensaje que indica que no se ha encontrado ningun usuario con el nombre proporcionado
+     */
     public void errorAlBuscarNombre(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "No se ha encontrado ningún usuario con el nombre que ha introducido" + estilo.ANSI_RESET + "\n");
     }
 
+    /**
+     * Mensaje que indica que escribamos la nueva contraseña de acceso
+     */
     public void pedirNuevaPassword(){
         System.out.print(estilo.PASTEL_BLUE + "Introduzca la nueva contraseña de acceso: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que confirmemos de nuevo la contraseña
+     */
     public void confirmarNuevaPassword(){
         System.out.print(estilo.PASTEL_BLUE + "Confirme la nueva contraseña: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que escribamos la contraseña actual
+     */
     public void pedirPasswordActual(){
         System.out.print(estilo.BOLD + estilo.PASTEL_BLUE + "Introduce la contraseña actual: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que la contraseña actual es incorrecta
+     */
     public void passwordActualIncorrecta(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Contraseña actual incorrecta. \n" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que no coinciden las contraseñas
+     */
     public void noCoincidenPassword(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "¡ERROR! Las contraseñas no coinciden \n" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que requisitos debe cumplir la contraseña para que sea segura
+     */
     public void requisitosPassSegura(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "La contraseña no es suficientemente segura. Debe tener:" + estilo.ANSI_RESET);
         System.out.println(estilo.PASTEL_YELLOW + "- Mínimo 8 caracteres");
@@ -510,73 +628,119 @@ public class VistaFernan{
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES INVITAR UN AMIGO (ASISTENTE)   .*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Mensaje que indica que el usuario no tiene amigos referidos en su lista
+     */
     public void noHayAmigosReferidos(){
         System.out.println(estilo.PASTEL_BLUE + "No tienes ningún amigo referido añadido en tu lista \n" + estilo.ANSI_RESET);
     }
-
+    /**
+     * Mensaje que muestra la cabecera del listado de amigos referidos con el total de ellos
+     */
     public void cabeceraListadoAmigosReferidos(int totalAmigos){
         System.out.println(estilo.PASTEL_BLUE + "Tus amigos referidos (" + totalAmigos + "): " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que muestra un amigo referido con su índice y correo
+     */
     public void listarAmigo(int indice, String correo){
         System.out.println(estilo.PASTEL_BLUE + "  " + indice + ". " + correo + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que escribamos el correo del amigo referido
+     */
     public void pedirCorreoAmigoReferido(){
         System.out.print(estilo.PASTEL_BLUE + "Escribe el correo electrónico del amigo que quieres añadir: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el formato del correo no es válido
+     */
     public void correoMalEscrito(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Has escrito mal el correo electrónico. Asegúrate de que " +
                 "tiene un @ en la dirección y sigue la estructura ejemplo@dominio.com \n" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el amigo referido se ha añadido correctamente a la lista
+     */
     public void registroAmigoReferidoOK(String correo){
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Has añadido a " + correo + " a tu lista de amigos" +
                 " correctamente \n" + "Hemos enviado un correo electrónico notificando a tu amigo/a \n"  + estilo.ANSI_RESET);
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA EVENTOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    /**
+     * Mensaje que indica que no hay eventos disponibles
+     */
     public void noHayEventos(){
         System.out.println(estilo.ANSI_RED + estilo.WARNING + " Actualmente no hay ningún evento disponible \n" + estilo.ANSI_RESET);
     }
 
+    /**
+     * solicita un dato para el evento
+     */
     public void pedirDatosEvento(String dato) {
         System.out.print(estilo.PASTEL_BLUE + dato  + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que escribamos la categoria del evento mostrando las opciones disponibles
+     */
     public void pedirDatosEventoCategoria(String dato){
         System.out.print(estilo.PASTEL_BLUE + "Introduce " + dato + " del evento (Arte, Tecnologia, Cine, Musica, Moda, " +
                 "Juegos): " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que ya existe un evento con ese nombre
+     */
     public void eventoYaExiste() {
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Ya existe un evento con ese nombre" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el evento se ha guardado correctamente
+     */
     public void eventoGuardado() {
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Evento guardado correctamente \n" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica las opciones disponibles para modificar un evento
+     */
     public void mostrarOpcionesEvento() {
         System.out.println(estilo.PASTEL_BLUE + "1. Nombre\n2. Descripción\n3. Categoría\n4. Fecha\n5. Aforo\n6. Inscritos\n" +
                 estilo.NEON_PINK + "7. Cancelar" + estilo.ANSI_RESET);
         System.out.print(estilo.PASTEL_GREEN + "Elige: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que escribamos el nombre del evento
+     */
     public void pedirNombreEvento() {
         System.out.print(estilo.PASTEL_BLUE + "Nombre del evento: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el evento se ha eliminado
+     */
     public void eventoEliminado() {
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Evento eliminado" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica un mensaje de error personalizado
+     */
     public void error(String mensaje) {
         System.out.println(estilo.ANSI_RED + estilo.BOLD + mensaje + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica información del total de la compra y pide confirmación
+     */
     public void infoCompra(float total) {
         System.out.println(estilo.PASTEL_BLUE + "Total: " + estilo.ANSI_RESET + total + "€");
         System.out.print(estilo.PASTEL_GREEN + "¿Confirmar? (si/no): " + estilo.ANSI_RESET);
