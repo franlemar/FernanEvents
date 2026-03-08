@@ -1,6 +1,7 @@
 package FernanEvents;
 
 import FernanEvents.controlador.ControladorFernan;
+import FernanEvents.controlador.GestionEvento;
 import FernanEvents.controlador.GestionUsuario;
 import FernanEvents.vista.VistaFernan;
 
@@ -9,7 +10,8 @@ public class FernanEventsApp {
 
         GestionUsuario modelo = new GestionUsuario(10);
         VistaFernan vista = new VistaFernan();
-        ControladorFernan controlador = new ControladorFernan(modelo,vista);
+        GestionEvento evento = new GestionEvento(10, vista);
+        ControladorFernan controlador = new ControladorFernan(modelo,vista, evento);
 
         controlador.iniciarFernan();
     }

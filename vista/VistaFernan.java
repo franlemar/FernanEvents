@@ -1,6 +1,8 @@
 package FernanEvents.vista;
+import FernanEvents.modelo.Entrada;
+import FernanEvents.modelo.Evento;
 
-import FernanEvents.modelo.Rol;
+import java.util.Scanner;
 
 public class VistaFernan{
 
@@ -14,21 +16,6 @@ public class VistaFernan{
         System.out.println(estilo.PASTEL_BLUE + "1. Iniciar sesión");
         System.out.println("2. Registrarse");
         System.out.println(estilo.NEON_PINK + "3. Salir" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Muestra el menú principal cuando se inicia el programa enseñando los distintos tipos de perfiles con los que puede interactuar el usuario
-     */
-    public void menuOpcionesUsuario() {
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + estilo.ITALIC + "✦ ELIGE TU TIPO DE USUARIO ✦" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.PASTEL_BLUE + "1. Administrador");
-        System.out.println("2. Organizador");
-        System.out.println("3. Asistente");
-        System.out.println(estilo.NEON_PINK + "4. Salir" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.SILVER + "────────────────────────────────────────────" + estilo.ANSI_RESET);
         System.out.println(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
     }
 
@@ -62,18 +49,6 @@ public class VistaFernan{
     }
 
     /**
-     * Muestra un menú que aparece cuando se intenta iniciar sesión como asistente, permitiendo al usuario elegir qué tipo de asistente es.
-     */
-    public void menuTipoAsistente() {
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ ¿QUÉ TIPO DE ASISTENTE ERES? ✦" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.PASTEL_BLUE + "1. Asistente 1");
-        System.out.println("2. Asistente 2");
-        System.out.println(estilo.NEON_PINK + "3. Volver atrás" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
-    }
-
-    /**
      * Muestra el menú de opciones disponibles que tiene el usuario cuando accede a FernanEvents como asistente
      */
     public void menuAsistente() {
@@ -87,19 +62,6 @@ public class VistaFernan{
         System.out.println(estilo.NEON_PINK + "6. Cerrar sesión" + estilo.ANSI_RESET);
 
         System.out.println(estilo.PASTEL_GREEN + "Seleccione la opción deseada: " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Muestra el menú de panel de control donde el administrador puede elegir sobre qué perfil trabajar pudiendo cambiar el nombre de usuario y contraseña de dicho perfil
-     */
-    public void OpcionesUsuariosPanelSoloAdmin() {
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ PANEL DE CONTROL ✦" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.PASTEL_BLUE + "1. Organizador");
-        System.out.println("2. Asistente 1");
-        System.out.println("3. Asistente 2" + estilo.ANSI_RESET);
-        System.out.println(estilo.NEON_PINK + "4. Volver atrás" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
     }
 
     /**
@@ -131,59 +93,6 @@ public class VistaFernan{
     }
 
     /**
-     * Muestra un menú con los tipos de detalles de los que cosnta un evento. Aparece cuando el organizador quiere modiciar un evento que ya se ha creado anteriormente.
-     */
-    public void datosEventos() {
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ DATOS DEL EVENTO ✦" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.PASTEL_BLUE + "1. Nombre del evento");
-        System.out.println("2. Descripción del evento");
-        System.out.println("3. Categoría del evento");
-        System.out.println("4. Fecha y hora");
-        System.out.println("5. Aforo");
-        System.out.println("6. Número de inscritos");
-        System.out.println("7. Tipos de entrada");
-        System.out.println(estilo.NEON_PINK + "8. Guardar datos y volver" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.PASTEL_GREEN + "Elige el dato que deseas crear/modificar: " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Muestra un menú desde donde los asistentes eligen el evento al que desean inscribirse
-     */
-    public void menuInscripcionAsistente() {
-        System.out.println(estilo.PASTEL_BLUE + "¿En qué evento quieres inscribirte?" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_BLUE + "1. Evento 1");
-        System.out.println("2. Evento 2");
-        System.out.println("3. Evento 3");
-        System.out.println(estilo.NEON_PINK + "4. Volver atrás" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_GREEN + "Elige la opción del evento correspondiente: " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Muestra un evento al que se hayan inscrito los asistentes con una vista previa del nombre, categoría y fecha del mismo
-     */
-    public void mostrarEventoInscrito(String nombre, String categoria, String fecha, int numeroEvento) {
-        System.out.println(estilo.PASTEL_PURPLE + "===Evento " + numeroEvento + "===" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_BLUE + "Nombre: " + estilo.ANSI_RESET + nombre);
-        System.out.println(estilo.PASTEL_BLUE + "Categoria: " + estilo.ANSI_RESET + categoria);
-        System.out.println(estilo.PASTEL_BLUE + "Fecha:" + estilo.ANSI_RESET + fecha);
-        System.out.println();
-    }
-
-    /**
-     * Muestra un menú donde el asistente elige qué tipo de entrada desea comprar a la hora de inscribirse en un evento
-     */
-    public void menuTipoEntrada() {
-        System.out.println(estilo.PASTEL_BLUE + "¿Qué tipo de entrada quieres comprar?" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_BLUE + "1. Entrada general");
-        System.out.println("2. Entrada VIP");
-        System.out.println("3. Entrada infantil");
-        System.out.println(estilo.NEON_PINK + "4. Volver atrás" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
-    }
-
-    /**
      * Muestra un menú desde donde los asistentes pueden comprobar una lista de amigos a los que han invitado a FernanEvents, así como enviar correos electrónicos con invitaciones para otros nuevos amigos
      */
     public void menuInvitarAmigo() {
@@ -199,8 +108,8 @@ public class VistaFernan{
     /**
      * Función que se encarga de mostrar de forma visual en consola el cierre de sesión de un perfil de usuario de FernanEvents. Aquí "thread.sleep" se encarga de hacer que aparezcan los puntos progresivamente con un tiempo ya predefinido.
      */
-    public void cerrarSesion(Rol rolUsuario) throws InterruptedException {
-        System.out.print(estilo.ANSI_RED + estilo.WARNING + estilo.BOLD +" Cerrando sesión como " + rolUsuario + estilo.ANSI_RESET );
+    public void cerrarSesion(String nombreUsuario) throws InterruptedException {
+        System.out.print(estilo.ANSI_RED + estilo.WARNING + estilo.BOLD +" Cerrando sesión como " + nombreUsuario + estilo.ANSI_RESET );
         for (int i = 1; i <=3 ; i++) {
             System.out.print(estilo.ANSI_RED + "."+ estilo.ANSI_RESET);
             Thread.sleep(1400);
@@ -256,6 +165,59 @@ public class VistaFernan{
     }
 
     /**
+     * Muestra todos los detalles de los eventos que han sido creados en FernanEvents así como un pequeño gráfico de barra horizontal donde poder ver de forma gráfica la cantidad de inscritos a los eventos en función del aforo disponible.
+     */
+    public void mostrarVistaDetalladaEvento(String nombre, String categoria, String fecha, String descripcion, int aforo, int inscritos) {
+
+        System.out.println(estilo.PASTEL_PURPLE + "\n===== VISTA DETALLADA DEL EVENTO =====" + estilo.ANSI_RESET);
+
+        System.out.println(estilo.PASTEL_BLUE + "Nombre del evento: " + estilo.ANSI_RESET + nombre);
+        System.out.println(estilo.PASTEL_BLUE + "Categoría: " + estilo.ANSI_RESET + categoria);
+        System.out.println(estilo.PASTEL_BLUE + "Fecha: " + estilo.ANSI_RESET + fecha);
+        System.out.println(estilo.PASTEL_BLUE + "Descripción: " + estilo.ANSI_RESET + descripcion);
+
+        int aforoRestante = aforo - inscritos;
+        System.out.println(estilo.PASTEL_BLUE + "Aforo total: " + estilo.ANSI_RESET + aforo + " personas");
+        System.out.println(estilo.PASTEL_BLUE + "Inscritos actualmente: " + estilo.ANSI_RESET + inscritos + " personas");
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Aforo disponible (Total): " + estilo.ANSI_RESET + aforoRestante + " plazas libres");
+
+
+        double porcentaje = 0;
+        if (aforo > 0) {
+            porcentaje = ((double) inscritos / aforo) * 100;
+        }
+
+        int barras = (int) (porcentaje / 5); // Máx. 20 barras
+
+        String grafico = "";
+        for (int i = 0; i < barras; i++) {
+            grafico += estilo.PASTEL_PURPLE + "█" + estilo.ANSI_RESET;
+        }
+
+        System.out.println(estilo.PASTEL_BLUE + "\nGráfico de inscritos:" + estilo.ANSI_RESET);
+        System.out.println("[" + grafico + estilo.ANSI_RESET + "] " + String.format("%.1f", porcentaje) + "%\n");
+    }
+
+    /**
+     * Muestra una vista detallada de las entradas disponibles para un evento
+     */
+    public void mostrarVistaDetalladaEntradas(Entrada[] tipoEntrada){
+        System.out.println(estilo.PASTEL_YELLOW + "\n=== ENTRADAS DISPONIBLES ===" + estilo.ANSI_RESET);
+
+        for (int i = 0; i < 3; i++) {
+            System.out.print(estilo.PASTEL_BLUE + "Tipo: " + estilo.ANSI_RESET + tipoEntrada[i].getCategoria());
+            System.out.print(" | " + estilo.PASTEL_BLUE + "Precio: " + estilo.ANSI_RESET + tipoEntrada[i].getPrecio() + " euros");
+
+            if (tipoEntrada[i].getCantidadDisponible() <= 0) {
+                System.out.println(" | " + estilo.ANSI_RED + "AGOTADAS" + estilo.ANSI_RESET);
+            } else {
+                System.out.println(" | " + estilo.PASTEL_GREEN + "Disponibles: " + estilo.ANSI_RESET + tipoEntrada[i].getCantidadDisponible());
+            }
+        }
+        System.out.println(" ");
+    }
+
+    /**
      * Muestra el logo de la plataforma de FernanEvents
      */
     public void mostrarFERNANEVENTSASCII() {
@@ -276,6 +238,9 @@ public class VistaFernan{
         );
     }
 
+    /**
+     * Muestra un mensaje de despedida al finalizar el programa
+     */
     public void mostrarDespedida(){
         System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "*** FIN DEL PROGRAMA ***" + estilo.ANSI_RESET);
         System.out.println(estilo.PASTEL_BLUE +
@@ -283,79 +248,166 @@ public class VistaFernan{
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.NOTIFICACIONES GENERALES.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Muestra un mensaje de confirmacion de operación exitosa
+     */
     public void mensajeConfirmacion(){
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD +
-                " ✅ Operación realizada correctamente" + estilo.ANSI_RESET);
+                " ✅ Operación realizada correctamente" + estilo.ANSI_RESET + "\n");
     }
 
+    /**
+     * Muestra un mensaje de error en la operación
+     */
     public void mensajeError(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD +
-                " ❌ ERROR, no se ha podido completar la operación solicitada" + estilo.ANSI_RESET);
+                " ❌ ERROR, no se ha podido completar la operación solicitada" + estilo.ANSI_RESET  + "\n");
     }
 
-    public void notificacion(String mensaje){
-        System.out.println(mensaje);
-    }
-
+    /**
+     * Muestra un mensaje indicando que la opción seleccionada no es válida
+     */
     public void opcionNoValida(){
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Opción no válida" + estilo.ANSI_RESET);
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Opción no válida" + estilo.ANSI_RESET + "\n");
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA LOGIN.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
-    public void pedirCorreoLoguin(){
-        System.out.print(estilo.PASTEL_BLUE + "Introduzca su correo electrónico para iniciar sesión: "
+    /**
+     * Solicita al usuario que introduzca su correo
+     */
+    public void pedirCorreo(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca su correo electrónico: "
                 + estilo.ANSI_RESET);
     }
 
+    /**
+     * Solicita al usuario que introduzca su contraseña
+     */
     public void pedirPasswordLoguin(){
         System.out.print(estilo.PASTEL_BLUE + "Introduzca su contraseña de acceso: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Informa que no existe ningun usuario con el correo que ha proporcionado
+     */
     public void noExisteCorreo(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "No existe ningún usuario con ese correo asociado"
                 + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica al usuario que su cuenta está bloqueada
+     */
     public void usuarioBloqueado(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD +
                 "Tu usuario está bloqueado, póngase en contacto con el administrador" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el usuario ha sido bloqueado por superar los intentos
+     */
     public void seBloqueaUsuario(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Has gastado los intentos, tu usuario ha sido bloqueado"
                 + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que la contraseña es incorrecta y muestra los intentos restantes
+     */
     public void normalPassIncorrecta(int intentos){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Los datos introducidos no son correctos. Le quedan "
                 + intentos + " intentos restantes" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que la contraseña para administrador es incorrecta
+     */
     public void adminPassIncorrecta(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD +
                 "Los datos introducidos no son correctos. Inténtelo de nuevo" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el codigo de verificacion ha sido enviado al correo
+     */
     public void correoVerificacionEnviado(){
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD +
                 "Código de verificación enviado a su correo electrónico." + estilo.ANSI_RESET);
     }
 
+    /**
+     * Solicita al usuario que introduzca el código de verificación
+     */
     public void pedirToken(){
         System.out.println(estilo.BG_AZUL_PASTEL + estilo.ANSI_BLACK + estilo.BOLD +
-                "Introduzca el código 2FA enviado a su correo" + estilo.ANSI_RESET);
+                "Introduzca el código de verificación enviado a su correo" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el inicio de sesion ha sido correcto
+     */
     public void loginCorrecto(){
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Has iniciado sesión correctamente \n"
                 + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el código de verificación es incorrecto
+     */
     public void tokenIncorrecto(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD +
                 "El código introducido no es correcto. Inténtelo de nuevo \n" + estilo.ANSI_RESET);
+    }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.REGISTRO DE NUEVOS USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    /**
+     * Mensaje que muestra el título de la seccion de registro de usuarios
+     */
+    public void tituloRegistro(){
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + estilo.UNDERLINE + "✦ REGISTRO DE NUEVO USUARIO ✦" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que solicita al usuario que introduzca un nombre para su nueva cuenta
+     */
+    public void pedirNombreRegistro(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca un nombre de usuario para su nueva cuenta: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica que el correo debe contener el símbolo '@'
+     */
+    public void errorArroba(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Error: El correo electrónico debe contener el símbolo '@'" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Mensaje que indica que tipo de rol desea para su cuenta
+     */
+    public void preguntaRol(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca el tipo de usuario que desea para su cuenta (ORGANIZADOR o ASISTENTE): " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica que el correo o el nombre de usuario ya están en uso
+     */
+    public void nombreOCorreoEnUso(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "El usuario o el correo que has introducido ya existe. Inténtelo de nuevo" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Mensaje que confirma que el registro se ha completado correctamente
+     */
+    public void registroCorrecto(){
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "¡Te has registrado en FernanEvents correctamente!¡BIENVENIDO!" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Mensaje que indica que el rol introducido no es válido
+     */
+    public void rolNoValido(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "El rol que ha introducido no es válido" + estilo.ANSI_RESET + "\n");
+
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CARTERA DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -380,21 +432,33 @@ public class VistaFernan{
                 estilo.BOLD + estilo.PASTEL_GREEN + saldo + "€ \n" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que pregunta cuanto saldo se quiere añadir a la cartera digital
+     */
     public void preguntaSumaSaldo(){
         System.out.println(estilo.PASTEL_BLUE + "¿Cuánto saldo quiere añadir a su cartera digital?"
                 + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que pregunta cuanto saldo se quiere retirar de la cartera digital
+     */
     public void preguntaRetiraSaldo(){
         System.out.println(estilo.PASTEL_BLUE + "¿Cuánto saldo quiere retirar de su cartera digital?"
                 + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el saldo se ha añadido correctamente mostrando el nuevo saldo
+     */
     public void sumaSaldoOK(float saldo){
         System.out.println(estilo.PASTEL_BLUE + "Saldo añadido con éxito. Su saldo actual es: " + estilo.ANSI_RESET +
                 estilo.BOLD + estilo.PASTEL_YELLOW + saldo + "€ \n" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que el saldo se ha retirado correctamente mostrando el saldo actualizado
+     */
     public void retiraSaldoOK(float saldo){
         System.out.println(estilo.PASTEL_BLUE + "Saldo retirado con éxito. Su saldo actual es: " + estilo.ANSI_RESET +
                 estilo.BOLD + estilo.PASTEL_YELLOW + saldo + "€ \n" + estilo.ANSI_RESET);
@@ -402,25 +466,367 @@ public class VistaFernan{
 
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.PANEL DE CONTROL DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-
+    /**
+     * Mensaje que indica que no hay usuarios bloqueados en el sistema
+     */
     public void noHayUsuariosBloqueados(){
         System.out.println(estilo.PASTEL_BLUE + "No hay ningún usuario bloqueado \n" + estilo.ANSI_RESET);
     }
 
-    public void cabeceraUsuariosBloqueados(){
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ USUARIOS BLOQUEADOS ✦" + estilo.ANSI_RESET);
+    /**
+     * Mensaje que indica el título de la seccion de usuarios bloqueados
+     */
+    public void tituloUsuariosBloqueados(){
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + estilo.UNDERLINE + "✦ USUARIOS BLOQUEADOS ✦" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica un usuario bloqueado con su índice y nombre
+     */
     public void mostrarUsuarioBloqueado(int indice, String nombre){
         System.out.println(estilo.PASTEL_BLUE + nombre + " (" + indice + ")" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que se pulse en el número correspondiente al usuario para desbloquearlo
+     */
     public void pideNumeroUsuario(){
         System.out.println(estilo.PASTEL_GREEN + "Pulse el número que corresponde a cada usuario para desbloquearlo. " +
                 "Para salir, pulse cualquier otro numero: " + estilo.ANSI_RESET);
     }
 
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION DE CONFIGURACION.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    /**
+     * Mensaje que indica que escribamos el nombre de usuario de la persona a la que se quiere cambiar el nombre
+     */
+    public void pedirNombreUsuario(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca el nombre del usuario al que desea cambiarle su nombre de usuario: " + estilo.ANSI_RESET);
+    }
 
+    /**
+     * Mensaje que indica que escribamos el nuevo nombre para el usuario
+     */
+    public void pedirNuevoNombre(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca el nuevo nombre que tendrá a partir de ahora este usuario: " + estilo.ANSI_RESET);
+    }
 
+    /**
+     * Mensaje que indica que el nombre introducido ya está en uso
+     */
+    public void nombreYaEnUso(String nuevoNombre){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Error: El nombre " + nuevoNombre + " ya está en uso. Introduce otro distinto." + estilo.ANSI_RESET + "\n");
+    }
 
+    /**
+     * Mensaje que indica que no se ha encontrado ningun usuario con el nombre proporcionado
+     */
+    public void errorAlBuscarNombre(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No se ha encontrado ningún usuario con el nombre que ha introducido" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Mensaje que indica que escribamos la nueva contraseña de acceso
+     */
+    public void pedirNuevaPassword(){
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca la nueva contraseña de acceso: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica que confirmemos de nuevo la contraseña
+     */
+    public void confirmarNuevaPassword(){
+        System.out.print(estilo.PASTEL_BLUE + "Confirme la nueva contraseña: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica que escribamos la contraseña actual
+     */
+    public void pedirPasswordActual(){
+        System.out.print(estilo.BOLD + estilo.PASTEL_BLUE + "Introduce la contraseña actual: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica que la contraseña actual es incorrecta
+     */
+    public void passwordActualIncorrecta(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Contraseña actual incorrecta. \n" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica que no coinciden las contraseñas
+     */
+    public void noCoincidenPassword(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "¡ERROR! Las contraseñas no coinciden \n" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica que requisitos debe cumplir la contraseña para que sea segura
+     */
+    public void requisitosPassSegura(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "La contraseña no es suficientemente segura. Debe tener:" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_YELLOW + "- Mínimo 8 caracteres");
+        System.out.println("- Al menos una letra mayúscula y una minúscula");
+        System.out.println("- Al menos un número");
+        System.out.println("- Al menos un símbolo (- _ . , * + @)" + estilo.ANSI_RESET + "\n");
+    }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES INVITAR UN AMIGO (ASISTENTE)   .*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    /**
+     * Mensaje que indica que el usuario no tiene amigos referidos en su lista
+     */
+    public void noHayAmigosReferidos(){
+        System.out.println(estilo.PASTEL_BLUE + "No tienes ningún amigo referido añadido en tu lista \n" + estilo.ANSI_RESET);
+    }
+    /**
+     * Mensaje que muestra la cabecera del listado de amigos referidos con el total de ellos
+     */
+    public void cabeceraListadoAmigosReferidos(int totalAmigos){
+        System.out.println(estilo.PASTEL_BLUE + "Tus amigos referidos (" + totalAmigos + "): " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que muestra un amigo referido con su índice y correo
+     */
+    public void listarAmigo(int indice, String correo){
+        System.out.println(estilo.PASTEL_BLUE + "  " + indice + ". " + correo + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica que escribamos el correo del amigo referido
+     */
+    public void pedirCorreoAmigoReferido(){
+        System.out.print(estilo.PASTEL_BLUE + "Escribe el correo electrónico del amigo que quieres añadir: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica que el formato del correo no es válido
+     */
+    public void correoMalEscrito(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Has escrito mal el correo electrónico. Asegúrate de que " +
+                "tiene un @ en la dirección y sigue la estructura ejemplo@dominio.com \n" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica que el amigo referido se ha añadido correctamente a la lista
+     */
+    public void registroAmigoReferidoOK(String correo){
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Has añadido a " + correo + " a tu lista de amigos" +
+                " correctamente \n" + "Hemos enviado un correo electrónico notificando a tu amigo/a \n"  + estilo.ANSI_RESET);
+    }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA EVENTOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    /**
+     * Mensaje que indica que no hay eventos disponibles
+     */
+    public void noHayEventos(){
+        System.out.println(estilo.ANSI_RED + estilo.WARNING + " Actualmente no hay ningún evento disponible \n" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * solicita un dato para el evento
+     */
+    public void pedirDatosEvento(String dato) {
+        System.out.print(estilo.PASTEL_BLUE + dato  + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica que escribamos la categoria del evento mostrando las opciones disponibles
+     */
+    public void pedirDatosEventoCategoria(String dato){
+        System.out.print(estilo.PASTEL_BLUE + "Introduce " + dato + " del evento (Arte, Tecnologia, Cine, Musica, Moda, " +
+                "Juegos): " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica las opciones disponibles para modificar un evento
+     */
+    public void mostrarOpcionesEvento() {
+        System.out.println(estilo.PASTEL_BLUE + "1. Nombre\n2. Descripción\n3. Categoría\n4. Fecha\n5. Aforo\n" +
+                "6. Inscritos\n" + "7. Modificar entradas\n" + estilo.NEON_PINK + "8. Cancelar" + estilo.ANSI_RESET);
+        System.out.print(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica un mensaje de error personalizado
+     */
+    public void error(String mensaje) {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + mensaje + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Muestra el título de eventos disponibles
+     */
+    public void tituloEventosDisponibles() {
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ EVENTOS DISPONIBLES ✦" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de evento no encontrado
+     */
+    public void eventoNoEncontrado() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No se ha encontrado el evento" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Mensaje de categoría no válida
+     */
+    public void categoriaNoValida() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Categoría no válida" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de fecha no válida
+     */
+    public void fechaNoValida() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Formato de fecha no válido" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de operación cancelada
+     */
+    public void operacionCancelada() {
+        System.out.println(estilo.ANSI_RED + "Operación cancelada" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Pide nombre del evento para inscribirse
+     */
+    public void pedirNombreEventoInscribir() {
+        System.out.print(estilo.PASTEL_BLUE + "Escriba el nombre del evento al que desea inscribirse: " + estilo.ANSI_RESET);
+    }
+
+    public void mostrarListaEventos(Evento[] eventos, int total) {
+        System.out.println(estilo.PASTEL_BLUE + "Eventos disponibles:" + estilo.ANSI_RESET);
+        for (int i = 0; i < total; i++) {
+            System.out.println(" - " + eventos[i].getNombre());
+        }
+    }
+
+    /**
+     *Pide confirmacion con un mensaje y espera respuesta de si -> "s" o no -> "n"
+     */
+    public boolean pedirConfirmacion(String mensaje) {
+        Scanner s = new Scanner(System.in);
+        System.out.print(estilo.ANSI_RED + mensaje + " (s/n): " + estilo.ANSI_RESET);
+        return s.nextLine().equalsIgnoreCase("s");
+    }
+
+    /**
+     * Mensaje de aviso de que el aforo está completo, y no se pueden asignar más entradas de un tipo
+     */
+    public void aforoCompleto(String tipo) {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Aforo completo. No se pueden asignar entradas de tipo: " + tipo + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que pregunta cuantas entradas de qué tipo va a tener este evento y muestra su aforo disponible
+     */
+    public void preguntaCantidadEntradasPorTipo(String tipo, int aforoDisponible) {
+        System.out.println(estilo.PASTEL_BLUE + "¿Cuántas entradas de tipo " + tipo + " va a tener este evento? " +
+                "(Aforo disponible: " + aforoDisponible + ")" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que indica que la cantidad no es válida y no se pueden vender más entradas de la cantidad disponible
+     */
+    public void errorCantidadNoValida() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Cantidad no válida, no se pueden vender más entradas de " +
+                "la cantidad de aforo disponible" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Mensaje que pregunta el precio de las entradas y la cantidad en euros
+     */
+    public void preguntaPrecioEntrada(String tipo) {
+        System.out.println(estilo.PASTEL_BLUE + "¿Qué precio van a tener las entradas de tipo " + tipo + "? " +
+                "(introduzca la cantidad en euros)" + estilo.ANSI_RESET);
+    }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.COMPRA DE ENTRADAS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    /**
+     * Mensaje de cabecera de mis eventos inscritos
+     */
+    public void cabeceraMisEventos() {
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ MIS EVENTOS INSCRITOS ✦" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Muestra la cantidad de entradas que tiene compradas un usuario. Controla con una condición ternaria si es una única entrada o varias
+     */
+    public void mensajeEntradasCompradas(int cantidad) {
+        String texto = (cantidad == 1) ? "entrada comprada" : "entradas compradas";
+        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Tiene " + cantidad + " " + texto + " para este evento"
+                + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Mensaje de avertencia para el usuario avisando de que n ose ha inscrito aún en ningún evento disponible de la plataforma
+     */
+    public void mensajeNoInscrito() {
+        System.out.println(estilo.ANSI_RED + "No se ha inscrito en ningún evento todavía" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Muestra el menú para elegir el tipo de entrada que quiere adquirir el usuario para un evento determinado
+     */
+    public void menuEntradaTipo() {
+        System.out.println(estilo.PASTEL_BLUE + "\nSeleccione el tipo de entrada:");
+        System.out.println("1. General \n2. VIP \n3. Infantil" + estilo.ANSI_RESET);
+        System.out.print(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje que muestra los detalles de la entrada seleccionada para comprar y pregunta cuántas de ellas quiere adquirir el usuario
+     */
+    public void mostrarDetallePreCompra(String tipo, float precio) {
+        System.out.println(estilo.PASTEL_BLUE + "Has elegido la entrada: " + estilo.ANSI_RESET + estilo.PASTEL_PURPLE + estilo.BOLD + tipo + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "El precio por entrada es de: " + estilo.ANSI_RESET + estilo.PASTEL_YELLOW + estilo.BOLD + precio + " euros" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "¿Cuántas entradas deseas comprar? (Máximo 4 entradas)" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de error que indica al usuario que no puede adquirir más de 4 entradas para el mismo evento
+     */
+    public void errorLimiteEntradas(int entradas) {
+        if (entradas >= 4) {
+            System.out.println(estilo.ANSI_RED + estilo.BOLD + "No puede comprar más entradas para este evento" + estilo.ANSI_RESET);
+        } else {
+            System.out.println(estilo.ANSI_RED + "No puede adquirir más de 4 entradas en total (Ya tiene: " + entradas + ")" + estilo.ANSI_RESET + "\n");
+        }
+    }
+
+    /**
+     * Mensaje de pregunta para realizar la confirmación de la compra de entradas para un evento. Indica el saldo disponible del usuario antes de la compra
+     */
+    public void preguntaConfirmacionCompra(float saldoActual) {
+        System.out.println(estilo.PASTEL_BLUE + "Su saldo actual es de " + estilo.ANSI_RESET + estilo.PASTEL_GREEN +
+                estilo.BOLD + saldoActual + " euros" + estilo.ANSI_RESET + estilo.PASTEL_BLUE +
+                ". ¿Desea realizar la compra?" + estilo.ANSI_RESET);
+        System.out.print(estilo.PASTEL_GREEN + "SI/NO: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de aviso de que no hay stock de la entrada seleccionada para realizar la compra
+     */
+    public void noHayStockEntradas(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Lo sentimos, no quedan entradas disponibles de este tipo" + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje de aviso de saldo insucifiente para realizar la compra de entradas para un evento
+     */
+    public void saldoInsuficiente(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No dispone de saldo suficiente en su cartera digital para realizar esta operación" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Mensaje de aviso para el asistente con los datos de la entrada que ha seleccionado en el proceso de compra
+     */
+    public void avisoPrecioTotal(int cantidadCompraEntrada, float precioTotal){
+        System.out.println(estilo.PASTEL_BLUE + "Ha elegido comprar " + cantidadCompraEntrada + " entradas. " +
+                "El precio total de la compra es de: " + estilo.ANSI_YELLOW + precioTotal + estilo.PASTEL_BLUE +
+                " euros" + estilo.ANSI_RESET);
+
+    }
 }

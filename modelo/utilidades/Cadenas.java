@@ -49,8 +49,4 @@ public class Cadenas {
         return String.valueOf((int) (Math.random() * 9000) + 1000);
     }
 
-    static void main(String[] args) {
-
-        System.out.println(esTextoValido("Esto es una prueba", 15, 300));
-    }
 }

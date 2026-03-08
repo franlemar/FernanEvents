@@ -11,65 +11,141 @@ public class Evento {
     private LocalDate fecha;
     private int aforo;
     private int personasInscritas;
-
+    private Entrada[] tiposDeEntrada;
+    private int contadorTipos;
+    private Usuario organizador;
 
     //Constructor
-    public Evento(String nombre, String descripcion, CategoriaEvento categoriaEvento, LocalDate fecha, int aforo, int personasInscritas) {
+    public Evento(String nombre, String descripcion, CategoriaEvento categoria, LocalDate fecha, int aforo, int personasInscritas) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.categoriaEvento = categoriaEvento;
+        this.categoriaEvento = categoria;
         this.fecha = fecha;
         this.aforo = aforo;
         this.personasInscritas = personasInscritas;
+        tiposDeEntrada = new Entrada[3];
+        contadorTipos = 0;
     }
 
+    /**
+     * Obtiene el usuario organizador que ha creado el evento
+     */
+    public Usuario getOrganizador() {
+        return organizador;
+    }
+
+    /**
+     * Establece un organizador como creador para un evento
+     */
+    public void setOrganizador(Usuario organizador) {
+        this.organizador = organizador;
+    }
+
+    /**
+     * Obtiene el aforo restante de un evento
+     */
+    public int getAforoRestante(){
+        return aforo - personasInscritas;
+    }
+
+    /**
+     * Establece la configuracion de las entradas para un evento en función del índice y tipo de entrada
+     */
+    public void setConfiguracionEntrada(int indice, Entrada tipo) {
+        if (indice >= 0 && indice < 3) {
+            this.tiposDeEntrada[indice] = tipo;
+        }
+    }
+
+    /**
+     * Obtiene el nombre del evento
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Establece el nombre del evento
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * Obtiene la descripción del evento
+     */
     public String getDescripcion() {
         return descripcion;
     }
 
+    /**
+     * Establece la descripción del evento
+     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
+    /**
+     * Obtiene la categoría del evento
+     */
     public CategoriaEvento getCategoria() {
         return categoriaEvento;
     }
 
+    /**
+     * Establece la categoría del evento
+     */
     public void setCategoria(CategoriaEvento categoriaEvento) {
         this.categoriaEvento = categoriaEvento;
     }
 
+    /**
+     * Obtiene la fecha del evento
+     */
     public LocalDate getFecha() {
         return fecha;
     }
 
+    /**
+     * Establece la fecha del evento
+     */
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
+    /**
+     * Obtiene el numero de personas inscritas del evento
+     */
     public int getPersonasInscritas() {
         return personasInscritas;
     }
 
+    /**
+     * Establece el número de personas inscritas del evento
+     */
     public void setPersonasInscritas(int personasInscritas) {
         this.personasInscritas = personasInscritas;
     }
 
+    /**
+     * Obtiene el aforo máximo del evento
+     */
     public int getAforo() {
         return aforo;
     }
 
+    /**
+     * Establece el aforo máximo del evento
+     */
     public void setAforo(int aforo) {
         this.aforo = aforo;
     }
 
+    /**
+     * Obtiene los tipos de entradas disponibles para un evento
+     */
+    public Entrada[] getTiposDeEntrada() {
+        return tiposDeEntrada;
+    }
 
 }
