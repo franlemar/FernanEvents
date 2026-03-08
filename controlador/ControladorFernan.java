@@ -377,7 +377,7 @@ public class ControladorFernan {
                         if(opcionTipoEntrada < 0 || opcionTipoEntrada > 3){
                             vista.opcionNoValida();
                         }else{
-                            EntradasTipo tipoEntradaElegido = eventoSeleccionado.getTiposDeEntrada()[opcionTipoEntrada];
+                            Entrada tipoEntradaElegido = eventoSeleccionado.getTiposDeEntrada()[opcionTipoEntrada];
                             vista.mostrarDetallePreCompra(tipoEntradaElegido.getCategoria().toString(), tipoEntradaElegido.getPrecio());
                             int cantidadEntradas = Integer.parseInt(s.nextLine());
 

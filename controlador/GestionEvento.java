@@ -2,13 +2,12 @@ package FernanEvents.controlador;
 
 import FernanEvents.modelo.CategoriaEntrada;
 import FernanEvents.modelo.CategoriaEvento;
-import FernanEvents.modelo.EntradasTipo;
+import FernanEvents.modelo.Entrada;
 import FernanEvents.modelo.Evento;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class GestionEvento {
@@ -114,20 +113,20 @@ public class GestionEvento {
         for (int i = 0; i < 3; i++) {
             if(aforoRestante <= 0){
                 vista.aforoCompleto(nombreCategoriasEntrada[i]);
-                nuevoEvento.setConfiguracionEntrada(i, new EntradasTipo(categorias[i], 0, 0));
+                nuevoEvento.setConfiguracionEntrada(i, new Entrada(categorias[i], 0, 0));
             }else{
                 vista.preguntaCantidadEntradasPorTipo(nombreCategoriasEntrada[i], aforoRestante);
                 int cantidadEntradas = Integer.parseInt(s.nextLine());
 
                 if(cantidadEntradas > aforoRestante){
                     vista.errorCantidadNoValida();
-                    nuevoEvento.setConfiguracionEntrada(i, new EntradasTipo(categorias[i], 0, 0));
+                    nuevoEvento.setConfiguracionEntrada(i, new Entrada(categorias[i], 0, 0));
                 }else{
                     if(cantidadEntradas > 0){
                         vista.preguntaPrecioEntrada(nombreCategoriasEntrada[i]);
                         precio = Float.parseFloat(s.nextLine());
                     }
-                    EntradasTipo entrada = new EntradasTipo(categorias[i], precio, cantidadEntradas);
+                    Entrada entrada = new Entrada(categorias[i], precio, cantidadEntradas);
                     nuevoEvento.setConfiguracionEntrada(i, entrada);
 
                     aforoRestante -= cantidadEntradas;
@@ -399,12 +398,12 @@ public class GestionEvento {
                     vista.preguntaPrecioEntrada(nombreCategoriasEntrada[i]);
                     precio = Float.parseFloat(s.nextLine());
                 }
-                EntradasTipo modificacionEntrada = new EntradasTipo(categorias[i], precio, cantidad);
+                Entrada modificacionEntrada = new Entrada(categorias[i], precio, cantidad);
                 evento.setConfiguracionEntrada(i, modificacionEntrada);
                 aforoRestante -= cantidad;
             }else{
                 vista.errorCantidadNoValida();
-                evento.setConfiguracionEntrada(i, new EntradasTipo(categorias[i], 0 ,0));
+                evento.setConfiguracionEntrada(i, new Entrada(categorias[i], 0 ,0));
             }
         }
         return true;
@@ -458,7 +457,7 @@ public class GestionEvento {
      * Actualiza el stock de las entradas y de las personas inscritas a un evento
      */
     public boolean controlaStockCorrecto(Evento evento, int indiceEntrada, int cantidad) {
-        EntradasTipo entrada = evento.getTiposDeEntrada()[indiceEntrada];
+        Entrada entrada = evento.getTiposDeEntrada()[indiceEntrada];
 
         if (entrada != null && entrada.getCantidadDisponible() >= cantidad) {
             entrada.setCantidadDisponible(entrada.getCantidadDisponible() - cantidad);

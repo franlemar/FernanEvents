@@ -11,7 +11,7 @@ public class Evento {
     private LocalDate fecha;
     private int aforo;
     private int personasInscritas;
-    private EntradasTipo[] tiposDeEntrada;
+    private Entrada[] tiposDeEntrada;
     private int contadorTipos;
     private Usuario organizador;
 
@@ -23,7 +23,7 @@ public class Evento {
         this.fecha = fecha;
         this.aforo = aforo;
         this.personasInscritas = personasInscritas;
-        tiposDeEntrada = new EntradasTipo[3];
+        tiposDeEntrada = new Entrada[3];
         contadorTipos = 0;
     }
 
@@ -51,7 +51,7 @@ public class Evento {
     /**
      * Establece la configuracion de las entradas para un evento en función del índice y tipo de entrada
      */
-    public void setConfiguracionEntrada(int indice, EntradasTipo tipo) {
+    public void setConfiguracionEntrada(int indice, Entrada tipo) {
         if (indice >= 0 && indice < 3) {
             this.tiposDeEntrada[indice] = tipo;
         }
@@ -144,7 +144,7 @@ public class Evento {
     /**
      * Obtiene los tipos de entradas disponibles para un evento
      */
-    public EntradasTipo[] getTiposDeEntrada() {
+    public Entrada[] getTiposDeEntrada() {
         return tiposDeEntrada;
     }
 

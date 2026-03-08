@@ -1,6 +1,5 @@
 package FernanEvents.vista;
-import FernanEvents.modelo.CategoriaEvento;
-import FernanEvents.modelo.EntradasTipo;
+import FernanEvents.modelo.Entrada;
 import FernanEvents.modelo.Evento;
 
 import java.util.Scanner;
@@ -202,7 +201,7 @@ public class VistaFernan{
     /**
      * Muestra una vista detallada de las entradas disponibles para un evento
      */
-    public void mostrarVistaDetalladaEntradas(EntradasTipo[] tipoEntrada){
+    public void mostrarVistaDetalladaEntradas(Entrada[] tipoEntrada){
         System.out.println(estilo.PASTEL_YELLOW + "\n=== ENTRADAS DISPONIBLES ===" + estilo.ANSI_RESET);
 
         for (int i = 0; i < 3; i++) {
