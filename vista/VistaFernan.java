@@ -714,9 +714,9 @@ public class VistaFernan{
      * Mensaje que indica las opciones disponibles para modificar un evento
      */
     public void mostrarOpcionesEvento() {
-        System.out.println(estilo.PASTEL_BLUE + "1. Nombre\n2. Descripción\n3. Categoría\n4. Fecha\n5. Aforo\n6. Inscritos\n" +
-                estilo.NEON_PINK + "7. Cancelar" + estilo.ANSI_RESET);
-        System.out.print(estilo.PASTEL_GREEN + "Elige: " + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "1. Nombre\n2. Descripción\n3. Categoría\n4. Fecha\n5. Aforo\n" +
+                "6. Inscritos\n" + "7. Modificar entradas\n" + estilo.NEON_PINK + "8. Cancelar" + estilo.ANSI_RESET);
+        System.out.print(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
     }
 
     /**

@@ -190,7 +190,7 @@ public class GestionEvento {
      */
     public Evento buscarEventoPorNombre(String nombre) {
         for (int i = 0; i < numEventos; i++) {
-            if (eventos[i] != null && eventos[i].getNombre().equalsIgnoreCase(nombre)) {
+            if (eventos[i] != null && eventos[i].getNombre().equalsIgnoreCase(nombre.trim())) {
                 return eventos[i];
             }
         }
@@ -311,11 +311,16 @@ public class GestionEvento {
                     funciona = actualizarInscritos(nombreActual, Integer.parseInt(s.nextLine()));
                     break;
                 case 7:
+                    funciona = actualizarEntradasInterno(evento);
+                    break;
+
+                case 8:
                     vista.operacionCancelada();
-                    return;
+                    break;
+
                 default:
                     vista.opcionNoValida();
-                    return;
+                    break;
             }
             if (funciona) {
                 vista.mensajeConfirmacion();
@@ -402,6 +407,33 @@ public class GestionEvento {
         }
 
         evento.setPersonasInscritas(nuevosInscritos);
+        return true;
+    }
+
+    public boolean actualizarEntradasInterno(Evento evento){
+        Scanner s = new Scanner(System.in);
+        int aforoRestante = evento.getAforo() - evento.getPersonasInscritas();
+        CategoriaEntrada[] categorias = {CategoriaEntrada.GENERAL, CategoriaEntrada.VIP, CategoriaEntrada.INFANTIL};
+        String[] nombreCategoriasEntrada = {"General", "VIP","Infantil"};
+
+        for (int i = 0; i < 3; i++) {
+            vista.preguntaCantidadEntradasPorTipo(nombreCategoriasEntrada[i], aforoRestante);
+            int cantidad = Integer.parseInt(s.nextLine());
+
+            if(cantidad <= aforoRestante){
+                float precio = 0;
+                if(cantidad > 0){
+                    vista.preguntaPrecioEntrada(nombreCategoriasEntrada[i]);
+                    precio = Float.parseFloat(s.nextLine());
+                }
+                EntradasTipo modificacionEntrada = new EntradasTipo(categorias[i], precio, cantidad);
+                evento.setConfiguracionEntrada(i, modificacionEntrada);
+                aforoRestante -= cantidad;
+            }else{
+                vista.errorCantidadNoValida();
+                evento.setConfiguracionEntrada(i, new EntradasTipo(categorias[i], 0 ,0));
+            }
+        }
         return true;
     }
 
