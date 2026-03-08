@@ -19,21 +19,9 @@ public class EntradasTipo {
     }
 
     /**
-     * Establece el nombre del tipo de entrada
-     */
-    public void setCategoria(CategoriaEntrada categoria) {
-        this.categoria = categoria;
-    }
-
-    /**
      * Obtiene el precio del tipo de entrada
      */
     public float getPrecio() {return precio;}
-
-    /**
-     * Establece el precio del tipo de entrada
-     */
-    public void setPrecio(float precio) {this.precio = precio;}
 
     /**
      * Obtiene la cantidad disponible

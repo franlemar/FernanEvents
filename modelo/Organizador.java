@@ -12,7 +12,6 @@ public class Organizador extends Usuario implements Bloqueable {
     /**
      * Bloquea la cuenta del organizador
      */
-    @Override
     public void bloquear() {
         this.bloqueado = true;
     }
@@ -27,7 +26,6 @@ public class Organizador extends Usuario implements Bloqueable {
     /**
      * Comprueba si la cuenta del organizador está bloqueada
      */
-    @Override
     public boolean estaBloqueado() {
         return this.bloqueado;
     }

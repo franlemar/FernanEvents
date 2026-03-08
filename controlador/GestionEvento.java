@@ -23,35 +23,6 @@ public class GestionEvento {
         this.vista = vista;
     }
 
-    /**
-     * Obtiene el array de eventos
-     */
-    public Evento[] getEventos() {
-        return eventos;
-    }
-
-    /**
-     * Establece el array de eventos
-     */
-    public void setEventos(Evento[] eventos) {
-        this.eventos = eventos;
-    }
-
-    /**
-     * Obtiene el número de eventos almacenados
-     */
-    public int getNumEventos() {
-        return numEventos;
-    }
-
-    /**
-     * Establece el número de eventos almacenados
-     */
-    public void setNumEventos(int numEventos) {
-        this.numEventos = numEventos;
-    }
-
-
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS INTERFAZ AUMENTABLE.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     /**
      * Aumenta la capacidad del array de eventos en 1
@@ -181,7 +152,6 @@ public class GestionEvento {
             return false;
         }
     }
-
 
     //----------------------------------------------------------------------------------------------------
     //R --> READ
@@ -410,6 +380,9 @@ public class GestionEvento {
         return true;
     }
 
+    /**
+     * Actualiza la información relacionada con las entradas disponibles para un evento de la plataforma
+     */
     public boolean actualizarEntradasInterno(Evento evento){
         Scanner s = new Scanner(System.in);
         int aforoRestante = evento.getAforo() - evento.getPersonasInscritas();
@@ -481,7 +454,9 @@ public class GestionEvento {
         }
     }
 
-
+    /**
+     * Actualiza el stock de las entradas y de las personas inscritas a un evento
+     */
     public boolean controlaStockCorrecto(Evento evento, int indiceEntrada, int cantidad) {
         EntradasTipo entrada = evento.getTiposDeEntrada()[indiceEntrada];
 
@@ -493,57 +468,4 @@ public class GestionEvento {
         return false;
     }
 
-
-
-
-
-
 }
-
-//    //métodos adicionales que nos pueden servir
-//    //nos vale para cuando queramos saber cuantas plazas libres quedan en un evento.
-//
-//     public int getAforoDisponible(String nombreEvento){
-//        Evento evento = buscarEventoPorNombre(nombreEvento);
-//        if (evento == null) return -1;
-//
-//        return evento.getAforo() - evento.getPersonasInscritas();
-//    }
-
-//    //verificar si se pueden comprar x entradas antes de que nos permita comprarlas
-//    public boolean hayPlazasDisponibles (String nombreEvento, int plazasSolicitadas){
-//        int disponibles = getAforoDisponible(nombreEvento);
-//        return disponibles >= plazasSolicitadas;
-//    }
-
-    //METODOS PARA ENTRADAS
-//    public float getPrecioTipo(String nombreEvento, String nombreTipo) {
-//        Evento evento = buscarEventoPorNombre(nombreEvento);
-//        if (evento == null) {
-//            return -1;
-//        }
-//        EntradasTipo tipo = evento.getTipoEntrada(nombreTipo);
-//        if (tipo == null) {
-//            return -1;
-//        }
-//        return tipo.getPrecio();
-//    }
-//
-//    public int getCantidadDisponible(String nombreEvento, String nombreTipo) {
-//        Evento evento = buscarEventoPorNombre(nombreEvento);
-//        if (evento == null) {
-//            return -1;
-//        }
-//        EntradasTipo tipo = evento.getTipoEntrada(nombreTipo);
-//
-//        if (tipo == null) {
-//            return -1;
-//        }
-//        return tipo.getCantidadDisponible();
-//    }
-//
-//    public boolean comprarEntradas (String nombreEvento, String nombreTipo, int cantidad){
-//        Evento evento = buscarEventoPorNombre(nombreEvento);
-//        if (evento == null) return false;
-//        return evento.venderEntradas(nombreTipo, cantidad);
-//    }

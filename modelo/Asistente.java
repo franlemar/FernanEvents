@@ -32,14 +32,23 @@ public class Asistente extends Usuario implements Bloqueable {
         return 0;
     }
 
+    /**
+     * Obtiene los eventos a los que el asistente se ha inscrito
+     */
     public String[] getEventosInscrito() {
         return eventosInscrito;
     }
 
+    /**
+     * Obtiene la cantidad de entradas para un evento del asistente
+     */
     public int[] getCantidadEntradasEvento() {
         return cantidadEntradasEvento;
     }
 
+    /**
+     * Obtiene el contador de inscripciones del asistente
+     */
     public int getContadorInscripciones() {
         return contadorInscripciones;
     }
@@ -75,7 +84,6 @@ public class Asistente extends Usuario implements Bloqueable {
     /**
      * Bloquea la cuenta del asistente
      */
-    @Override
     public void bloquear() {
         this.bloqueado = true;
     }
@@ -90,7 +98,6 @@ public class Asistente extends Usuario implements Bloqueable {
     /**
      * Comprueba si la cuenta del asistente está bloqueada
      */
-    @Override
     public boolean estaBloqueado() {
         return this.bloqueado;
     }

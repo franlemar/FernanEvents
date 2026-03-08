@@ -25,11 +25,14 @@ public class FuncionesFechas {
     public static String convertirLocalDateString(LocalDate fecha){
         return fecha.format(FORMATO_FECHA);
     }
-// está bien pero la siguiente está mejor expresada
-//    public static boolean fechaHoraAnterior(LocalDateTime fechaHora1, LocalDateTime fechaHora2){
-//        if (fechaHora1.isBefore(fechaHora2)) {return true;}
-//        return false;
-//    }
+
+    /**
+     * Comprueba si una fecha es anterior a otra fecha pasada por parámetro
+     */
+    public static boolean fechaHoraAnterior(LocalDate fechaHora1, LocalDate fechaHora2){
+        if (fechaHora1.isBefore(fechaHora2)) {return true;}
+        return false;
+    }
 
     /**
      * Comprueba si una fecha es anterior a la fecha actual

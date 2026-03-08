@@ -27,18 +27,30 @@ public class Evento {
         contadorTipos = 0;
     }
 
+    /**
+     * Obtiene el usuario organizador que ha creado el evento
+     */
     public Usuario getOrganizador() {
         return organizador;
     }
 
+    /**
+     * Establece un organizador como creador para un evento
+     */
     public void setOrganizador(Usuario organizador) {
         this.organizador = organizador;
     }
 
+    /**
+     * Obtiene el aforo restante de un evento
+     */
     public int getAforoRestante(){
         return aforo - personasInscritas;
     }
 
+    /**
+     * Establece la configuracion de las entradas para un evento en función del índice y tipo de entrada
+     */
     public void setConfiguracionEntrada(int indice, EntradasTipo tipo) {
         if (indice >= 0 && indice < 3) {
             this.tiposDeEntrada[indice] = tipo;
@@ -129,34 +141,11 @@ public class Evento {
         this.aforo = aforo;
     }
 
-    public CategoriaEvento getCategoriaEvento() {
-        return categoriaEvento;
-    }
-
-    public void setCategoriaEvento(CategoriaEvento categoriaEvento) {
-        this.categoriaEvento = categoriaEvento;
-    }
-
+    /**
+     * Obtiene los tipos de entradas disponibles para un evento
+     */
     public EntradasTipo[] getTiposDeEntrada() {
         return tiposDeEntrada;
     }
 
-    public void setTiposDeEntrada(EntradasTipo[] tiposDeEntrada) {
-        this.tiposDeEntrada = tiposDeEntrada;
-    }
-
-    public int getContadorTipos() {
-        return contadorTipos;
-    }
-
-    public void setContadorTipos(int contadorTipos) {
-        this.contadorTipos = contadorTipos;
-    }
-
-    public void aniadirTipoEntrada(EntradasTipo nuevoTipo) {
-        if (contadorTipos < tiposDeEntrada.length) {
-            this.tiposDeEntrada[contadorTipos] = nuevoTipo;
-            contadorTipos++;
-        }
-    }
 }

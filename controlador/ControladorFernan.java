@@ -20,6 +20,7 @@ public class ControladorFernan {
         this.vista = vista;
         this.modeloEve = modeloEve;
     }
+
     /**
      * Inicia FernanEvents mostrando las animaciones de carga del programa
      */
@@ -194,7 +195,6 @@ public class ControladorFernan {
     /**
      * Se encarga de enviar el token de verificacion por correo necesario para el registro
      */
-
     private void enviarTokenRegistro(String nombreRegistro, String correoRegistro, String codigoVerificacion){
         String cuerpo = EnvioGmail.plantillaRegistroUsuario(nombreRegistro, codigoVerificacion);
         EnvioGmail.enviarConGMail(correoRegistro, "Token único de inicio de sesión", cuerpo);
@@ -204,7 +204,6 @@ public class ControladorFernan {
     /**
      * Verifica el token y completa el registro del usuario
      */
-
     private boolean verificaTokenYRegistro(String codigoVerificacion, String nombreRegistro, String correoRegistro, String passwordRegistro, Rol rolCorrecto){
         Scanner s = new Scanner(System.in);
         boolean tokenVerificado = false;
@@ -258,7 +257,6 @@ public class ControladorFernan {
     /**
      * Muestra el menú principal del usuario Administrador
      */
-
     private void menuPrincipalAdmin() throws InterruptedException {
         Scanner s = new Scanner(System.in);
         int opcionMenu;
@@ -298,7 +296,6 @@ public class ControladorFernan {
     /**
      * Muestra el menú principal del usuario Organizador
      */
-
     private void menuPrincipalOrganizador() throws InterruptedException {
         Scanner s = new Scanner(System.in);
         int opcionMenu;
@@ -709,7 +706,6 @@ public class ControladorFernan {
     /**
      * Función que pide una contraseña que sea segura
      */
-
     private String obtenerPasswordValida(){
         Scanner s = new Scanner(System.in);
         String nuevaPassword = "";

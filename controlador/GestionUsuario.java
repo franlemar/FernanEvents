@@ -22,24 +22,10 @@ public class GestionUsuario implements Aumentable {
     }
 
     /**
-     * Establece el array de usuarios
-     */
-    protected void setUsuarios(Usuario[] usuarios) {
-        this.usuarios = usuarios;
-    }
-
-    /**
      * Obtiene el número de usuarios almacenados
      */
     protected int getNumUsuarios() {
         return numUsuarios;
-    }
-
-    /**
-     * Establece el número de usuarios almacenados
-     */
-    protected void setNumUsuarios(int numUsuarios) {
-        this.numUsuarios = numUsuarios;
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS INTERFAZ AUMENTABLE.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -203,7 +189,6 @@ public class GestionUsuario implements Aumentable {
         return true;
     }
 
-
     //CRUD --> UPDATE
     /**
      * Actualiza el nombre de un usuario
@@ -292,6 +277,5 @@ public class GestionUsuario implements Aumentable {
         usuarios[numUsuarios - 1] = null;
         numUsuarios--;
     }
-
 
 }
