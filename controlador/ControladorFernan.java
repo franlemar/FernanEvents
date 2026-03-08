@@ -341,82 +341,11 @@ public class ControladorFernan {
 
             switch(opcionMenu){
                 case 1:
-                    Asistente asistenteActual = (Asistente) usuarioLogueado;
-                    vista.cabeceraMisEventos();
-                    int totalEventosInscritos = asistenteActual.getContadorInscripciones();
-
-                    if(totalEventosInscritos == 0){
-                        vista.mensajeNoInscrito();
-                    }else{
-                        for (int i = 0; i < totalEventosInscritos; i++) {
-                            String nombreEvento = asistenteActual.getEventosInscrito()[i];
-                            int cantidadEntradas = asistenteActual.getCantidadEntradasEvento()[i];
-
-                            Evento evento = modeloEve.buscarEventoPorNombre(nombreEvento);
-
-                            if(evento != null){
-                                vista.mostrarEventoTabla(nombreEvento, evento.getCategoria().toString(),
-                                        FuncionesFechas.convertirLocalDateString(evento.getFecha()));
-                                vista.mensajeEntradasCompradas(cantidadEntradas);
-                            }
-                        }
-                    }
-
+                    mostrarEventosInscrito();
                     break;
 
                 case 2:
-                    modeloEve.mostrarEventos();
-                    vista.pedirNombreEventoInscribir();
-                    String eventoAInscribir = s.nextLine();
-                    Evento eventoSeleccionado = modeloEve.buscarEventoPorNombre(eventoAInscribir);
-
-                    if(eventoSeleccionado != null){
-                        vista.menuEntradaTipo();
-                        int opcionTipoEntrada = Integer.parseInt(s.nextLine()) - 1;
-
-                        if(opcionTipoEntrada < 0 || opcionTipoEntrada > 3){
-                            vista.opcionNoValida();
-                        }else{
-                            Entrada tipoEntradaElegido = eventoSeleccionado.getTiposDeEntrada()[opcionTipoEntrada];
-                            vista.mostrarDetallePreCompra(tipoEntradaElegido.getCategoria().toString(), tipoEntradaElegido.getPrecio());
-                            int cantidadEntradas = Integer.parseInt(s.nextLine());
-
-                            Asistente asistente = (Asistente) usuarioLogueado;
-                            int entradasYaCompradas = asistente.getNumEntradasEvento(eventoSeleccionado.getNombre());
-
-                            if(entradasYaCompradas + cantidadEntradas > 4){
-                                vista.errorLimiteEntradas(entradasYaCompradas);
-                            }else if(cantidadEntradas <= 0){
-                                vista.errorCantidadNoValida();
-                            }else{
-                                float precioTotal = cantidadEntradas * tipoEntradaElegido.getPrecio();
-
-                                if(tipoEntradaElegido.getCantidadDisponible() < cantidadEntradas){
-                                    vista.noHayStockEntradas();
-                                }else if(usuarioLogueado.getSaldo() < precioTotal){
-                                    vista.saldoInsuficiente();
-                                }else{
-                                    vista.avisoPrecioTotal(cantidadEntradas, precioTotal);
-                                    vista.preguntaConfirmacionCompra(usuarioLogueado.getSaldo());
-                                    String mensajeConfirmaCompra = s.nextLine();
-
-                                    if(mensajeConfirmaCompra.equalsIgnoreCase("si")){
-                                        modeloUsu.quitarSaldo(usuarioLogueado.getCorreo(), precioTotal);
-                                        modeloUsu.aniadirSaldo(eventoSeleccionado.getOrganizador().getCorreo(), precioTotal * 0.90f);
-                                        modeloUsu.aniadirSaldo("admin@fernanevents.com", precioTotal * 0.10f);
-                                        modeloEve.controlaStockCorrecto(eventoSeleccionado, opcionTipoEntrada, cantidadEntradas);
-                                        asistente.registraCompraEntrada(eventoSeleccionado.getNombre(), cantidadEntradas);
-                                        vista.mensajeConfirmacion();
-
-                                    }else{
-                                        vista.operacionCancelada();
-                                    }
-                                }
-                            }
-                        }
-                    }else{
-                        vista.eventoNoEncontrado();
-                    }
+                    gestionCompraEntradas();
                     break;
 
                 case 3:
@@ -828,6 +757,104 @@ public class ControladorFernan {
                     vista.opcionNoValida();
             }
         }while(opcionMenu != 5);
+    }
+
+    /**
+     * Muestra los eventos a los que está inscrito un asistente. Si no está inscrito en ninguno, muestra un mensaje de aviso
+     */
+    private void mostrarEventosInscrito(){
+        Asistente asistenteActual = (Asistente) usuarioLogueado;
+        vista.cabeceraMisEventos();
+        int totalEventosInscritos = asistenteActual.getContadorInscripciones();
+
+        if(totalEventosInscritos == 0){
+            vista.mensajeNoInscrito();
+        }else{
+            for (int i = 0; i < totalEventosInscritos; i++) {
+                String nombreEvento = asistenteActual.getEventosInscrito()[i];
+                int cantidadEntradas = asistenteActual.getCantidadEntradasEvento()[i];
+
+                Evento evento = modeloEve.buscarEventoPorNombre(nombreEvento);
+
+                if(evento != null){
+                    vista.mostrarEventoTabla(nombreEvento, evento.getCategoria().toString(),
+                            FuncionesFechas.convertirLocalDateString(evento.getFecha()));
+                    vista.mensajeEntradasCompradas(cantidadEntradas);
+                }
+            }
+        }
+    }
+
+    /**
+     * Se encarga de todo el proceso de compra de entradas a un evento para los asistentes
+     */
+    private void gestionCompraEntradas(){
+        Scanner s = new Scanner(System.in);
+        modeloEve.mostrarEventos();
+        vista.pedirNombreEventoInscribir();
+        String eventoAInscribir = s.nextLine();
+        Evento eventoSeleccionado = modeloEve.buscarEventoPorNombre(eventoAInscribir);
+
+        if(eventoSeleccionado != null){
+            vista.menuEntradaTipo();
+            int opcionTipoEntrada = Integer.parseInt(s.nextLine()) - 1;
+
+            if(opcionTipoEntrada < 0 || opcionTipoEntrada > 3){
+                vista.opcionNoValida();
+            }else{
+                Entrada tipoEntradaElegido = eventoSeleccionado.getTiposDeEntrada()[opcionTipoEntrada];
+                vista.mostrarDetallePreCompra(tipoEntradaElegido.getCategoria().toString(), tipoEntradaElegido.getPrecio());
+                int cantidadEntradas = Integer.parseInt(s.nextLine());
+
+                Asistente asistente = (Asistente) usuarioLogueado;
+                int entradasYaCompradas = asistente.getNumEntradasEvento(eventoSeleccionado.getNombre());
+
+                if(entradasYaCompradas + cantidadEntradas > 4){
+                    vista.errorLimiteEntradas(entradasYaCompradas);
+                }else if(cantidadEntradas <= 0){
+                    vista.errorCantidadNoValida();
+                }else{
+                    float precioTotal = cantidadEntradas * tipoEntradaElegido.getPrecio();
+
+                    if(tipoEntradaElegido.getCantidadDisponible() < cantidadEntradas){
+                        vista.noHayStockEntradas();
+                    }else if(usuarioLogueado.getSaldo() < precioTotal){
+                        vista.saldoInsuficiente();
+                    }else{
+                        String mensajeConfirmaCompra = confirmaCompraEntrada(cantidadEntradas, precioTotal);
+                        if(mensajeConfirmaCompra.equalsIgnoreCase("si")){
+                            movimientoSaldosCompraEntrada(asistente, precioTotal, eventoSeleccionado, opcionTipoEntrada, cantidadEntradas);
+                        }else{
+                            vista.operacionCancelada();
+                        }
+                    }
+                }
+            }
+        }else{
+            vista.eventoNoEncontrado();
+        }
+    }
+
+    /**
+     * Gestiona el movimiento de los saldos entre las carteras del administrador, organizadores y asistentes
+     */
+    private void movimientoSaldosCompraEntrada(Asistente asistente, float precioTotal, Evento eventoSeleccionado, int opcionTipoEntrada, int cantidadEntradas ){
+        modeloUsu.quitarSaldo(usuarioLogueado.getCorreo(), precioTotal);
+        modeloUsu.aniadirSaldo(eventoSeleccionado.getOrganizador().getCorreo(), precioTotal * 0.90f);
+        modeloUsu.aniadirSaldo("admin@fernanevents.com", precioTotal * 0.10f);
+        modeloEve.controlaStockCorrecto(eventoSeleccionado, opcionTipoEntrada, cantidadEntradas);
+        asistente.registraCompraEntrada(eventoSeleccionado.getNombre(), cantidadEntradas);
+        vista.mensajeConfirmacion();
+    }
+
+    /**
+     * Confirma mediante unos mensajes en consola, el proceso de compra de entradas
+     */
+    private String confirmaCompraEntrada(int cantidadEntradas, float precioTotal){
+        Scanner s = new Scanner(System.in);
+        vista.avisoPrecioTotal(cantidadEntradas, precioTotal);
+        vista.preguntaConfirmacionCompra(usuarioLogueado.getSaldo());
+        return s.nextLine();
     }
 
 
