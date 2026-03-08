@@ -11,6 +11,9 @@ import java.util.Locale;
 import java.util.Properties;
 
 public class EnvioGmail {
+    /**
+     * Enviar correo con usando Gmail SMTP
+     */
     public static void enviarConGMail(String destinatario, String asunto, String cuerpo) {
         String remitente = "chemamc3@gmail.com";
         String clave = "blne cdaw znbi vmtn";
@@ -43,6 +46,9 @@ public class EnvioGmail {
         }
     }
 
+    /**
+     * Genera la plantilla HTML para el correo de registro de usuario
+     */
     public static String plantillaRegistroUsuario(String nombreUsuario, String codigoToken) {
         LocalDateTime ahora = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' yyyy 'a las' HH:mm:ss", new Locale("es", "ES"));
@@ -125,6 +131,9 @@ public class EnvioGmail {
         """.formatted(nombreUsuario, codigoToken, nombreUsuario, fechaHoraFormateada);
     }
 
+    /**
+     * Genera la plantilla HTML para el correo de inicio de sesion del admin
+     */
     public static String plantillaLoginAdmin(String usuario, String codigo) {
         LocalDateTime ahora = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' yyyy 'a las' HH:mm:ss", new Locale("es", "ES"));
@@ -200,6 +209,9 @@ public class EnvioGmail {
         """.formatted(usuario, codigo, fechaHoraFormateada);
     }
 
+    /**
+     * Genera la plantilla HTML para el correo de invitar a un amigo
+     */
     public static String plantillaInvitarAmigo(String correoAmigo, String nombreRemitente) {
         LocalDateTime ahora = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' yyyy", new Locale("es", "ES"));

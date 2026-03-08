@@ -9,15 +9,24 @@ public class Organizador extends Usuario implements Bloqueable {
         super(nombre, correo, password, Rol.ORGANIZADOR);
     }
 
+    /**
+     * Bloquea la cuenta del organizador
+     */
     @Override
     public void bloquear() {
         this.bloqueado = true;
     }
 
+    /**
+     * Desbloquea la cuenta del organizador
+     */
     public void desbloquear(){
         this.bloqueado = false;
     }
 
+    /**
+     * Comprueba si la cuenta del organizador está bloqueada
+     */
     @Override
     public boolean estaBloqueado() {
         return this.bloqueado;
