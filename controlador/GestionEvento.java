@@ -1,6 +1,8 @@
 package FernanEvents.controlador;
 
+import FernanEvents.modelo.CategoriaEntrada;
 import FernanEvents.modelo.CategoriaEvento;
+import FernanEvents.modelo.EntradasTipo;
 import FernanEvents.modelo.Evento;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
@@ -103,10 +105,8 @@ public class GestionEvento {
 
         vista.pedirDatosEvento("Introduce el nombre del evento: ");
         String nombreEvento = s.nextLine();
-
         vista.pedirDatosEvento("Introduce la descripción del evento: ");
         String descripcionEvento = s.nextLine();
-
         CategoriaEvento categoriaEve = null;
         while (categoriaEve == null) {
             vista.pedirDatosEventoCategoria("categoría");
@@ -133,7 +133,37 @@ public class GestionEvento {
         vista.pedirDatosEvento("Introduce el número de inscritos: ");
         int numInscritosEvento = Integer.parseInt(s.nextLine());
 
-        return new Evento(nombreEvento, descripcionEvento, categoriaEve, fechaEve, aforoEvento, numInscritosEvento);
+        Evento nuevoEvento = new Evento(nombreEvento, descripcionEvento, categoriaEve, fechaEve, aforoEvento,
+                numInscritosEvento);
+        int aforoRestante = nuevoEvento.getAforoRestante();
+        CategoriaEntrada[] categorias = {CategoriaEntrada.GENERAL, CategoriaEntrada.VIP, CategoriaEntrada.INFANTIL};
+        String[] nombreCategoriasEntrada = {"General", "VIP","Infantil"};
+        float precio = 0;
+
+        for (int i = 0; i < 3; i++) {
+            if(aforoRestante <= 0){
+                vista.aforoCompleto(nombreCategoriasEntrada[i]);
+                nuevoEvento.setConfiguracionEntrada(i, new EntradasTipo(categorias[i], 0, 0));
+            }else{
+                vista.preguntaCantidadEntradasPorTipo(nombreCategoriasEntrada[i], aforoRestante);
+                int cantidadEntradas = Integer.parseInt(s.nextLine());
+
+                if(cantidadEntradas > aforoRestante){
+                    vista.errorCantidadNoValida();
+                    nuevoEvento.setConfiguracionEntrada(i, new EntradasTipo(categorias[i], 0, 0));
+                }else{
+                    if(cantidadEntradas > 0){
+                        vista.preguntaPrecioEntrada(nombreCategoriasEntrada[i]);
+                        precio = Float.parseFloat(s.nextLine());
+                    }
+                    EntradasTipo entrada = new EntradasTipo(categorias[i], precio, cantidadEntradas);
+                    nuevoEvento.setConfiguracionEntrada(i, entrada);
+
+                    aforoRestante -= cantidadEntradas;
+                }
+            }
+        }
+        return nuevoEvento;
     }
 
     /**
@@ -187,7 +217,6 @@ public class GestionEvento {
             vista.noHayEventos();
             return;
         }
-
         vista.tituloEventosDisponibles();
 
         for (int i = 0; i < numEventos; i++) {
@@ -207,6 +236,8 @@ public class GestionEvento {
                         evento.getAforo(),
                         evento.getPersonasInscritas()
                 );
+
+                vista.mostrarVistaDetalladaEntradas(evento.getTiposDeEntrada());
             }
         }
 

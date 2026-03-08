@@ -1,5 +1,6 @@
 package FernanEvents.vista;
 import FernanEvents.modelo.CategoriaEvento;
+import FernanEvents.modelo.EntradasTipo;
 import FernanEvents.modelo.Evento;
 
 import java.util.Scanner;
@@ -252,19 +253,20 @@ public class VistaFernan{
     }
 
     //MODIFICAR CUANDO TENGAMOS ENTRADAS LOS VALORES QUE LE LLEGAN POR PARÁMETRO
-    public void mostrarVistaDetalladaEntradas(String[] nombreTipoEntrada, int[] cantidadEntradas, float[] precioEntrada){
+    public void mostrarVistaDetalladaEntradas(EntradasTipo[] tipoEntrada){
         System.out.println(estilo.PASTEL_YELLOW + "\n=== ENTRADAS DISPONIBLES ===" + estilo.ANSI_RESET);
 
         for (int i = 0; i < 3; i++) {
-            System.out.print(estilo.PASTEL_BLUE + "Tipo: " + estilo.ANSI_RESET + nombreTipoEntrada[i]);
-            System.out.print(" | " + estilo.PASTEL_BLUE + "Precio: " + estilo.ANSI_RESET + precioEntrada[i] + " euros");
+            System.out.print(estilo.PASTEL_BLUE + "Tipo: " + estilo.ANSI_RESET + tipoEntrada[i].getCategoria());
+            System.out.print(" | " + estilo.PASTEL_BLUE + "Precio: " + estilo.ANSI_RESET + tipoEntrada[i].getPrecio() + " euros");
 
-            if (cantidadEntradas[i] <= 0) {
+            if (tipoEntrada[i].getCantidadDisponible() <= 0) {
                 System.out.println(" | " + estilo.ANSI_RED + "AGOTADAS" + estilo.ANSI_RESET);
             } else {
-                System.out.println(" | " + estilo.PASTEL_GREEN + "Disponibles: " + estilo.ANSI_RESET + cantidadEntradas[i]);
+                System.out.println(" | " + estilo.PASTEL_GREEN + "Disponibles: " + estilo.ANSI_RESET + tipoEntrada[i].getCantidadDisponible());
             }
         }
+        System.out.println(" ");
     }
 
     /**
@@ -947,6 +949,25 @@ public class VistaFernan{
         Scanner s = new Scanner(System.in);
         System.out.print(estilo.ANSI_RED + mensaje + " (s/n): " + estilo.ANSI_RESET);
         return s.nextLine().equalsIgnoreCase("s");
+    }
+
+    public void aforoCompleto(String tipo) {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Aforo completo. No se pueden asignar entradas de tipo: " + tipo + estilo.ANSI_RESET);
+    }
+
+    public void preguntaCantidadEntradasPorTipo(String tipo, int aforoDisponible) {
+        System.out.println(estilo.PASTEL_BLUE + "¿Cuántas entradas de tipo " + tipo + " va a tener este evento? " +
+                "(Aforo disponible: " + aforoDisponible + ")" + estilo.ANSI_RESET);
+    }
+
+    public void errorCantidadNoValida() {
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Cantidad no válida, no se pueden vender más entradas de " +
+                "la cantidad de aforo disponible" + estilo.ANSI_RESET + "\n");
+    }
+
+    public void preguntaPrecioEntrada(String tipo) {
+        System.out.println(estilo.PASTEL_BLUE + "¿Qué precio van a tener las entradas de tipo " + tipo + "? " +
+                "(introduzca la cantidad en euros)" + estilo.ANSI_RESET);
     }
 
 

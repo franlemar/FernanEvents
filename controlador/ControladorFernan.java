@@ -272,7 +272,7 @@ public class ControladorFernan {
                     break;
 
                 case 2:
-
+                    modeloEve.mostrarEventos();
                     break;
 
                 case 3:

@@ -1,12 +1,12 @@
 package FernanEvents.modelo;
 
 public class EntradasTipo {
-    private String nombre;
+    private CategoriaEntrada categoria;
     private float precio;
     private int cantidadDisponible;
 
-    public EntradasTipo( String nombre, float precio, int cantidadDisponible){
-        this.nombre=nombre;
+    public EntradasTipo(CategoriaEntrada categoria, float precio, int cantidadDisponible){
+        this.categoria = categoria;
         this.precio=precio;
         this.cantidadDisponible=cantidadDisponible;
     }
@@ -14,12 +14,16 @@ public class EntradasTipo {
     /**
      * Obtiene el nombre del tipo de entrada
      */
-    public String getNombre() {return nombre;}
+    public CategoriaEntrada getCategoria() {
+        return categoria;
+    }
 
     /**
      * Establece el nombre del tipo de entrada
      */
-    public void setNombre(String nombre) {this.nombre = nombre;}
+    public void setCategoria(CategoriaEntrada categoria) {
+        this.categoria = categoria;
+    }
 
     /**
      * Obtiene el precio del tipo de entrada

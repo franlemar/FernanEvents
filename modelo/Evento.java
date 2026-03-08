@@ -11,6 +11,8 @@ public class Evento {
     private LocalDate fecha;
     private int aforo;
     private int personasInscritas;
+    private EntradasTipo[] tiposDeEntrada;
+    private int contadorTipos;
 
     //Constructor
     public Evento(String nombre, String descripcion, CategoriaEvento categoria, LocalDate fecha, int aforo, int personasInscritas) {
@@ -20,6 +22,18 @@ public class Evento {
         this.fecha = fecha;
         this.aforo = aforo;
         this.personasInscritas = personasInscritas;
+        tiposDeEntrada = new EntradasTipo[3];
+        contadorTipos = 0;
+    }
+
+    public int getAforoRestante(){
+        return aforo - personasInscritas;
+    }
+
+    public void setConfiguracionEntrada(int indice, EntradasTipo tipo) {
+        if (indice >= 0 && indice < 3) {
+            this.tiposDeEntrada[indice] = tipo;
+        }
     }
 
     /**
@@ -106,4 +120,34 @@ public class Evento {
         this.aforo = aforo;
     }
 
+    public CategoriaEvento getCategoriaEvento() {
+        return categoriaEvento;
+    }
+
+    public void setCategoriaEvento(CategoriaEvento categoriaEvento) {
+        this.categoriaEvento = categoriaEvento;
+    }
+
+    public EntradasTipo[] getTiposDeEntrada() {
+        return tiposDeEntrada;
+    }
+
+    public void setTiposDeEntrada(EntradasTipo[] tiposDeEntrada) {
+        this.tiposDeEntrada = tiposDeEntrada;
+    }
+
+    public int getContadorTipos() {
+        return contadorTipos;
+    }
+
+    public void setContadorTipos(int contadorTipos) {
+        this.contadorTipos = contadorTipos;
+    }
+
+    public void aniadirTipoEntrada(EntradasTipo nuevoTipo) {
+        if (contadorTipos < tiposDeEntrada.length) {
+            this.tiposDeEntrada[contadorTipos] = nuevoTipo;
+            contadorTipos++;
+        }
+    }
 }
