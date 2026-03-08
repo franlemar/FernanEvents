@@ -94,59 +94,6 @@ public class VistaFernan{
     }
 
     /**
-     * Muestra un menú con los tipos de detalles de los que consta un evento. Aparece cuando el organizador quiere modificar un evento que ya se ha creado anteriormente.
-     */
-    public void datosEventos() {
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ DATOS DEL EVENTO ✦" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.PASTEL_BLUE + "1. Nombre del evento");
-        System.out.println("2. Descripción del evento");
-        System.out.println("3. Categoría del evento");
-        System.out.println("4. Fecha y hora");
-        System.out.println("5. Aforo");
-        System.out.println("6. Número de inscritos");
-        System.out.println("7. Tipos de entrada");
-        System.out.println(estilo.NEON_PINK + "8. Guardar datos y volver" + estilo.ANSI_RESET);
-
-        System.out.println(estilo.PASTEL_GREEN + "Elige el dato que deseas crear/modificar: " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Muestra un menú desde donde los asistentes eligen el evento al que desean inscribirse
-     */
-    public void menuInscripcionAsistente() {
-        System.out.println(estilo.PASTEL_BLUE + "¿En qué evento quieres inscribirte?" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_BLUE + "1. Evento 1");
-        System.out.println("2. Evento 2");
-        System.out.println("3. Evento 3");
-        System.out.println(estilo.NEON_PINK + "4. Volver atrás" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_GREEN + "Elige la opción del evento correspondiente: " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Muestra un evento al que se hayan inscrito los asistentes con una vista previa del nombre, categoría y fecha del mismo
-     */
-    public void mostrarEventoInscrito(String nombre, String categoria, String fecha, int numeroEvento) {
-        System.out.println(estilo.PASTEL_PURPLE + "===Evento " + numeroEvento + "===" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_BLUE + "Nombre: " + estilo.ANSI_RESET + nombre);
-        System.out.println(estilo.PASTEL_BLUE + "Categoria: " + estilo.ANSI_RESET + categoria);
-        System.out.println(estilo.PASTEL_BLUE + "Fecha:" + estilo.ANSI_RESET + fecha);
-        System.out.println();
-    }
-
-    /**
-     * Muestra un menú donde el asistente elige qué tipo de entrada desea comprar a la hora de inscribirse en un evento
-     */
-    public void menuTipoEntrada() {
-        System.out.println(estilo.PASTEL_BLUE + "¿Qué tipo de entrada quieres comprar?" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_BLUE + "1. Entrada general");
-        System.out.println("2. Entrada VIP");
-        System.out.println("3. Entrada infantil");
-        System.out.println(estilo.NEON_PINK + "4. Volver atrás" + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
-    }
-
-    /**
      * Muestra un menú desde donde los asistentes pueden comprobar una lista de amigos a los que han invitado a FernanEvents, así como enviar correos electrónicos con invitaciones para otros nuevos amigos
      */
     public void menuInvitarAmigo() {
@@ -252,7 +199,9 @@ public class VistaFernan{
         System.out.println("[" + grafico + estilo.ANSI_RESET + "] " + String.format("%.1f", porcentaje) + "%\n");
     }
 
-    //MODIFICAR CUANDO TENGAMOS ENTRADAS LOS VALORES QUE LE LLEGAN POR PARÁMETRO
+    /**
+     * Muestra una vista detallada de las entradas disponibles para un evento
+     */
     public void mostrarVistaDetalladaEntradas(EntradasTipo[] tipoEntrada){
         System.out.println(estilo.PASTEL_YELLOW + "\n=== ENTRADAS DISPONIBLES ===" + estilo.ANSI_RESET);
 
@@ -314,13 +263,6 @@ public class VistaFernan{
     public void mensajeError(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD +
                 " ❌ ERROR, no se ha podido completar la operación solicitada" + estilo.ANSI_RESET  + "\n");
-    }
-
-    /**
-     * Muestra un mensaje personalizado
-     */
-    public void notificacion(String mensaje){
-        System.out.println(mensaje);
     }
 
     /**
@@ -697,40 +639,12 @@ public class VistaFernan{
     }
 
     /**
-     * Mensaje que indica que ya existe un evento con ese nombre
-     */
-    public void eventoYaExiste() {
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Ya existe un evento con ese nombre" + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Mensaje que indica que el evento se ha guardado correctamente
-     */
-    public void eventoGuardado() {
-        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Evento guardado correctamente \n" + estilo.ANSI_RESET);
-    }
-
-    /**
      * Mensaje que indica las opciones disponibles para modificar un evento
      */
     public void mostrarOpcionesEvento() {
         System.out.println(estilo.PASTEL_BLUE + "1. Nombre\n2. Descripción\n3. Categoría\n4. Fecha\n5. Aforo\n" +
                 "6. Inscritos\n" + "7. Modificar entradas\n" + estilo.NEON_PINK + "8. Cancelar" + estilo.ANSI_RESET);
         System.out.print(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Mensaje que indica que escribamos el nombre del evento
-     */
-    public void pedirNombreEvento() {
-        System.out.print(estilo.PASTEL_BLUE + "Nombre del evento: " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Mensaje que indica que el evento se ha eliminado
-     */
-    public void eventoEliminado() {
-        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Evento eliminado" + estilo.ANSI_RESET);
     }
 
     /**
@@ -741,46 +655,6 @@ public class VistaFernan{
     }
 
     /**
-     * Mensaje que indica información del total de la compra y pide confirmación
-     */
-    public void infoCompra(float total) {
-        System.out.println(estilo.PASTEL_BLUE + "Total: " + estilo.ANSI_RESET + total + "€");
-        System.out.print(estilo.PASTEL_GREEN + "¿Confirmar? (si/no): " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Muestra las categorías disponibles del enum
-     */
-    public void mostrarCategorias() {
-        System.out.println(estilo.PASTEL_YELLOW + "Categorías disponibles: " + estilo.ANSI_RESET);
-        CategoriaEvento[] categorias = CategoriaEvento.values();
-        for (int i = 0; i < categorias.length; i++) {
-            System.out.println(estilo.PASTEL_BLUE + "  " + (i+1) + ". " + categorias[i] + estilo.ANSI_RESET);
-        }
-    }
-
-    /**
-     * Pide seleccionar categoría por número
-     */
-    public void pedirCategoria() {
-        System.out.print(estilo.PASTEL_BLUE + "Selecciona categoría (número): " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Muestra el título de creación de evento
-     */
-    public void tituloCrearEvento() {
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "* DATOS DE EVENTO NUEVO *" + estilo.ANSI_RESET + "\n");
-    }
-
-    /**
-     * Muestra el título de modificación de evento
-     */
-    public void tituloModificarEvento(String nombreEvento) {
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "\n ✦ MODIFICANDO: " + nombreEvento + " ✦ " + estilo.ANSI_RESET);
-    }
-
-    /**
      * Muestra el título de eventos disponibles
      */
     public void tituloEventosDisponibles() {
@@ -788,51 +662,10 @@ public class VistaFernan{
     }
 
     /**
-     * Listar eventos para modificar
-     */
-    public void listarEventosParaModificar(String[] nombres, int total) {
-        System.out.println(estilo.PASTEL_BLUE + "Elige el evento del que deseas modificar los datos: " + estilo.ANSI_RESET);
-        for (int i = 0; i < total; i++) {
-            if (nombres[i] != null) {
-                System.out.println(estilo.PASTEL_BLUE + "(" + i + ") " + nombres[i] + estilo.ANSI_RESET);
-            }
-        }
-        System.out.println();
-    }
-
-    /**
-     * Pide el número del evento
-     */
-    public void pedirNumeroEvento() {
-        System.out.print(estilo.PASTEL_GREEN + "Pulse el número del evento: " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Mensaje de evento no válido
-     */
-    public void eventoNoValido() {
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Evento no válido" + estilo.ANSI_RESET);
-    }
-
-    /**
      * Mensaje de evento no encontrado
      */
     public void eventoNoEncontrado() {
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "No se ha encontrado el evento" + estilo.ANSI_RESET + "\n");
-    }
-
-    /**
-     * Mensaje de aforo insuficiente
-     */
-    public void aforoInsuficiente() {
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No hay suficiente aforo disponible" + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Mensaje de inscritos superan aforo
-     */
-    public void inscritosSuperanAforo() {
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Los inscritos no pueden superar el aforo" + estilo.ANSI_RESET);
     }
 
     /**
@@ -850,41 +683,6 @@ public class VistaFernan{
     }
 
     /**
-     * Mensaje de cantidad no válida
-     */
-    public void cantidadNoValida() {
-        System.out.println(estilo.ANSI_RED + "La cantidad introducida no es válida" + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Mensaje de límite de entradas excedido
-     */
-    public void limiteEntradasExcedido() {
-        System.out.println(estilo.ANSI_RED + estilo.BOLD + "No puede comprar más de 4 entradas" + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Mensaje de entradas insuficientes
-     */
-    public void entradasInsuficientes(int disponibles) {
-        System.out.println(estilo.ANSI_RED + "Lo sentimos, solo hay " + disponibles + " entradas disponibles" + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Muestra el total de la compra
-     */
-    public void mostrarTotalCompra(int cantidad, float total) {
-        System.out.println(estilo.PASTEL_BLUE + "Ha elegido comprar " + cantidad + " entradas. El precio total es de: " + estilo.ANSI_YELLOW + total + "€" + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Mensaje de compra exitosa
-     */
-    public void compraExitosa() {
-        System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "¡Compra realizada con éxito!" + estilo.ANSI_RESET);
-    }
-
-    /**
      * Mensaje de operación cancelada
      */
     public void operacionCancelada() {
@@ -892,40 +690,10 @@ public class VistaFernan{
     }
 
     /**
-     * Título de mis eventos inscritos
-     */
-    public void tituloMisEventosInscritos() {
-        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ MIS EVENTOS INSCRITOS ✦" + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Mensaje de no inscrito en eventos
-     */
-    public void noInscritoEnEventos() {
-        System.out.println(estilo.PASTEL_BLUE + "No te has inscrito en ningún evento todavía" + estilo.ANSI_RESET);
-    }
-
-    /**
      * Pide nombre del evento para inscribirse
      */
     public void pedirNombreEventoInscribir() {
         System.out.print(estilo.PASTEL_BLUE + "Escriba el nombre del evento al que desea inscribirse: " + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Muestra información de la entrada seleccionada
-     */
-    public void infoEntradaSeleccionada(String tipo, float precio) {
-        System.out.println(estilo.PASTEL_BLUE + "Has elegido la entrada: " + estilo.ANSI_RESET + estilo.PASTEL_PURPLE + estilo.BOLD + tipo + estilo.ANSI_RESET);
-        System.out.println(estilo.PASTEL_BLUE + "El precio por entrada es de: " + estilo.ANSI_RESET + estilo.PASTEL_YELLOW + estilo.BOLD + precio + "€" + estilo.ANSI_RESET);
-    }
-
-    /**
-     * Pide cantidad de entradas
-     */
-    public void pedirCantidadEntradas() {
-        System.out.println("¿Cuántas entradas deseas comprar? (Máximo 4 entradas)");
-        System.out.print(estilo.PASTEL_GREEN + "Cantidad: " + estilo.ANSI_RESET);
     }
 
     public void mostrarListaEventos(Evento[] eventos, int total) {
@@ -944,20 +712,32 @@ public class VistaFernan{
         return s.nextLine().equalsIgnoreCase("s");
     }
 
+    /**
+     * Mensaje de aviso de que el aforo está completo, y no se pueden asignar más entradas de un tipo
+     */
     public void aforoCompleto(String tipo) {
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Aforo completo. No se pueden asignar entradas de tipo: " + tipo + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que pregunta cuantas entradas de qué tipo va a tener este evento y muestra su aforo disponible
+     */
     public void preguntaCantidadEntradasPorTipo(String tipo, int aforoDisponible) {
         System.out.println(estilo.PASTEL_BLUE + "¿Cuántas entradas de tipo " + tipo + " va a tener este evento? " +
                 "(Aforo disponible: " + aforoDisponible + ")" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que indica que la cantidad no es válida y no se pueden vender más entradas de la cantidad disponible
+     */
     public void errorCantidadNoValida() {
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Cantidad no válida, no se pueden vender más entradas de " +
                 "la cantidad de aforo disponible" + estilo.ANSI_RESET + "\n");
     }
 
+    /**
+     * Mensaje que pregunta el precio de las entradas y la cantidad en euros
+     */
     public void preguntaPrecioEntrada(String tipo) {
         System.out.println(estilo.PASTEL_BLUE + "¿Qué precio van a tener las entradas de tipo " + tipo + "? " +
                 "(introduzca la cantidad en euros)" + estilo.ANSI_RESET);
@@ -965,32 +745,50 @@ public class VistaFernan{
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.COMPRA DE ENTRADAS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
 
+    /**
+     * Mensaje de cabecera de mis eventos inscritos
+     */
     public void cabeceraMisEventos() {
         System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ MIS EVENTOS INSCRITOS ✦" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Muestra la cantidad de entradas que tiene compradas un usuario. Controla con una condición ternaria si es una única entrada o varias
+     */
     public void mensajeEntradasCompradas(int cantidad) {
         String texto = (cantidad == 1) ? "entrada comprada" : "entradas compradas";
         System.out.println(estilo.PASTEL_GREEN + estilo.BOLD + "Tiene " + cantidad + " " + texto + " para este evento"
                 + estilo.ANSI_RESET + "\n");
     }
 
+    /**
+     * Mensaje de avertencia para el usuario avisando de que n ose ha inscrito aún en ningún evento disponible de la plataforma
+     */
     public void mensajeNoInscrito() {
         System.out.println(estilo.ANSI_RED + "No se ha inscrito en ningún evento todavía" + estilo.ANSI_RESET + "\n");
     }
 
+    /**
+     * Muestra el menú para elegir el tipo de entrada que quiere adquirir el usuario para un evento determinado
+     */
     public void menuEntradaTipo() {
         System.out.println(estilo.PASTEL_BLUE + "\nSeleccione el tipo de entrada:");
         System.out.println("1. General \n2. VIP \n3. Infantil" + estilo.ANSI_RESET);
         System.out.print(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje que muestra los detalles de la entrada seleccionada para comprar y pregunta cuántas de ellas quiere adquirir el usuario
+     */
     public void mostrarDetallePreCompra(String tipo, float precio) {
         System.out.println(estilo.PASTEL_BLUE + "Has elegido la entrada: " + estilo.ANSI_RESET + estilo.PASTEL_PURPLE + estilo.BOLD + tipo + estilo.ANSI_RESET);
         System.out.println(estilo.PASTEL_BLUE + "El precio por entrada es de: " + estilo.ANSI_RESET + estilo.PASTEL_YELLOW + estilo.BOLD + precio + " euros" + estilo.ANSI_RESET);
         System.out.println(estilo.PASTEL_BLUE + "¿Cuántas entradas deseas comprar? (Máximo 4 entradas)" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje de error que indica al usuario que no puede adquirir más de 4 entradas para el mismo evento
+     */
     public void errorLimiteEntradas(int entradas) {
         if (entradas >= 4) {
             System.out.println(estilo.ANSI_RED + estilo.BOLD + "No puede comprar más entradas para este evento" + estilo.ANSI_RESET);
@@ -999,6 +797,9 @@ public class VistaFernan{
         }
     }
 
+    /**
+     * Mensaje de pregunta para realizar la confirmación de la compra de entradas para un evento. Indica el saldo disponible del usuario antes de la compra
+     */
     public void preguntaConfirmacionCompra(float saldoActual) {
         System.out.println(estilo.PASTEL_BLUE + "Su saldo actual es de " + estilo.ANSI_RESET + estilo.PASTEL_GREEN +
                 estilo.BOLD + saldoActual + " euros" + estilo.ANSI_RESET + estilo.PASTEL_BLUE +
@@ -1006,14 +807,23 @@ public class VistaFernan{
         System.out.print(estilo.PASTEL_GREEN + "SI/NO: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje de aviso de que no hay stock de la entrada seleccionada para realizar la compra
+     */
     public void noHayStockEntradas(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Lo sentimos, no quedan entradas disponibles de este tipo" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Mensaje de aviso de saldo insucifiente para realizar la compra de entradas para un evento
+     */
     public void saldoInsuficiente(){
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "No dispone de saldo suficiente en su cartera digital para realizar esta operación" + estilo.ANSI_RESET + "\n");
     }
 
+    /**
+     * Mensaje de aviso para el asistente con los datos de la entrada que ha seleccionado en el proceso de compra
+     */
     public void avisoPrecioTotal(int cantidadCompraEntrada, float precioTotal){
         System.out.println(estilo.PASTEL_BLUE + "Ha elegido comprar " + cantidadCompraEntrada + " entradas. " +
                 "El precio total de la compra es de: " + estilo.ANSI_YELLOW + precioTotal + estilo.PASTEL_BLUE +
