@@ -1,205 +1,57 @@
 package FernanEvents.modelo;
 
-import FernanEvents.modelo.utilidades.interfaces.Aumentable;
+import java.util.Collection;
+import java.util.HashMap;
 
-public class GestionUsuario implements Aumentable {
+public class GestionUsuario{
 
-    private Usuario[] usuarios;
-    private int numUsuarios;
+    private HashMap<String, Usuario> usuarios;
 
-    public GestionUsuario(int tamanio) {
-        usuarios = new Usuario[tamanio];
-        numUsuarios = 0;
+    public GestionUsuario(){
+        this.usuarios = new HashMap<>();
         cargarUsuariosPredefinidos();
     }
 
     /**
-     * Obtiene el array de usuarios
+     * Devuelve los valores(Usuarios) almacenados en el HashMap
      */
-    public Usuario[] getUsuarios() {
-        return usuarios;
+    public Collection<Usuario> getUsuarios() {
+        return usuarios.values();
     }
 
     /**
      * Obtiene el número de usuarios almacenados
      */
-    public int getNumUsuarios() {
-        return numUsuarios;
-    }
-
-    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS INTERFAZ AUMENTABLE.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-    /**
-     * Aumenta la capacidad del array de usuarios en 1
-     */
-    public void aumentarCapacidad(){
-        aumentarCapacidad(1);
-    }
-
-    /**
-     * Aumenta la capacidad del array de usuarios en la cantidad que se le pase
-     */
-    public void aumentarCapacidad(int cantidad){
-        Usuario[] nuevoArray = new Usuario[usuarios.length + cantidad];
-        for (int i = 0; i < numUsuarios; i++) {
-            nuevoArray[i] = usuarios[i];
-        }
-        this.usuarios = nuevoArray;
-    }
-
-    /**
-     * disminuye la capacidad del array de usuarios en 1
-     */
-    public void disminuirCapacidad(){
-        disminuirCapacidad(1);
-    }
-
-    /**
-     * Disminuye la capacidad del array de usuarios en la cantidad que se le pase
-     */
-    public void disminuirCapacidad(int cantidad){
-        int nuevoTamanio = usuarios.length - cantidad;
-        if(nuevoTamanio < numUsuarios){
-            System.out.println("ERROR, no se puede reducir ese espacio");
-            return;
-        }
-        Usuario[] nuevoArray = new Usuario[nuevoTamanio];
-
-        for (int i = 0; i < numUsuarios; i++) {
-            nuevoArray[i] = usuarios[i];
-        }
-        this.usuarios = nuevoArray;
-    }
-
-    /**
-     * Aumenta la capacidad del array de amigos referidos de un asistente
-     */
-    public void aumentarCapacidadAR(Usuario usuario){
-        Asistente asistente = (Asistente) usuario;
-        String[] arrayActual = asistente.getAmigosReferidos();
-        String[] nuevoArray = new String[arrayActual.length + 1];
-        for (int i = 0; i < asistente.getNumAmigosReferidos(); i++) {
-            nuevoArray[i] = arrayActual[i];
-        }
-        asistente.setAmigosReferidos(nuevoArray);
+    public int getNumUsuarios(){
+        return usuarios.size();
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CRUD.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-    //C --> CREATE
+
     /**
-     * Añade un nuevo usuario al array
+     * Añade un nuevo usuario al HashMap
      */
     public boolean aniadirUsuario(Usuario nuevoUsuario){
-        if(numUsuarios == usuarios.length){
-            aumentarCapacidad();
-        }
-        usuarios[numUsuarios++] = nuevoUsuario;
-        return true;
-    }
-
-    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS HELPER.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-    /**
-     * Crea los usuarios predefinidos para las pruebas
-     */
-    private void cargarUsuariosPredefinidos(){
-        Usuario admin = new Administrador("admin", "admin@fernanevents.com", "admin");
-        Usuario organizador1 = new Organizador("organizador1", "organizador1@fernanevents.com", "organizador1");
-        Usuario asistente1 = new Asistente("asistente1", "asistente1@fernanevents.com", "1234");
-        Usuario asistente2 = new Asistente("asistente2", "asistente2@fernanevents.com", "5678");
-
-        aniadirUsuario(admin);
-        aniadirUsuario(organizador1);
-        aniadirUsuario(asistente1);
-        aniadirUsuario(asistente2);
-    }
-
-    /**
-     * Verifica si hay usuarios bloqueados
-     */
-    public boolean confirmaUsuariosBloqueados(){
-        for (int i = 0; i < numUsuarios; i++) {
-            if(usuarios[i] != null && usuarios[i].isBloqueado()){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Busca a un usuario por su correo
-     */
-    public Usuario buscaUsuarioPorCorreo(String correo){
-        for (int i = 0; i < numUsuarios; i++) {
-            if(usuarios[i].getCorreo().equalsIgnoreCase(correo)){
-                return usuarios[i];
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Busca la posición de un usuario en el array por su correo
-     */
-    public int buscaPosicionPorCorreo(String correo){
-        for (int i = 0; i < numUsuarios; i++) {
-            if(usuarios[i].getCorreo().equalsIgnoreCase(correo)){
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Busca a un usuario por su nombre
-     */
-    public Usuario buscarPorNombre(String nombre){
-        for (int i = 0; i <numUsuarios ; i++) {
-            if (usuarios[i] != null && usuarios[i].getNombre().equalsIgnoreCase(nombre)){
-                return usuarios[i];
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Comprueba si tiene amigos referidos
-     */
-    public boolean tieneAmigosReferidos(Usuario usuario){
-        if(usuario instanceof Asistente asistente){
-            return asistente.getNumAmigosReferidos() > 0;
-        }
-        return false;
-    }
-
-    /**
-     * Añade amigos referidos
-     */
-    public boolean aniadirAmigoReferido(Usuario usuario, String correoAmigo){
-        Asistente asistente = (Asistente) usuario;
-        if(!correoAmigo.contains("@")){
+        if(nuevoUsuario == null || usuarios.containsKey(nuevoUsuario.getCorreo())){
             return false;
         }
-        int posicionFinal = asistente.getNumAmigosReferidos();
-        if(posicionFinal == asistente.getAmigosReferidos().length){
-            aumentarCapacidadAR(usuario);
-        }
-
-        asistente.getAmigosReferidos()[posicionFinal] = correoAmigo;
-        asistente.setNumAmigosReferidos(posicionFinal + 1);
+        usuarios.put(nuevoUsuario.getCorreo(), nuevoUsuario);
         return true;
     }
 
-    //CRUD --> UPDATE
     /**
      * Actualiza el nombre de un usuario
      */
-    public boolean actualizarNombre(String correo, String nuevoNombre){
-        Usuario usuario = buscaUsuarioPorCorreo(correo);
-        if (usuario == null) { return false; }
+    public boolean actualizarNombre(String correo, String nuevoNombre) {
+        Usuario usuario = usuarios.get(correo);
+        if (usuario == null) return false;
 
-        Usuario existente = buscarPorNombre(nuevoNombre);
-        if (existente != null && !existente.getCorreo().equals(correo)){
-            return false;
+        for (Usuario u : usuarios.values()) {
+            if (u.getNombre().equalsIgnoreCase(nuevoNombre) && !u.getCorreo().equals(correo)) {
+                return false;
+            }
         }
+
         usuario.setNombre(nuevoNombre);
         return true;
     }
@@ -208,7 +60,7 @@ public class GestionUsuario implements Aumentable {
      * Actualiza la contraseña de un usuario
      */
     public boolean actualizarContrasena(String correo, String nuevaContrasena){
-        Usuario usuario = buscaUsuarioPorCorreo(correo);
+        Usuario usuario = usuarios.get(correo);
         if (usuario == null) { return false; }
 
         usuario.setPassword(nuevaContrasena);
@@ -232,7 +84,6 @@ public class GestionUsuario implements Aumentable {
      */
     public boolean aniadirSaldo (String correo, float cantidad){
         Usuario usuario = buscaUsuarioPorCorreo(correo);
-
         if (usuario == null || cantidad <= 0) { return false; }
         usuario.setSaldo(usuario.getSaldo() + cantidad);
         return true;
@@ -243,7 +94,6 @@ public class GestionUsuario implements Aumentable {
      */
     public boolean quitarSaldo (String correo, float cantidad){
         Usuario usuario = buscaUsuarioPorCorreo(correo);
-
         if (usuario == null || cantidad <= 0) { return false; }
 
         if (usuario.getSaldo() >= cantidad) {
@@ -253,28 +103,75 @@ public class GestionUsuario implements Aumentable {
         return false;
     }
 
-    //CRUD --> DELETE
     /**
-     * Elimina un usuario por su correo
+     * Añade amigos referidos a la lista de amigos referidos de los asistentes
      */
-    public boolean eliminaUsuario(String correo){
-        int posicion = buscaPosicionPorCorreo(correo);
-        if(posicion < 0){
-            return false;
-        }else{
-            usuarios[posicion] = null;
-            eliminaEspacios(posicion);
+    public boolean aniadirAmigoReferido(Usuario usuario, String correoAmigo) {
+        if (usuario instanceof Asistente asistente && correoAmigo.contains("@")) {
+            asistente.getAmigosReferidos().add(correoAmigo);
             return true;
         }
+        return false;
     }
 
     /**
-     * Reorganiza el array después de eliminar un usuario
+     * Elimina un usuario por su correo
      */
-    private void eliminaEspacios(int posicion){
-        usuarios[posicion] = usuarios[numUsuarios - 1];
-        usuarios[numUsuarios - 1] = null;
-        numUsuarios--;
+    public boolean eliminaUsuario(String correo) {
+        return usuarios.remove(correo) != null;
+    }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS HELPER.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    /**
+     * Crea los usuarios predefinidos para las pruebas
+     */
+    private void cargarUsuariosPredefinidos(){
+        aniadirUsuario(new Administrador("admin", "admin@fernanevents.com", "admin"));
+        aniadirUsuario(new Organizador("organizador1", "organizador1@fernanevents.com", "organizador1"));
+        aniadirUsuario(new Asistente("asistente1", "asistente1@fernanevents.com", "1234"));
+        aniadirUsuario(new Asistente("asistente2", "asistente2@fernanevents.com", "5678"));
+    }
+
+    /**
+     * Busca a un usuario por su correo
+     */
+    public Usuario buscaUsuarioPorCorreo(String correo){
+        return usuarios.get(correo);
+    }
+
+    /**
+     * Busca a un usuario por su nombre
+     */
+    public Usuario buscarPorNombre(String nombre){
+        for(Usuario u : usuarios.values()){
+            if(u.getNombre().equalsIgnoreCase(nombre)){
+                return u;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Verifica si hay usuarios bloqueados
+     */
+    public boolean confirmaUsuariosBloqueados(){
+        for(Usuario u : usuarios.values()){
+            if(u.isBloqueado()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba si un asistente tiene amigos referidos
+     */
+    public boolean tieneAmigosReferidos(Usuario usuario){
+        if(usuario instanceof Asistente asistente){
+            return !asistente.getAmigosReferidos().isEmpty();
+        }
+        return false;
     }
 
 }

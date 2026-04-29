@@ -8,7 +8,7 @@ import FernanEvents.vista.VistaFernan;
 public class FernanEventsApp {
     static void main(String[] args) throws InterruptedException {
 
-        GestionUsuario modelo = new GestionUsuario(10);
+        GestionUsuario modelo = new GestionUsuario();
         VistaFernan vista = new VistaFernan();
         GestionEvento evento = new GestionEvento(10, vista);
         ControladorFernan controlador = new ControladorFernan(modelo,vista, evento);

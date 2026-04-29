@@ -6,6 +6,7 @@ import FernanEvents.modelo.utilidades.EnvioGmail;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ControladorFernan {
@@ -207,6 +208,7 @@ public class ControladorFernan {
     private boolean verificaTokenYRegistro(String codigoVerificacion, String nombreRegistro, String correoRegistro, String passwordRegistro, Rol rolCorrecto){
         Scanner s = new Scanner(System.in);
         boolean tokenVerificado = false;
+
         while (!tokenVerificado) {
             vista.pedirToken();
             String tokenRegistro = s.nextLine();
@@ -214,9 +216,6 @@ public class ControladorFernan {
             if (!tokenRegistro.equals(codigoVerificacion)) {
                 vista.tokenIncorrecto();
             } else {
-                if (modeloUsu.getNumUsuarios() == modeloUsu.getUsuarios().length) {
-                    modeloUsu.aumentarCapacidad();
-                }
 
                 Usuario nuevoUsuario;
                 if (rolCorrecto.equals(Rol.ORGANIZADOR)) {
@@ -392,21 +391,27 @@ public class ControladorFernan {
      */
     private boolean gestionaUsuariosBloqueados(){
         Scanner s = new Scanner(System.in);
-        Usuario[] listaUsuarios = modeloUsu.getUsuarios();
+        if (!modeloUsu.confirmaUsuariosBloqueados()) {
+            vista.noHayUsuariosBloqueados();
+            return false;
+        }
+
         vista.tituloUsuariosBloqueados();
-        for (int i = 0; i < modeloUsu.getNumUsuarios(); i++) {
-            if(listaUsuarios[i] != null && listaUsuarios[i].isBloqueado()){
-                vista.mostrarUsuarioBloqueado(i, listaUsuarios[i].getNombre());
+        for (Usuario u : modeloUsu.getUsuarios()) {
+            if (u.isBloqueado()) {
+                // Mostramos nombre y correo para que el admin sepa cuál elegir
+                vista.mostrarUsuarioBloqueado(u.getCorreo(), u.getNombre());
             }
         }
-        vista.pideNumeroUsuario();
-        int opcionPanelBloqueo = Integer.parseInt(s.nextLine());
-        if(opcionPanelBloqueo > 0 && opcionPanelBloqueo < listaUsuarios.length &&
-                listaUsuarios[opcionPanelBloqueo] != null){
 
-            Usuario usuarioQuitarBloqueo = listaUsuarios[opcionPanelBloqueo];
-            return modeloUsu.actualizaEstadoBloqueo(usuarioQuitarBloqueo.getCorreo(), false);
+        vista.pedirCorreo();
+        String correoABloquear = s.nextLine();
+        if(modeloUsu.actualizaEstadoBloqueo(correoABloquear, false)){
+            vista.mensajeConfirmacion();
+            return true;
         }
+
+        vista.mensajeError();
         return false;
     }
 
@@ -708,11 +713,11 @@ public class ControladorFernan {
      */
     private void listarAmigosReferidos(){
         Asistente asistente = (Asistente) usuarioLogueado;
-        String[] listadoAmigosReferidos = asistente.getAmigosReferidos();
-        int totalAmigos = asistente.getNumAmigosReferidos();
+        ArrayList<String> listadoAmigosReferidos = asistente.getAmigosReferidos();
+        int totalAmigos = listadoAmigosReferidos.size();
         vista.cabeceraListadoAmigosReferidos(totalAmigos);
         for (int i = 0; i < totalAmigos; i++) {
-            vista.listarAmigo(i + 1, listadoAmigosReferidos[i]);
+            vista.listarAmigo(i + 1, listadoAmigosReferidos.get(i));
         }
     }
 
@@ -856,12 +861,6 @@ public class ControladorFernan {
         vista.preguntaConfirmacionCompra(usuarioLogueado.getSaldo());
         return s.nextLine();
     }
-
-
-
-
-
-
 
 
 }

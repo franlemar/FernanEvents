@@ -276,7 +276,7 @@ public class VistaFernan{
      * Solicita al usuario que introduzca su correo
      */
     public void pedirCorreo(){
-        System.out.print(estilo.PASTEL_BLUE + "Introduzca su correo electrónico: "
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca el correo electrónico: "
                 + estilo.ANSI_RESET);
     }
 
@@ -483,8 +483,8 @@ public class VistaFernan{
     /**
      * Mensaje que indica un usuario bloqueado con su índice y nombre
      */
-    public void mostrarUsuarioBloqueado(int indice, String nombre){
-        System.out.println(estilo.PASTEL_BLUE + nombre + " (" + indice + ")" + estilo.ANSI_RESET);
+    public void mostrarUsuarioBloqueado(String correo, String nombre){
+        System.out.println(estilo.PASTEL_BLUE + nombre + " (" + correo + ")" + estilo.ANSI_RESET);
     }
 
     /**

@@ -2,19 +2,19 @@ package FernanEvents.modelo;
 
 import FernanEvents.modelo.utilidades.interfaces.Bloqueable;
 
+import java.util.ArrayList;
+
 public class Asistente extends Usuario implements Bloqueable {
 
     private boolean bloqueado = false;
-    private String[] amigosReferidos;
-    private int numAmigosReferidos;
+    private ArrayList<String> amigosReferidos;
     private String[] eventosInscrito;
     private int[] cantidadEntradasEvento;
     private int contadorInscripciones;
 
     public Asistente(String nombre, String correo, String password){
         super(nombre, correo, password, Rol.ASISTENTE);
-        amigosReferidos = new String[10];
-        numAmigosReferidos = 0;
+        amigosReferidos = new ArrayList<>();
         eventosInscrito = new String[100];
         cantidadEntradasEvento = new int[100];
         contadorInscripciones = 0;
@@ -56,29 +56,15 @@ public class Asistente extends Usuario implements Bloqueable {
     /**
      * Obtiene el array de amigos referidos por el asistente
      */
-    public String[] getAmigosReferidos() {
+    public ArrayList<String> getAmigosReferidos() {
         return amigosReferidos;
     }
 
     /**
      * Establece el array de amigos referidos por el asistente
      */
-    public void setAmigosReferidos(String[] amigosReferidos) {
+    public void setAmigosReferidos(ArrayList<String> amigosReferidos) {
         this.amigosReferidos = amigosReferidos;
-    }
-
-    /**
-     * Obtiene el número de amigos referidos por el asistente
-     */
-    public int getNumAmigosReferidos() {
-        return numAmigosReferidos;
-    }
-
-    /**
-     * Establece el número de amigos referidos por el asistente
-     */
-    public void setNumAmigosReferidos(int numAmigosReferidos) {
-        this.numAmigosReferidos = numAmigosReferidos;
     }
 
     /**
