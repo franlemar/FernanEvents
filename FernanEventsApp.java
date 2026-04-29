@@ -1,8 +1,8 @@
 package FernanEvents;
 
 import FernanEvents.controlador.ControladorFernan;
-import FernanEvents.controlador.GestionEvento;
-import FernanEvents.controlador.GestionUsuario;
+import FernanEvents.modelo.GestionEvento;
+import FernanEvents.modelo.GestionUsuario;
 import FernanEvents.vista.VistaFernan;
 
 public class FernanEventsApp {

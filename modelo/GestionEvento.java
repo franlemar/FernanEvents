@@ -1,9 +1,5 @@
-package FernanEvents.controlador;
+package FernanEvents.modelo;
 
-import FernanEvents.modelo.CategoriaEntrada;
-import FernanEvents.modelo.CategoriaEvento;
-import FernanEvents.modelo.Entrada;
-import FernanEvents.modelo.Evento;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
 
