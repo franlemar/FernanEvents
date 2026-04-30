@@ -30,7 +30,7 @@ public class ControladorFernan {
 
         cargarDatos();
 
-        // ----Autoguardado de datos en el JSON cada 15 segundos-----
+        // ----Autoguardado de datos en el JSON cada 5 segundos-----
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
