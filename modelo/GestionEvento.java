@@ -4,61 +4,17 @@ import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GestionEvento {
 
-    private Evento[] eventos;
-    private int numEventos;
+    private ArrayList<Evento> eventos;
     private VistaFernan vista;
 
     public GestionEvento(int tamanio, VistaFernan vista) {
-        eventos = new Evento[tamanio];
-        numEventos = 0;
+        eventos = new ArrayList<>();
         this.vista = vista;
-    }
-
-    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS INTERFAZ AUMENTABLE.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-    /**
-     * Aumenta la capacidad del array de eventos en 1
-     */
-    public void aumentarCapacidad() {
-        aumentarCapacidad(1);
-    }
-
-    /**
-     * Aumenta la capacidad del array de eventos en la cantidad que se le pase
-     */
-    public void aumentarCapacidad(int cantidad) {
-        Evento[] nuevoArray = new Evento[eventos.length + cantidad];
-        for (int i = 0; i < numEventos; i++) {
-            nuevoArray[i] = eventos[i];
-        }
-        this.eventos = nuevoArray;
-    }
-
-    /**
-     * Disminuye la capacidad del array de eventos en 1
-     */
-    public void disminuirCapacidad() {
-        disminuirCapacidad(1);
-    }
-
-    /**
-     * Disminuye la capacidad del array en la cantidad que se le pase
-     */
-    public void disminuirCapacidad(int cantidad) {
-        int nuevoTamanio = eventos.length - cantidad;
-        if (nuevoTamanio < numEventos) {
-            System.out.println("ERROR, no se puede reducir ese espacio");
-            return;
-        }
-        Evento[] nuevoArray = new Evento[nuevoTamanio];
-
-        for (int i = 0; i < numEventos; i++) {
-            nuevoArray[i] = eventos[i];
-        }
-        this.eventos = nuevoArray;
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CRUD.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -136,16 +92,8 @@ public class GestionEvento {
      * Añade un nuevo evento al array
      */
     public boolean aniadirEvento(Evento nuevoEvento) {
-        if (numEventos == eventos.length) {
-            aumentarCapacidad(1);
-        }
-
-        if (numEventos < eventos.length) {
-            eventos[numEventos++] = nuevoEvento;
-            return true;
-        } else {
-            return false;
-        }
+        eventos.add(nuevoEvento);
+        return true;
     }
 
     //----------------------------------------------------------------------------------------------------
@@ -154,9 +102,9 @@ public class GestionEvento {
      * Busca un evento por su nombre
      */
     public Evento buscarEventoPorNombre(String nombre) {
-        for (int i = 0; i < numEventos; i++) {
-            if (eventos[i] != null && eventos[i].getNombre().equalsIgnoreCase(nombre.trim())) {
-                return eventos[i];
+        for (Evento evento : eventos) {
+            if (evento.getNombre().equalsIgnoreCase(nombre.trim())) {
+                return evento;
             }
         }
         return null;
@@ -166,8 +114,8 @@ public class GestionEvento {
      * Busca la posición de un evento en el array por su nombre
      */
     public int buscarPosicionPorNombre(String nombre) {
-        for (int i = 0; i < numEventos; i++) {
-            if (eventos[i] != null && eventos[i].getNombre().equalsIgnoreCase(nombre.trim())) {
+        for (int i = 0; i < eventos.size(); i++) {
+            if (eventos.get(i).getNombre().equalsIgnoreCase(nombre.trim())) {
                 return i;
             }
         }
@@ -178,14 +126,13 @@ public class GestionEvento {
      * Muestra todos los eventos disponibles
      */
     public void mostrarEventos() {
-        if (numEventos == 0) {
+        if (eventos.isEmpty()) {
             vista.noHayEventos();
             return;
         }
         vista.tituloEventosDisponibles();
 
-        for (int i = 0; i < numEventos; i++) {
-            Evento evento = eventos[i];
+        for (Evento evento : eventos) {
             if (evento != null) {
                 vista.mostrarEventoTabla(
                         evento.getNombre(),
@@ -215,12 +162,12 @@ public class GestionEvento {
      */
     public void modificarEvento() {
         Scanner s = new Scanner(System.in);
-        if (numEventos == 0) {
+        if (eventos.isEmpty()) {
             vista.noHayEventos();
             return;
         }
 
-        vista.mostrarListaEventos(eventos, numEventos);
+        vista.mostrarListaEventos(eventos.toArray(new Evento[0]), eventos.size());
         vista.pedirDatosEvento("Introduce el nombre del evento que quieres modificar: ");
         String nombreActual = s.nextLine();
 
@@ -413,9 +360,7 @@ public class GestionEvento {
         int posicion = buscarPosicionPorNombre(nombre);
         if (posicion == -1) return false;
 
-        eventos[posicion] = eventos[numEventos - 1];
-        eventos[numEventos - 1] = null;
-        numEventos--;
+        eventos.remove(posicion);
 
         return true;
     }
@@ -425,10 +370,10 @@ public class GestionEvento {
      */
     public void eliminarEvento() {
         Scanner s = new Scanner(System.in);
-        if (numEventos == 0) {
+        if (eventos.isEmpty()) {
             vista.noHayEventos();
         } else {
-            vista.mostrarListaEventos(eventos, numEventos);
+            vista.mostrarListaEventos(eventos.toArray(new Evento[0]), eventos.size());
             vista.pedirDatosEvento("Escribe el nombre del evento que quieres eliminar: ");
             String nombreEvento = s.nextLine();
             Evento evento = buscarEventoPorNombre(nombreEvento);
