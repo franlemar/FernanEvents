@@ -58,29 +58,26 @@ public class GestionEvento {
         Evento nuevoEvento = new Evento(nombreEvento, descripcionEvento, categoriaEve, fechaEve, aforoEvento,
                 numInscritosEvento);
         int aforoRestante = nuevoEvento.getAforoRestante();
-        CategoriaEntrada[] categorias = {CategoriaEntrada.GENERAL, CategoriaEntrada.VIP, CategoriaEntrada.INFANTIL};
-        String[] nombreCategoriasEntrada = {"General", "VIP","Infantil"};
-        float precio = 0;
 
-        for (int i = 0; i < 3; i++) {
+        for(CategoriaEntrada categoria : CategoriaEntrada.values()){
             if(aforoRestante <= 0){
-                vista.aforoCompleto(nombreCategoriasEntrada[i]);
-                nuevoEvento.setConfiguracionEntrada(i, new Entrada(categorias[i], 0, 0));
+                vista.aforoCompleto(categoria.toString());
+                nuevoEvento.setConfiguracionEntrada(new Entrada(categoria, 0, 0));
             }else{
-                vista.preguntaCantidadEntradasPorTipo(nombreCategoriasEntrada[i], aforoRestante);
+                vista.preguntaCantidadEntradasPorTipo(categoria.toString(), aforoRestante);
                 int cantidadEntradas = Integer.parseInt(s.nextLine());
 
-                if(cantidadEntradas > aforoRestante){
+                if(cantidadEntradas > aforoRestante || cantidadEntradas < 0){
                     vista.errorCantidadNoValida();
-                    nuevoEvento.setConfiguracionEntrada(i, new Entrada(categorias[i], 0, 0));
+                    nuevoEvento.setConfiguracionEntrada(new Entrada(categoria, 0, 0));
                 }else{
+                    float precio = 0;
                     if(cantidadEntradas > 0){
-                        vista.preguntaPrecioEntrada(nombreCategoriasEntrada[i]);
+                        vista.preguntaPrecioEntrada(categoria.toString());
                         precio = Float.parseFloat(s.nextLine());
                     }
-                    Entrada entrada = new Entrada(categorias[i], precio, cantidadEntradas);
-                    nuevoEvento.setConfiguracionEntrada(i, entrada);
 
+                    nuevoEvento.setConfiguracionEntrada(new Entrada(categoria, precio, cantidadEntradas));
                     aforoRestante -= cantidadEntradas;
                 }
             }
@@ -331,41 +328,35 @@ public class GestionEvento {
     public boolean actualizarEntradasInterno(Evento evento){
         Scanner s = new Scanner(System.in);
         int aforoRestante = evento.getAforo() - evento.getPersonasInscritas();
-        CategoriaEntrada[] categorias = {CategoriaEntrada.GENERAL, CategoriaEntrada.VIP, CategoriaEntrada.INFANTIL};
-        String[] nombreCategoriasEntrada = {"General", "VIP","Infantil"};
+        ArrayList<Entrada> nuevasEntradas = new ArrayList<>();
 
-        for (int i = 0; i < 3; i++) {
-            vista.preguntaCantidadEntradasPorTipo(nombreCategoriasEntrada[i], aforoRestante);
+        for(CategoriaEntrada categoria : CategoriaEntrada.values()){
+            vista.preguntaCantidadEntradasPorTipo(categoria.toString(), aforoRestante);
             int cantidad = Integer.parseInt(s.nextLine());
 
-            if(cantidad <= aforoRestante){
+            if(cantidad <= aforoRestante && cantidad >= 0){
                 float precio = 0;
                 if(cantidad > 0){
-                    vista.preguntaPrecioEntrada(nombreCategoriasEntrada[i]);
+                    vista.preguntaPrecioEntrada(categoria.toString());
                     precio = Float.parseFloat(s.nextLine());
                 }
-                Entrada modificacionEntrada = new Entrada(categorias[i], precio, cantidad);
-                evento.setConfiguracionEntrada(i, modificacionEntrada);
+                nuevasEntradas.add(new Entrada(categoria, precio, cantidad));
                 aforoRestante -= cantidad;
             }else{
                 vista.errorCantidadNoValida();
-                evento.setConfiguracionEntrada(i, new Entrada(categorias[i], 0 ,0));
+                nuevasEntradas.add(new Entrada(categoria, 0, 0));
             }
         }
+        evento.setTiposDeEntrada(nuevasEntradas);
         return true;
     }
 
     //D --> DELETE
     /**
-     * Elimina un evento por su nombre
+     * Elimina un evento por su nombre mediante una función lambda
      */
-    public boolean eliminarEvento(String nombre) {
-        int posicion = buscarPosicionPorNombre(nombre);
-        if (posicion == -1) return false;
-
-        eventos.remove(posicion);
-
-        return true;
+    public boolean eliminarEvento(String nombreEvento) {
+        return eventos.removeIf(e -> e.getNombre().equalsIgnoreCase(nombreEvento));
     }
 
     /**
@@ -400,13 +391,15 @@ public class GestionEvento {
     /**
      * Actualiza el stock de las entradas y de las personas inscritas a un evento
      */
-    public boolean controlaStockCorrecto(Evento evento, int indiceEntrada, int cantidad) {
-        Entrada entrada = evento.getTiposDeEntrada()[indiceEntrada];
-
-        if (entrada != null && entrada.getCantidadDisponible() >= cantidad) {
-            entrada.setCantidadDisponible(entrada.getCantidadDisponible() - cantidad);
-            evento.setPersonasInscritas(evento.getPersonasInscritas() + cantidad);
-            return true;
+    public boolean controlaStockCorrecto(Evento evento, CategoriaEntrada categoriaEntrada, int cantidad) {
+        for(Entrada entrada : evento.getTiposDeEntrada()){
+            if(entrada.getCategoria().equals(categoriaEntrada)){
+                if(entrada.getCantidadDisponible() >= cantidad){
+                    entrada.setCantidadDisponible(entrada.getCantidadDisponible() - cantidad);
+                    evento.setPersonasInscritas(evento.getPersonasInscritas() + cantidad);
+                    return true;
+                }
+            }
         }
         return false;
     }

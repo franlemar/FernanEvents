@@ -202,17 +202,17 @@ public class VistaFernan{
     /**
      * Muestra una vista detallada de las entradas disponibles para un evento
      */
-    public void mostrarVistaDetalladaEntradas(Entrada[] tipoEntrada){
+    public void mostrarVistaDetalladaEntradas(ArrayList<Entrada> tipoEntrada){
         System.out.println(estilo.PASTEL_YELLOW + "\n=== ENTRADAS DISPONIBLES ===" + estilo.ANSI_RESET);
 
-        for (int i = 0; i < 3; i++) {
-            System.out.print(estilo.PASTEL_BLUE + "Tipo: " + estilo.ANSI_RESET + tipoEntrada[i].getCategoria());
-            System.out.print(" | " + estilo.PASTEL_BLUE + "Precio: " + estilo.ANSI_RESET + tipoEntrada[i].getPrecio() + " euros");
+        for(Entrada entrada : tipoEntrada){
+            System.out.print(estilo.PASTEL_BLUE + "Tipo: " + estilo.ANSI_RESET + entrada.getCategoria());
+            System.out.print(" | " + estilo.PASTEL_BLUE + "Precio: " + estilo.ANSI_RESET + entrada.getPrecio() + " euros");
 
-            if (tipoEntrada[i].getCantidadDisponible() <= 0) {
+            if(entrada.getCantidadDisponible() <= 0){
                 System.out.println(" | " + estilo.ANSI_RED + "AGOTADAS" + estilo.ANSI_RESET);
-            } else {
-                System.out.println(" | " + estilo.PASTEL_GREEN + "Disponibles: " + estilo.ANSI_RESET + tipoEntrada[i].getCantidadDisponible());
+            }else{
+                System.out.println(" | " + estilo.PASTEL_GREEN + "Disponibles: " + estilo.ANSI_RESET + entrada.getCantidadDisponible());
             }
         }
         System.out.println(" ");

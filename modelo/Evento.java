@@ -1,6 +1,7 @@
 package FernanEvents.modelo;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Evento {
 
@@ -11,8 +12,7 @@ public class Evento {
     private LocalDate fecha;
     private int aforo;
     private int personasInscritas;
-    private Entrada[] tiposDeEntrada;
-    private int contadorTipos;
+    private ArrayList<Entrada> tiposDeEntrada;
     private Usuario organizador;
 
     //Constructor
@@ -23,8 +23,7 @@ public class Evento {
         this.fecha = fecha;
         this.aforo = aforo;
         this.personasInscritas = personasInscritas;
-        tiposDeEntrada = new Entrada[3];
-        contadorTipos = 0;
+        this.tiposDeEntrada = new ArrayList<>();
     }
 
     /**
@@ -49,12 +48,16 @@ public class Evento {
     }
 
     /**
-     * Establece la configuracion de las entradas para un evento en función del índice y tipo de entrada
+     * Establece la configuracion de las entradas para un evento en función del tipo de entrada
      */
-    public void setConfiguracionEntrada(int indice, Entrada tipo) {
-        if (indice >= 0 && indice < 3) {
-            this.tiposDeEntrada[indice] = tipo;
+    public void setConfiguracionEntrada(Entrada tipo) {
+        for (int i = 0; i < tiposDeEntrada.size(); i++) {
+            if(tiposDeEntrada.get(i).getCategoria().equals(tipo.getCategoria())){
+                tiposDeEntrada.set(i, tipo);
+                return;
+            }
         }
+        tiposDeEntrada.add(tipo);
     }
 
     /**
@@ -144,8 +147,12 @@ public class Evento {
     /**
      * Obtiene los tipos de entradas disponibles para un evento
      */
-    public Entrada[] getTiposDeEntrada() {
+    public ArrayList<Entrada> getTiposDeEntrada() {
         return tiposDeEntrada;
+    }
+
+    public void setTiposDeEntrada(ArrayList<Entrada> tiposDeEntrada){
+        this.tiposDeEntrada = tiposDeEntrada;
     }
 
 }

@@ -804,10 +804,10 @@ public class ControladorFernan {
             vista.menuEntradaTipo();
             int opcionTipoEntrada = Integer.parseInt(s.nextLine()) - 1;
 
-            if(opcionTipoEntrada < 0 || opcionTipoEntrada > 3){
+            if(opcionTipoEntrada < 0 || opcionTipoEntrada > eventoSeleccionado.getTiposDeEntrada().size()){
                 vista.opcionNoValida();
             }else{
-                Entrada tipoEntradaElegido = eventoSeleccionado.getTiposDeEntrada()[opcionTipoEntrada];
+                Entrada tipoEntradaElegido = eventoSeleccionado.getTiposDeEntrada().get(opcionTipoEntrada);
                 vista.mostrarDetallePreCompra(tipoEntradaElegido.getCategoria().toString(), tipoEntradaElegido.getPrecio());
                 int cantidadEntradas = Integer.parseInt(s.nextLine());
 
@@ -828,7 +828,8 @@ public class ControladorFernan {
                     }else{
                         String mensajeConfirmaCompra = confirmaCompraEntrada(cantidadEntradas, precioTotal);
                         if(mensajeConfirmaCompra.equalsIgnoreCase("si")){
-                            movimientoSaldosCompraEntrada(asistente, precioTotal, eventoSeleccionado, opcionTipoEntrada, cantidadEntradas);
+                            movimientoSaldosCompraEntrada(asistente, precioTotal, eventoSeleccionado,
+                                    tipoEntradaElegido.getCategoria(), cantidadEntradas);
                         }else{
                             vista.operacionCancelada();
                         }
@@ -843,11 +844,11 @@ public class ControladorFernan {
     /**
      * Gestiona el movimiento de los saldos entre las carteras del administrador, organizadores y asistentes
      */
-    private void movimientoSaldosCompraEntrada(Asistente asistente, float precioTotal, Evento eventoSeleccionado, int opcionTipoEntrada, int cantidadEntradas ){
+    private void movimientoSaldosCompraEntrada(Asistente asistente, float precioTotal, Evento eventoSeleccionado, CategoriaEntrada categoria, int cantidadEntradas ){
         modeloUsu.quitarSaldo(usuarioLogueado.getCorreo(), precioTotal);
         modeloUsu.aniadirSaldo(eventoSeleccionado.getOrganizador().getCorreo(), precioTotal * 0.90f);
         modeloUsu.aniadirSaldo("admin@fernanevents.com", precioTotal * 0.10f);
-        modeloEve.controlaStockCorrecto(eventoSeleccionado, opcionTipoEntrada, cantidadEntradas);
+        modeloEve.controlaStockCorrecto(eventoSeleccionado, categoria, cantidadEntradas);
         asistente.registraCompraEntrada(eventoSeleccionado.getNombre(), cantidadEntradas);
         vista.mensajeConfirmacion();
     }
