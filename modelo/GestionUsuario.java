@@ -1,5 +1,7 @@
 package FernanEvents.modelo;
 
+import FernanEvents.modelo.utilidades.Cadenas;
+
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -126,10 +128,10 @@ public class GestionUsuario{
      * Crea los usuarios predefinidos para las pruebas
      */
     public void cargarUsuariosPredefinidos(){
-        aniadirUsuario(new Administrador("admin", "admin@fernanevents.com", "admin"));
-        aniadirUsuario(new Organizador("organizador1", "organizador1@fernanevents.com", "organizador1"));
-        aniadirUsuario(new Asistente("asistente1", "asistente1@fernanevents.com", "1234"));
-        aniadirUsuario(new Asistente("asistente2", "asistente2@fernanevents.com", "5678"));
+        aniadirUsuario(new Administrador("admin", "admin@fernanevents.com", Cadenas.hashearPassword("admin")));
+        aniadirUsuario(new Organizador("organizador1", "organizador1@fernanevents.com", Cadenas.hashearPassword("organizador1")));
+        aniadirUsuario(new Asistente("asistente1", "asistente1@fernanevents.com", Cadenas.hashearPassword("1234")));
+        aniadirUsuario(new Asistente("asistente2", "asistente2@fernanevents.com", Cadenas.hashearPassword("5678")));
     }
 
     /**
