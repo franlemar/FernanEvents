@@ -792,10 +792,12 @@ public class VistaFernan{
     /**
      * Muestra el menú para elegir el tipo de entrada que quiere adquirir el usuario para un evento determinado
      */
-    public void menuEntradaTipo() {
+    public void menuEntradaTipo(ArrayList<Entrada> entradas) {
         System.out.println(estilo.PASTEL_BLUE + "\nSeleccione el tipo de entrada:");
-        System.out.println("1. General \n2. VIP \n3. Infantil" + estilo.ANSI_RESET);
-        System.out.print(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
+        for (int i = 0; i < entradas.size(); i++) {
+            System.out.println((i + 1) + ". " + entradas.get(i).getCategoria());
+        }
+        System.out.print(estilo.ANSI_RESET + estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
     }
 
     /**

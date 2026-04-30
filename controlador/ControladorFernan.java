@@ -807,7 +807,8 @@ public class ControladorFernan {
         Evento eventoSeleccionado = modeloEve.buscarEventoPorNombre(eventoAInscribir);
 
         if(eventoSeleccionado != null){
-            vista.menuEntradaTipo();
+            ArrayList<Entrada> entradas = eventoSeleccionado.getTiposDeEntrada();
+            vista.menuEntradaTipo(entradas);
             int opcionTipoEntrada = Integer.parseInt(s.nextLine()) - 1;
 
             if(opcionTipoEntrada < 0 || opcionTipoEntrada > eventoSeleccionado.getTiposDeEntrada().size()){
