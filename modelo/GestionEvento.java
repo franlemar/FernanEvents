@@ -5,6 +5,7 @@ import FernanEvents.vista.VistaFernan;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class GestionEvento {
@@ -355,38 +356,41 @@ public class GestionEvento {
     /**
      * Elimina un evento por su nombre mediante una función lambda
      */
-    public boolean eliminarEvento(String nombreEvento) {
+    private boolean eliminaEvento(String nombreEvento) {
         return eventos.removeIf(e -> e.getNombre().equalsIgnoreCase(nombreEvento));
     }
 
     /**
      * Gestiona la eliminación de un evento pidiendo confirmación
      */
-    public void eliminarEvento() {
+    public String eliminarEvento() {
         Scanner s = new Scanner(System.in);
         if (eventos.isEmpty()) {
             vista.noHayEventos();
-        } else {
-            vista.mostrarListaEventos(eventos, eventos.size());
-            vista.pedirDatosEvento("Escribe el nombre del evento que quieres eliminar: ");
-            String nombreEvento = s.nextLine();
-            Evento evento = buscarEventoPorNombre(nombreEvento);
+            return null;
+        }
 
-            if (evento != null) {
-                if (vista.pedirConfirmacion("¿Estás seguro de que quieres eliminar " + nombreEvento + " ?")) {
-                    if (eliminarEvento(nombreEvento)) {
-                        vista.mensajeConfirmacion();
-                    } else {
-                        vista.mensajeError();
-                    }
+        vista.mostrarListaEventos(eventos, eventos.size());
+        vista.pedirDatosEvento("Escribe el nombre del evento que quieres eliminar: ");
+        String nombreEvento = s.nextLine();
+        Evento evento = buscarEventoPorNombre(nombreEvento);
+
+        if (evento != null) {
+            if (vista.pedirConfirmacion("¿Estás seguro de que quieres eliminar " + nombreEvento + " ?")) {
+                if (eliminaEvento(nombreEvento)) {
+                    return nombreEvento;
                 } else {
-                    vista.operacionCancelada();
+                    vista.mensajeError();
                 }
             } else {
-                vista.eventoNoEncontrado();
+                vista.operacionCancelada();
             }
+        } else {
+            vista.eventoNoEncontrado();
         }
+        return null;
     }
+
 
     /**
      * Actualiza el stock de las entradas y de las personas inscritas a un evento
@@ -402,6 +406,42 @@ public class GestionEvento {
             }
         }
         return false;
+    }
+
+    /**
+     * Permite ordenar los eventos ordenados de mayor número de personas inscritas a menor y mostrarlos
+     */
+    public void ordenarEventosPorAsistentesDesc() {
+        eventos.sort((e1, e2) -> Integer.compare(e2.getPersonasInscritas(), e1.getPersonasInscritas()));
+        mostrarEventos();
+    }
+
+    /**
+     * Permite ordenar los eventos por fecha de más reciente a más antigua y mostrarlos
+     */
+    public void ordenarEventosPorFecha() {
+        eventos.sort((e1, e2) -> e2.getFecha().compareTo(e1.getFecha()));
+        mostrarEventos();
+    }
+
+    /**
+     * Permite ordenar las entradas por su tipo alfabéticamente
+     */
+    public void ordenarEntradasPorTipo(Evento evento) {
+        if (evento != null) {
+            evento.getTiposDeEntrada().sort(Comparator.comparing(t -> t.getCategoria().name()));
+            vista.mostrarVistaDetalladaEntradas(evento.getTiposDeEntrada());
+        }
+    }
+
+    /**
+     * Permite ordenar las entradas por su precio, de más cara a más económica
+     */
+    public void ordenarEntradasPorImporte(Evento evento) {
+        if (evento != null) {
+            evento.getTiposDeEntrada().sort((t1, t2) -> Float.compare(t2.getPrecio(), t1.getPrecio()));
+            vista.mostrarVistaDetalladaEntradas(evento.getTiposDeEntrada());
+        }
     }
 
 }

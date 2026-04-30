@@ -173,4 +173,12 @@ public class GestionUsuario{
         return false;
     }
 
+    public void limpiarEventoDeAsistentes(String nombreEvento){
+        for(Usuario u : usuarios.values()){
+            if(u instanceof Asistente asistente){
+                asistente.getEventosInscrito().remove(nombreEvento);
+            }
+        }
+    }
+
 }

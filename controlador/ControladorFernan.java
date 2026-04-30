@@ -753,7 +753,13 @@ public class ControladorFernan {
                     break;
 
                 case 4:
-                    modeloEve.eliminarEvento();
+                    String eventoEliminado = modeloEve.eliminarEvento();
+                    if(eventoEliminado != null){
+                        modeloUsu.limpiarEventoDeAsistentes(eventoEliminado);
+                        vista.mensajeConfirmacion();
+                    }else{
+                        vista.mensajeError();
+                    }
                     break;
 
                 case 5:
