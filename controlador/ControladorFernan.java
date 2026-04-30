@@ -7,6 +7,7 @@ import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 public class ControladorFernan {
@@ -770,14 +771,13 @@ public class ControladorFernan {
     private void mostrarEventosInscrito(){
         Asistente asistenteActual = (Asistente) usuarioLogueado;
         vista.cabeceraMisEventos();
-        int totalEventosInscritos = asistenteActual.getContadorInscripciones();
 
-        if(totalEventosInscritos == 0){
+        if(asistenteActual.getEventosInscrito().isEmpty()){
             vista.mensajeNoInscrito();
         }else{
-            for (int i = 0; i < totalEventosInscritos; i++) {
-                String nombreEvento = asistenteActual.getEventosInscrito()[i];
-                int cantidadEntradas = asistenteActual.getCantidadEntradasEvento()[i];
+            for(Map.Entry<String, Integer> entrada : asistenteActual.getEventosInscrito().entrySet()){
+                String nombreEvento = entrada.getKey();
+                int cantidadEntradas = entrada.getValue();
 
                 Evento evento = modeloEve.buscarEventoPorNombre(nombreEvento);
 

@@ -12,7 +12,7 @@ public class GestionEvento {
     private ArrayList<Evento> eventos;
     private VistaFernan vista;
 
-    public GestionEvento(int tamanio, VistaFernan vista) {
+    public GestionEvento(VistaFernan vista) {
         eventos = new ArrayList<>();
         this.vista = vista;
     }
@@ -148,7 +148,6 @@ public class GestionEvento {
                         evento.getAforo(),
                         evento.getPersonasInscritas()
                 );
-
                 vista.mostrarVistaDetalladaEntradas(evento.getTiposDeEntrada());
             }
         }
@@ -167,7 +166,7 @@ public class GestionEvento {
             return;
         }
 
-        vista.mostrarListaEventos(eventos.toArray(new Evento[0]), eventos.size());
+        vista.mostrarListaEventos(eventos, eventos.size());
         vista.pedirDatosEvento("Introduce el nombre del evento que quieres modificar: ");
         String nombreActual = s.nextLine();
 
@@ -373,7 +372,7 @@ public class GestionEvento {
         if (eventos.isEmpty()) {
             vista.noHayEventos();
         } else {
-            vista.mostrarListaEventos(eventos.toArray(new Evento[0]), eventos.size());
+            vista.mostrarListaEventos(eventos, eventos.size());
             vista.pedirDatosEvento("Escribe el nombre del evento que quieres eliminar: ");
             String nombreEvento = s.nextLine();
             Evento evento = buscarEventoPorNombre(nombreEvento);

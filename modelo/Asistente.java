@@ -3,54 +3,46 @@ package FernanEvents.modelo;
 import FernanEvents.modelo.utilidades.interfaces.Bloqueable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Asistente extends Usuario implements Bloqueable {
 
     private boolean bloqueado = false;
     private ArrayList<String> amigosReferidos;
-    private String[] eventosInscrito;
-    private int[] cantidadEntradasEvento;
-    private int contadorInscripciones;
+    private HashMap<String, Integer> eventosInscrito;
 
     public Asistente(String nombre, String correo, String password){
         super(nombre, correo, password, Rol.ASISTENTE);
-        amigosReferidos = new ArrayList<>();
-        eventosInscrito = new String[100];
-        cantidadEntradasEvento = new int[100];
-        contadorInscripciones = 0;
+        this.amigosReferidos = new ArrayList<>();
+        this.eventosInscrito = new HashMap<>();
     }
 
     /**
      * Consulta cuántas entradas para un evento tiene un asistente y devuelve el valor. Si no tiene ninguna, devuelve 0
      */
     public int getNumEntradasEvento(String nombreEvento) {
-        for (int i = 0; i < contadorInscripciones; i++) {
-            if (eventosInscrito[i].trim().equalsIgnoreCase(nombreEvento.trim())) {
-                return cantidadEntradasEvento[i];
-            }
-        }
-        return 0;
+        return eventosInscrito.getOrDefault(nombreEvento.trim(), 0);
     }
 
     /**
-     * Obtiene los eventos a los que el asistente se ha inscrito
+     * Devuelve un HashMap con los eventos a los que el asistente se ha inscrito, así como el número de entradas que tiene
      */
-    public String[] getEventosInscrito() {
+    public HashMap<String, Integer> getEventosInscrito(){
         return eventosInscrito;
     }
 
     /**
-     * Obtiene la cantidad de entradas para un evento del asistente
+     * Devuelve solo el nombre de los eventos a los que se ha inscrito el asistente
      */
-    public int[] getCantidadEntradasEvento() {
-        return cantidadEntradasEvento;
+    public ArrayList<String> getNombreEventosInscrito(){
+        return new ArrayList<>(eventosInscrito.keySet());
     }
 
     /**
-     * Obtiene el contador de inscripciones del asistente
+     * Devuelve el total de eventos a los que se ha inscrito el asistente
      */
-    public int getContadorInscripciones() {
-        return contadorInscripciones;
+    public int getTotalEventosInscrito(){
+        return eventosInscrito.size();
     }
 
     /**
@@ -92,19 +84,8 @@ public class Asistente extends Usuario implements Bloqueable {
      * Registra la compra de entradas a un evento en el historial del asistente
      */
     public void registraCompraEntrada(String nombreEvento, int cantidadEntradas){
-        boolean eventoEncontrado = false;
-        for (int i = 0; i < contadorInscripciones; i++) {
-            if(eventosInscrito[i].equalsIgnoreCase(nombreEvento.trim())){
-                cantidadEntradasEvento[i] += cantidadEntradas;
-                eventoEncontrado = true;
-                break;
-            }
-        }
-
-        if(!eventoEncontrado && contadorInscripciones < eventosInscrito.length){
-            eventosInscrito[contadorInscripciones] = nombreEvento;
-            cantidadEntradasEvento[contadorInscripciones++] = cantidadEntradas;
-        }
+        int cantidadActual = getNumEntradasEvento(nombreEvento.trim());
+        eventosInscrito.put(nombreEvento.trim(), cantidadActual + cantidadEntradas);
     }
 
 }

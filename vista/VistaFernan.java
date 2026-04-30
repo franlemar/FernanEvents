@@ -2,6 +2,7 @@ package FernanEvents.vista;
 import FernanEvents.modelo.Entrada;
 import FernanEvents.modelo.Evento;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class VistaFernan{
@@ -695,10 +696,10 @@ public class VistaFernan{
         System.out.print(estilo.PASTEL_BLUE + "Escriba el nombre del evento al que desea inscribirse: " + estilo.ANSI_RESET);
     }
 
-    public void mostrarListaEventos(Evento[] eventos, int total) {
+    public void mostrarListaEventos(ArrayList<Evento> eventos, int total) {
         System.out.println(estilo.PASTEL_BLUE + "Eventos disponibles:" + estilo.ANSI_RESET);
         for (int i = 0; i < total; i++) {
-            System.out.println(" - " + eventos[i].getNombre());
+            System.out.println(" - " + eventos.get(i).getNombre());
         }
     }
 

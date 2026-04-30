@@ -10,7 +10,7 @@ public class FernanEventsApp {
 
         GestionUsuario modelo = new GestionUsuario();
         VistaFernan vista = new VistaFernan();
-        GestionEvento evento = new GestionEvento(10, vista);
+        GestionEvento evento = new GestionEvento(vista);
         ControladorFernan controlador = new ControladorFernan(modelo,vista, evento);
 
         controlador.iniciarFernan();
