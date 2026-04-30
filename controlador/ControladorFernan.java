@@ -113,7 +113,7 @@ public class ControladorFernan {
         while(intentosRestantes > 0 && !passwordCorrecta){
             vista.pedirPasswordLoguin();
             String password = s.nextLine();
-            if(usuario.getPassword().equals(password)){
+            if(Cadenas.verificarPassword(password, usuario.getPassword())){
                 passwordCorrecta = true;
             }else{
                 if(!usuario.getRol().name().equals("ADMINISTRADOR")){
