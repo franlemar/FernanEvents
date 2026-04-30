@@ -12,8 +12,8 @@ import java.util.Collection;
 
 public class PersistenciaJSON {
 
-    private static final String ARCHIVO_USUARIOS = "usuarios.json";
-    private static final String ARCHIVO_EVENTOS  = "eventos.json";
+    private static final String ARCHIVO_USUARIOS = "datosJSON/usuarios.json";
+    private static final String ARCHIVO_EVENTOS  = "datosJSON/eventos.json";
 
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class,
@@ -38,7 +38,16 @@ public class PersistenciaJSON {
     }
 
     public static void guardarEventos(ArrayList<Evento> eventos) {
-        escribirArchivo(ARCHIVO_EVENTOS, gson.toJson(eventos));
+        JsonArray array = new JsonArray();
+        for (Evento e : eventos) {
+            JsonObject obj = gson.toJsonTree(e).getAsJsonObject();
+            if (e.getOrganizador() != null) {
+                obj.getAsJsonObject("organizador")
+                        .addProperty("tipo", e.getOrganizador().getRol().name());
+            }
+            array.add(obj);
+        }
+        escribirArchivo(ARCHIVO_EVENTOS, gson.toJson(array));
     }
 
     // --------------------CARGAR ------------------------
@@ -70,8 +79,36 @@ public class PersistenciaJSON {
         String contenido = leerArchivo(ARCHIVO_EVENTOS);
         if (contenido == null) return new ArrayList<>();
 
-        Type tipoLista = new TypeToken<ArrayList<Evento>>(){}.getType();
-        return gson.fromJson(contenido, tipoLista);
+        ArrayList<Evento> lista = new ArrayList<>();
+        JsonArray array = JsonParser.parseString(contenido).getAsJsonArray();
+
+        for (JsonElement elemento : array) {
+            JsonObject obj = elemento.getAsJsonObject();
+
+            // guardamos el organizador aparte y lo quitamos antes de que Gson lo procese
+            JsonObject orgObj = null;
+            if (obj.has("organizador") && !obj.get("organizador").isJsonNull()) {
+                orgObj = obj.getAsJsonObject("organizador").deepCopy();
+                obj.remove("organizador");
+            }
+
+            Evento evento = gson.fromJson(obj, Evento.class);
+
+            // reconstruir el organizador con su tipo correcto
+            if (orgObj != null) {
+                String tipo = orgObj.get("tipo").getAsString();
+                Usuario organizador = switch (tipo) {
+                    case "ADMINISTRADOR" -> gson.fromJson(orgObj, Administrador.class);
+                    case "ORGANIZADOR"   -> gson.fromJson(orgObj, Organizador.class);
+                    case "ASISTENTE"     -> gson.fromJson(orgObj, Asistente.class);
+                    default -> null;
+                };
+                evento.setOrganizador(organizador);
+            }
+
+            lista.add(evento);
+        }
+        return lista;
     }
 
     // -------------------HELPERS -----------------------

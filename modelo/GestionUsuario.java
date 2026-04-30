@@ -9,7 +9,6 @@ public class GestionUsuario{
 
     public GestionUsuario(){
         this.usuarios = new HashMap<>();
-        cargarUsuariosPredefinidos();
     }
 
     /**
@@ -126,7 +125,7 @@ public class GestionUsuario{
     /**
      * Crea los usuarios predefinidos para las pruebas
      */
-    private void cargarUsuariosPredefinidos(){
+    public void cargarUsuariosPredefinidos(){
         aniadirUsuario(new Administrador("admin", "admin@fernanevents.com", "admin"));
         aniadirUsuario(new Organizador("organizador1", "organizador1@fernanevents.com", "organizador1"));
         aniadirUsuario(new Asistente("asistente1", "asistente1@fernanevents.com", "1234"));

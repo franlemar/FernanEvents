@@ -154,6 +154,10 @@ public class GestionEvento {
 
     }
 
+    public ArrayList<Evento> getEventos() {
+        return eventos;
+    }
+
     //----------------------------------------------------------------------------------------------------
     //U --> UPDATE
     /**

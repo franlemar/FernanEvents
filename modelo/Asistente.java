@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 public class Asistente extends Usuario implements Bloqueable {
 
-    private boolean bloqueado = false;
     private ArrayList<String> amigosReferidos;
     private HashMap<String, Integer> eventosInscrito;
 
@@ -63,21 +62,21 @@ public class Asistente extends Usuario implements Bloqueable {
      * Bloquea la cuenta del asistente
      */
     public void bloquear() {
-        this.bloqueado = true;
+        setBloqueado(true);
     }
 
     /**
      * Desbloquea la cuenta del asistente
      */
     public void desbloquear(){
-        this.bloqueado = false;
+        setBloqueado(false);
     }
 
     /**
      * Comprueba si la cuenta del asistente está bloqueada
      */
     public boolean estaBloqueado() {
-        return this.bloqueado;
+        return isBloqueado();
     }
 
     /**
