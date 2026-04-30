@@ -110,7 +110,7 @@ public class ControladorFernan {
         }
 
         String codigoVerificacion = Cadenas.generarCodigoVerificacion();
-        String destinatario = "jmorcam520@g.educaand.es";
+        String destinatario = "flenmar918@g.educaand.es";
         String asunto = "Código de verificación - Inicio de sesión";
         String cuerpo = EnvioGmail.plantillaLoginAdmin(usuario.getNombre(), codigoVerificacion);
 
@@ -271,7 +271,7 @@ public class ControladorFernan {
                     break;
 
                 case 2:
-                    modeloEve.mostrarEventos();
+                    gestionarVisualizacionEventosEntradas();
                     break;
 
                 case 3:
@@ -734,7 +734,7 @@ public class ControladorFernan {
             opcionMenu = Integer.parseInt(s.nextLine());
             switch(opcionMenu){
                 case 1:
-                    modeloEve.mostrarEventos();
+                    gestionarVisualizacionEventosEntradas();
                     break;
 
                 case 2:
@@ -801,7 +801,7 @@ public class ControladorFernan {
      */
     private void gestionCompraEntradas(){
         Scanner s = new Scanner(System.in);
-        modeloEve.mostrarEventos();
+        gestionarVisualizacionEventosEntradas();
         vista.pedirNombreEventoInscribir();
         String eventoAInscribir = s.nextLine();
         Evento eventoSeleccionado = modeloEve.buscarEventoPorNombre(eventoAInscribir);
@@ -869,5 +869,37 @@ public class ControladorFernan {
         return s.nextLine();
     }
 
+    private void gestionarVisualizacionEventosEntradas() {
+        Scanner s = new Scanner(System.in);
+        vista.menuOrdenaEventos();
+        int opcionEventos = Integer.parseInt(s.nextLine());
+        if (opcionEventos == 3) return;
+
+        switch (opcionEventos) {
+            case 1 -> modeloEve.ordenarEventosPorFecha();
+            case 2 -> modeloEve.ordenarEventosPorAsistentesDesc();
+            default -> {
+                vista.opcionNoValida();
+                return;
+            }
+        }
+
+        vista.menuOrdenaEntradas();
+        int opcionEntradas = Integer.parseInt(s.nextLine());
+        if (opcionEntradas == 4) return;
+
+        for (Evento evento : modeloEve.getEventos()) {
+            switch (opcionEntradas) {
+                case 1 -> modeloEve.ordenarEntradasPorImporteDesc(evento);
+                case 2 -> modeloEve.ordenarEntradasPorImporteAsc(evento);
+                case 3 -> modeloEve.ordenarEntradasPorTipo(evento);
+                default -> {
+                    vista.opcionNoValida();
+                    return;
+                }
+            }
+        }
+        modeloEve.mostrarEventos();
+    }
 
 }

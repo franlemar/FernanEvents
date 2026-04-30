@@ -131,23 +131,23 @@ public class GestionEvento {
         vista.tituloEventosDisponibles();
 
         for (Evento evento : eventos) {
-            if (evento != null) {
-                vista.mostrarEventoTabla(
-                        evento.getNombre(),
-                        evento.getCategoria().toString(),
-                        FuncionesFechas.convertirLocalDateString(evento.getFecha())
-                );
 
-                vista.mostrarVistaDetalladaEvento(
-                        evento.getNombre(),
-                        evento.getCategoria().toString(),
-                        FuncionesFechas.convertirLocalDateString(evento.getFecha()),
-                        evento.getDescripcion(),
-                        evento.getAforo(),
-                        evento.getPersonasInscritas()
-                );
-                vista.mostrarVistaDetalladaEntradas(evento.getTiposDeEntrada());
-            }
+            vista.mostrarEventoTabla(
+                    evento.getNombre(),
+                    evento.getCategoria().toString(),
+                    FuncionesFechas.convertirLocalDateString(evento.getFecha())
+            );
+
+            vista.mostrarVistaDetalladaEvento(
+                    evento.getNombre(),
+                    evento.getCategoria().toString(),
+                    FuncionesFechas.convertirLocalDateString(evento.getFecha()),
+                    evento.getDescripcion(),
+                    evento.getAforo(),
+                    evento.getPersonasInscritas()
+            );
+            vista.mostrarVistaDetalladaEntradas(evento.getTiposDeEntrada());
+
         }
 
     }
@@ -409,19 +409,17 @@ public class GestionEvento {
     }
 
     /**
-     * Permite ordenar los eventos ordenados de mayor número de personas inscritas a menor y mostrarlos
+     * Permite ordenar los eventos ordenados de mayor número de personas inscritas a menor
      */
     public void ordenarEventosPorAsistentesDesc() {
         eventos.sort((e1, e2) -> Integer.compare(e2.getPersonasInscritas(), e1.getPersonasInscritas()));
-        mostrarEventos();
     }
 
     /**
-     * Permite ordenar los eventos por fecha de más reciente a más antigua y mostrarlos
+     * Permite ordenar los eventos por fecha de más reciente a más antigua
      */
     public void ordenarEventosPorFecha() {
         eventos.sort((e1, e2) -> e2.getFecha().compareTo(e1.getFecha()));
-        mostrarEventos();
     }
 
     /**
@@ -430,17 +428,24 @@ public class GestionEvento {
     public void ordenarEntradasPorTipo(Evento evento) {
         if (evento != null) {
             evento.getTiposDeEntrada().sort(Comparator.comparing(t -> t.getCategoria().name()));
-            vista.mostrarVistaDetalladaEntradas(evento.getTiposDeEntrada());
         }
     }
 
     /**
      * Permite ordenar las entradas por su precio, de más cara a más económica
      */
-    public void ordenarEntradasPorImporte(Evento evento) {
+    public void ordenarEntradasPorImporteDesc(Evento evento) {
         if (evento != null) {
             evento.getTiposDeEntrada().sort((t1, t2) -> Float.compare(t2.getPrecio(), t1.getPrecio()));
-            vista.mostrarVistaDetalladaEntradas(evento.getTiposDeEntrada());
+        }
+    }
+
+    /**
+     * Permite ordenar las entradas por su precio, de más económica a mas cára
+     */
+    public void ordenarEntradasPorImporteAsc(Evento evento) {
+        if (evento != null) {
+            evento.getTiposDeEntrada().sort((t1, t2) -> Float.compare(t1.getPrecio(), t2.getPrecio()));
         }
     }
 

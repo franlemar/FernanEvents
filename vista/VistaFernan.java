@@ -94,15 +94,36 @@ public class VistaFernan{
     }
 
     /**
+     * Muestra un menú que pregunta al usuario cómo le gustaría ver los eventos disponibles de la plataforma
+     */
+    public void menuOrdenaEventos(){
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "¿Cómo quiere visualizar los eventos?" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "1. Ordenados por fecha (más recientes primero)");
+        System.out.println("2. Ordenados por número de personas inscritas (orden descendente)");
+        System.out.println(estilo.NEON_PINK + "3. Volver atrás" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_GREEN + "Seleccione la opción deseada: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Muestra un menú que pregunta al usuario cómo le gustaría ver las entradas disponibles de los eventos presentes en la plataforma
+     */
+    public void menuOrdenaEntradas(){
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "¿Cómo le gustaría consultar las entradas disponibles?" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "1. Ordenadas por precio (más caras primero)");
+        System.out.println("2. Ordenadas por precio (más baratas primero) ");
+        System.out.println("3. Ordenadas por su tipo (alfabéticamente) ");
+        System.out.println(estilo.NEON_PINK + "4. Volver atrás" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_GREEN + "Seleccione la opción deseada: " + estilo.ANSI_RESET);
+    }
+
+    /**
      * Muestra un menú desde donde los asistentes pueden comprobar una lista de amigos a los que han invitado a FernanEvents, así como enviar correos electrónicos con invitaciones para otros nuevos amigos
      */
     public void menuInvitarAmigo() {
         System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ INVITA A TUS AMIGOS ✦" + estilo.ANSI_RESET);
-
         System.out.println(estilo.PASTEL_BLUE + "1. Listado de referidos");
         System.out.println("2. Añadir nuevo amigo (email)");
         System.out.println(estilo.NEON_PINK + "3. Volver atrás" + estilo.ANSI_RESET);
-
         System.out.println(estilo.PASTEL_GREEN + "Seleccione la opción deseada: " + estilo.ANSI_RESET);
     }
 

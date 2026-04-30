@@ -39,9 +39,7 @@
   },
   {
     "amigosReferidos": [],
-    "eventosInscrito": {
-      "badbunny": 2
-    },
+    "eventosInscrito": {},
     "nombre": "asistente1",
     "correo": "asistente1@fernanevents.com",
     "password": "1234",

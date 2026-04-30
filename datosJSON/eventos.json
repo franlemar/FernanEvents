@@ -1,1 +1,70 @@
-[]
+[
+  {
+    "nombre": "Concierto Olivia Rodrigo Tour",
+    "descripcion": "Nueva gira de su último álbum",
+    "categoriaEvento": "MUSICA",
+    "fecha": "2027-05-07",
+    "aforo": 4000,
+    "personasInscritas": 532,
+    "tiposDeEntrada": [
+      {
+        "categoria": "VIP",
+        "precio": 120.0,
+        "cantidadDisponible": 968
+      },
+      {
+        "categoria": "GENERAL",
+        "precio": 80.0,
+        "cantidadDisponible": 2500
+      },
+      {
+        "categoria": "INFANTIL",
+        "precio": 0.0,
+        "cantidadDisponible": 0
+      }
+    ],
+    "organizador": {
+      "nombre": "organizador1",
+      "correo": "organizador1@fernanevents.com",
+      "password": "organizador1",
+      "rol": "ORGANIZADOR",
+      "saldo": 360.0,
+      "bloqueado": false,
+      "tipo": "ORGANIZADOR"
+    }
+  },
+  {
+    "nombre": "Exposición Retro de Tecnología en Jaén",
+    "descripcion": "Conoce los productos que marcaron el pasado para que nuestro presente apunte cada vez más hacia el futuro",
+    "categoriaEvento": "TECNOLOGIA",
+    "fecha": "2027-05-05",
+    "aforo": 800,
+    "personasInscritas": 461,
+    "tiposDeEntrada": [
+      {
+        "categoria": "GENERAL",
+        "precio": 14.9,
+        "cantidadDisponible": 239
+      },
+      {
+        "categoria": "INFANTIL",
+        "precio": 4.9,
+        "cantidadDisponible": 100
+      },
+      {
+        "categoria": "VIP",
+        "precio": 0.0,
+        "cantidadDisponible": 0
+      }
+    ],
+    "organizador": {
+      "nombre": "organizador1",
+      "correo": "organizador1@fernanevents.com",
+      "password": "organizador1",
+      "rol": "ORGANIZADOR",
+      "saldo": 360.0,
+      "bloqueado": false,
+      "tipo": "ORGANIZADOR"
+    }
+  }
+]
