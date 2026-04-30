@@ -646,13 +646,13 @@ public class ControladorFernan {
         vista.pedirPasswordActual();
         String passwordActual = s.nextLine();
 
-        if(!usuarioLogueado.getPassword().equals(passwordActual)){
+        if(!Cadenas.verificarPassword(passwordActual, usuarioLogueado.getPassword())){
             vista.passwordActualIncorrecta();
             return false;
         }else{
             String nuevaPassword = obtenerPasswordValida();
 
-            if(modeloUsu.actualizarContrasena(usuarioLogueado.getCorreo(), nuevaPassword)){
+            if(modeloUsu.actualizarContrasena(usuarioLogueado.getCorreo(), Cadenas.hashearPassword(nuevaPassword))){
                 this.usuarioLogueado = modeloUsu. buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
                 return true;
             }
