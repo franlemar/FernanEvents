@@ -579,7 +579,7 @@ public class ControladorFernan {
 
         vista.pedirNuevaPassword();
         String nuevaPassword = s.nextLine();
-        return modeloUsu.actualizarContrasena(usuarioCambio.getCorreo(), nuevaPassword);
+        return modeloUsu.actualizarContrasena(usuarioCambio.getCorreo(), Cadenas.hashearPassword(nuevaPassword));
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCIÓN CONFIGURACIÓN RESTO DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
