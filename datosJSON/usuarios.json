@@ -4,7 +4,7 @@
     "correo": "admin@fernanevents.com",
     "password": "admin",
     "rol": "ADMINISTRADOR",
-    "saldo": 40.0,
+    "saldo": 0.0,
     "bloqueado": false,
     "tipo": "ADMINISTRADOR"
   },
@@ -13,7 +13,7 @@
     "correo": "organizador1@fernanevents.com",
     "password": "organizador1",
     "rol": "ORGANIZADOR",
-    "saldo": 360.0,
+    "saldo": 0.0,
     "bloqueado": false,
     "tipo": "ORGANIZADOR"
   },
@@ -29,22 +29,13 @@
     "tipo": "ASISTENTE"
   },
   {
-    "nombre": "chemita",
-    "correo": "vientosdefran@gmail.com",
-    "password": "HolaCaracola_55",
-    "rol": "ORGANIZADOR",
-    "saldo": 0.0,
-    "bloqueado": false,
-    "tipo": "ORGANIZADOR"
-  },
-  {
     "amigosReferidos": [],
     "eventosInscrito": {},
     "nombre": "asistente1",
     "correo": "asistente1@fernanevents.com",
     "password": "1234",
     "rol": "ASISTENTE",
-    "saldo": 600.0,
+    "saldo": 0.0,
     "bloqueado": false,
     "tipo": "ASISTENTE"
   }

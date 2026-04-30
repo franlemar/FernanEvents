@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
+import java.util.TimerTask;
+import FernanEvents.modelo.utilidades.PersistenciaJSON;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class ControladorFernan {
 
     private GestionUsuario modeloUsu;
@@ -21,6 +27,22 @@ public class ControladorFernan {
         this.modeloUsu = modeloUsu;
         this.vista = vista;
         this.modeloEve = modeloEve;
+
+        cargarDatos();
+
+        // ----Autoguardado de datos en el JSON cada 15 segundos-----
+        Timer timer = new Timer(true);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                guardarDatos();
+            }
+        }, 15000, 15000);
+
+        //----Guardar datos en el JSON al cerrar bruscamente------
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            guardarDatos();
+        }));
     }
 
     /**
@@ -110,7 +132,7 @@ public class ControladorFernan {
         }
 
         String codigoVerificacion = Cadenas.generarCodigoVerificacion();
-        String destinatario = "flenmar918@g.educaand.es";
+        String destinatario = "jmorcam520@g.educaand.es";
         String asunto = "Código de verificación - Inicio de sesión";
         String cuerpo = EnvioGmail.plantillaLoginAdmin(usuario.getNombre(), codigoVerificacion);
 
@@ -901,6 +923,32 @@ public class ControladorFernan {
             }
         }
         modeloEve.mostrarEventos();
+    }
+
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS PARA GUARDAR Y CARGAR DATOS JSON*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    /**
+     * Carga los usuarios y eventos desde los archivos JSON al iniciar la aplicación. Si no existe JSON previo, carga
+     * los usuarios predefinidos.
+     */
+    private void cargarDatos() {
+        ArrayList<Usuario> usuariosGuardados = PersistenciaJSON.cargarUsuarios();
+        if (usuariosGuardados.isEmpty()) {
+            modeloUsu.cargarUsuariosPredefinidos();
+        } else {
+            for (Usuario u : usuariosGuardados) modeloUsu.aniadirUsuario(u);
+        }
+
+        ArrayList<Evento> eventosGuardados = PersistenciaJSON.cargarEventos();
+        for (Evento e : eventosGuardados) modeloEve.aniadirEvento(e);
+    }
+
+    /**
+     * Guarda los usuarios y eventos actuales en los archivos JSON. Se ejecuta automáticamente cada 60 segundos y
+     * al cerrar la aplicación.
+     */
+    private void guardarDatos() {
+        PersistenciaJSON.guardarUsuarios(modeloUsu.getUsuarios());
+        PersistenciaJSON.guardarEventos(modeloEve.getEventos());
     }
 
 }
