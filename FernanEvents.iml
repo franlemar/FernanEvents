@@ -10,5 +10,6 @@
     <orderEntry type="library" name="sun.mail.javax" level="project" />
     <orderEntry type="library" name="google.code.gson" level="project" />
     <orderEntry type="library" name="javax.annotation.api" level="project" />
+    <orderEntry type="library" name="mindrot.jbcrypt" level="project" />
   </component>
 </module>

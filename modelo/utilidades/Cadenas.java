@@ -1,5 +1,7 @@
 package FernanEvents.modelo.utilidades;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class Cadenas {
 
     /**
@@ -47,6 +49,20 @@ public class Cadenas {
      */
     public static String generarCodigoVerificacion() {
         return String.valueOf((int) (Math.random() * 9000) + 1000);
+    }
+
+    /**
+     * Función que Hashea una constraseña, ya sea al registrar o al cambiar
+     */
+    public static String hashearPassword(String password){
+        return BCrypt.hashpw(password, BCrypt.gensalt(12));
+    }
+
+    /**
+     * Función que verificar una contraseña contra su hash (al hacer login)
+     */
+    public static boolean verificarPassword(String passwordPlano, String hashGuardado) {
+        return BCrypt.checkpw(passwordPlano, hashGuardado);
     }
 
 }
