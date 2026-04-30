@@ -239,12 +239,12 @@ public class ControladorFernan {
             if (!tokenRegistro.equals(codigoVerificacion)) {
                 vista.tokenIncorrecto();
             } else {
-
+                String hash = Cadenas.hashearPassword(passwordRegistro);
                 Usuario nuevoUsuario;
                 if (rolCorrecto.equals(Rol.ORGANIZADOR)) {
-                    nuevoUsuario = new Organizador(nombreRegistro, correoRegistro, passwordRegistro);
+                    nuevoUsuario = new Organizador(nombreRegistro, correoRegistro, hash);
                 } else {
-                    nuevoUsuario = new Asistente(nombreRegistro, correoRegistro, passwordRegistro);
+                    nuevoUsuario = new Asistente(nombreRegistro, correoRegistro, hash);
                 }
 
                 modeloUsu.aniadirUsuario(nuevoUsuario);
