@@ -37,7 +37,7 @@ public class ControladorFernan {
             public void run() {
                 guardarDatos();
             }
-        }, 15000, 15000);
+        }, 5000, 5000);
 
         //----Guardar datos en el JSON al cerrar bruscamente------
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
