@@ -121,7 +121,7 @@ public class EnvioGmail {
                 <tr>
                     <td style="padding: 20px 30px; background: linear-gradient(135deg, #9fd7ff, #e2a6d9);; border-radius: 0 0 8px 8px;">
                         <p style="margin: 0; text-align: center; font-size: 12px; color: #2c3e50;">
-                            © 2025 FernanEvents • Correo automático de registro
+                            © 2026 FernanEvents • Correo automático de registro
                         </p>
                     </td>
                 </tr>
@@ -199,7 +199,7 @@ public class EnvioGmail {
                 <tr>
                     <td style="padding: 20px 30px; background: linear-gradient(135deg, #9fd7ff, #e2a6d9);; border-radius: 0 0 8px 8px;">
                         <p style="margin: 0; text-align: center; font-size: 12px; color: #2c3e50;">
-                            © 2025 FernanEvents • Correo automático de seguridad
+                            © 2026 FernanEvents • Correo automático de seguridad
                         </p>
                     </td>
                 </tr>

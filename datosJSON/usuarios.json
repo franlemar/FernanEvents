@@ -1,0 +1,42 @@
+[
+  {
+    "nombre": "admin",
+    "correo": "admin@fernanevents.com",
+    "password": "$2a$12$LvepH6ynfhbgqFPYKMkzpOPkd4DHfSAlrqnduTQBadosSwVB.uRuG",
+    "rol": "ADMINISTRADOR",
+    "saldo": 0.0,
+    "bloqueado": false,
+    "tipo": "ADMINISTRADOR"
+  },
+  {
+    "nombre": "organizador1",
+    "correo": "organizador1@fernanevents.com",
+    "password": "$2a$12$vIzMQ/9YbCA58FvDnS86jOf..TEOVeMZmtG5KwmZ5SYVJ41SetjjW",
+    "rol": "ORGANIZADOR",
+    "saldo": 0.0,
+    "bloqueado": false,
+    "tipo": "ORGANIZADOR"
+  },
+  {
+    "amigosReferidos": [],
+    "eventosInscrito": {},
+    "nombre": "asistente2",
+    "correo": "asistente2@fernanevents.com",
+    "password": "$2a$12$tplSEk85usF70o4IAfeio.AuT7jiKwVBmkBWiROqPCw8YgqSsd8m6",
+    "rol": "ASISTENTE",
+    "saldo": 0.0,
+    "bloqueado": false,
+    "tipo": "ASISTENTE"
+  },
+  {
+    "amigosReferidos": [],
+    "eventosInscrito": {},
+    "nombre": "asistente1",
+    "correo": "asistente1@fernanevents.com",
+    "password": "$2a$12$l.YpN3vVpl9zKd.j7FqmNOA9.ed9TmFhroEobs2mIyEaT4h4s12I6",
+    "rol": "ASISTENTE",
+    "saldo": 0.0,
+    "bloqueado": false,
+    "tipo": "ASISTENTE"
+  }
+]

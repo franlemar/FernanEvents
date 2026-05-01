@@ -1,68 +1,21 @@
-package FernanEvents.controlador;
+package FernanEvents.modelo;
 
-import FernanEvents.modelo.CategoriaEntrada;
-import FernanEvents.modelo.CategoriaEvento;
-import FernanEvents.modelo.Entrada;
-import FernanEvents.modelo.Evento;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class GestionEvento {
 
-    private Evento[] eventos;
-    private int numEventos;
+    private ArrayList<Evento> eventos;
     private VistaFernan vista;
 
-    public GestionEvento(int tamanio, VistaFernan vista) {
-        eventos = new Evento[tamanio];
-        numEventos = 0;
+    public GestionEvento(VistaFernan vista) {
+        eventos = new ArrayList<>();
         this.vista = vista;
-    }
-
-    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS INTERFAZ AUMENTABLE.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
-    /**
-     * Aumenta la capacidad del array de eventos en 1
-     */
-    public void aumentarCapacidad() {
-        aumentarCapacidad(1);
-    }
-
-    /**
-     * Aumenta la capacidad del array de eventos en la cantidad que se le pase
-     */
-    public void aumentarCapacidad(int cantidad) {
-        Evento[] nuevoArray = new Evento[eventos.length + cantidad];
-        for (int i = 0; i < numEventos; i++) {
-            nuevoArray[i] = eventos[i];
-        }
-        this.eventos = nuevoArray;
-    }
-
-    /**
-     * Disminuye la capacidad del array de eventos en 1
-     */
-    public void disminuirCapacidad() {
-        disminuirCapacidad(1);
-    }
-
-    /**
-     * Disminuye la capacidad del array en la cantidad que se le pase
-     */
-    public void disminuirCapacidad(int cantidad) {
-        int nuevoTamanio = eventos.length - cantidad;
-        if (nuevoTamanio < numEventos) {
-            System.out.println("ERROR, no se puede reducir ese espacio");
-            return;
-        }
-        Evento[] nuevoArray = new Evento[nuevoTamanio];
-
-        for (int i = 0; i < numEventos; i++) {
-            nuevoArray[i] = eventos[i];
-        }
-        this.eventos = nuevoArray;
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CRUD.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -106,29 +59,26 @@ public class GestionEvento {
         Evento nuevoEvento = new Evento(nombreEvento, descripcionEvento, categoriaEve, fechaEve, aforoEvento,
                 numInscritosEvento);
         int aforoRestante = nuevoEvento.getAforoRestante();
-        CategoriaEntrada[] categorias = {CategoriaEntrada.GENERAL, CategoriaEntrada.VIP, CategoriaEntrada.INFANTIL};
-        String[] nombreCategoriasEntrada = {"General", "VIP","Infantil"};
-        float precio = 0;
 
-        for (int i = 0; i < 3; i++) {
+        for(CategoriaEntrada categoria : CategoriaEntrada.values()){
             if(aforoRestante <= 0){
-                vista.aforoCompleto(nombreCategoriasEntrada[i]);
-                nuevoEvento.setConfiguracionEntrada(i, new Entrada(categorias[i], 0, 0));
+                vista.aforoCompleto(categoria.toString());
+                nuevoEvento.setConfiguracionEntrada(new Entrada(categoria, 0, 0));
             }else{
-                vista.preguntaCantidadEntradasPorTipo(nombreCategoriasEntrada[i], aforoRestante);
+                vista.preguntaCantidadEntradasPorTipo(categoria.toString(), aforoRestante);
                 int cantidadEntradas = Integer.parseInt(s.nextLine());
 
-                if(cantidadEntradas > aforoRestante){
+                if(cantidadEntradas > aforoRestante || cantidadEntradas < 0){
                     vista.errorCantidadNoValida();
-                    nuevoEvento.setConfiguracionEntrada(i, new Entrada(categorias[i], 0, 0));
+                    nuevoEvento.setConfiguracionEntrada(new Entrada(categoria, 0, 0));
                 }else{
+                    float precio = 0;
                     if(cantidadEntradas > 0){
-                        vista.preguntaPrecioEntrada(nombreCategoriasEntrada[i]);
+                        vista.preguntaPrecioEntrada(categoria.toString());
                         precio = Float.parseFloat(s.nextLine());
                     }
-                    Entrada entrada = new Entrada(categorias[i], precio, cantidadEntradas);
-                    nuevoEvento.setConfiguracionEntrada(i, entrada);
 
+                    nuevoEvento.setConfiguracionEntrada(new Entrada(categoria, precio, cantidadEntradas));
                     aforoRestante -= cantidadEntradas;
                 }
             }
@@ -140,16 +90,8 @@ public class GestionEvento {
      * Añade un nuevo evento al array
      */
     public boolean aniadirEvento(Evento nuevoEvento) {
-        if (numEventos == eventos.length) {
-            aumentarCapacidad(1);
-        }
-
-        if (numEventos < eventos.length) {
-            eventos[numEventos++] = nuevoEvento;
-            return true;
-        } else {
-            return false;
-        }
+        eventos.add(nuevoEvento);
+        return true;
     }
 
     //----------------------------------------------------------------------------------------------------
@@ -158,9 +100,9 @@ public class GestionEvento {
      * Busca un evento por su nombre
      */
     public Evento buscarEventoPorNombre(String nombre) {
-        for (int i = 0; i < numEventos; i++) {
-            if (eventos[i] != null && eventos[i].getNombre().equalsIgnoreCase(nombre.trim())) {
-                return eventos[i];
+        for (Evento evento : eventos) {
+            if (evento.getNombre().equalsIgnoreCase(nombre.trim())) {
+                return evento;
             }
         }
         return null;
@@ -170,8 +112,8 @@ public class GestionEvento {
      * Busca la posición de un evento en el array por su nombre
      */
     public int buscarPosicionPorNombre(String nombre) {
-        for (int i = 0; i < numEventos; i++) {
-            if (eventos[i] != null && eventos[i].getNombre().equalsIgnoreCase(nombre.trim())) {
+        for (int i = 0; i < eventos.size(); i++) {
+            if (eventos.get(i).getNombre().equalsIgnoreCase(nombre.trim())) {
                 return i;
             }
         }
@@ -182,34 +124,36 @@ public class GestionEvento {
      * Muestra todos los eventos disponibles
      */
     public void mostrarEventos() {
-        if (numEventos == 0) {
+        if (eventos.isEmpty()) {
             vista.noHayEventos();
             return;
         }
         vista.tituloEventosDisponibles();
 
-        for (int i = 0; i < numEventos; i++) {
-            Evento evento = eventos[i];
-            if (evento != null) {
-                vista.mostrarEventoTabla(
-                        evento.getNombre(),
-                        evento.getCategoria().toString(),
-                        FuncionesFechas.convertirLocalDateString(evento.getFecha())
-                );
+        for (Evento evento : eventos) {
 
-                vista.mostrarVistaDetalladaEvento(
-                        evento.getNombre(),
-                        evento.getCategoria().toString(),
-                        FuncionesFechas.convertirLocalDateString(evento.getFecha()),
-                        evento.getDescripcion(),
-                        evento.getAforo(),
-                        evento.getPersonasInscritas()
-                );
+            vista.mostrarEventoTabla(
+                    evento.getNombre(),
+                    evento.getCategoria().toString(),
+                    FuncionesFechas.convertirLocalDateString(evento.getFecha())
+            );
 
-                vista.mostrarVistaDetalladaEntradas(evento.getTiposDeEntrada());
-            }
+            vista.mostrarVistaDetalladaEvento(
+                    evento.getNombre(),
+                    evento.getCategoria().toString(),
+                    FuncionesFechas.convertirLocalDateString(evento.getFecha()),
+                    evento.getDescripcion(),
+                    evento.getAforo(),
+                    evento.getPersonasInscritas()
+            );
+            vista.mostrarVistaDetalladaEntradas(evento.getTiposDeEntrada());
+
         }
 
+    }
+
+    public ArrayList<Evento> getEventos() {
+        return eventos;
     }
 
     //----------------------------------------------------------------------------------------------------
@@ -219,12 +163,12 @@ public class GestionEvento {
      */
     public void modificarEvento() {
         Scanner s = new Scanner(System.in);
-        if (numEventos == 0) {
+        if (eventos.isEmpty()) {
             vista.noHayEventos();
             return;
         }
 
-        vista.mostrarListaEventos(eventos, numEventos);
+        vista.mostrarListaEventos(eventos, eventos.size());
         vista.pedirDatosEvento("Introduce el nombre del evento que quieres modificar: ");
         String nombreActual = s.nextLine();
 
@@ -385,86 +329,123 @@ public class GestionEvento {
     public boolean actualizarEntradasInterno(Evento evento){
         Scanner s = new Scanner(System.in);
         int aforoRestante = evento.getAforo() - evento.getPersonasInscritas();
-        CategoriaEntrada[] categorias = {CategoriaEntrada.GENERAL, CategoriaEntrada.VIP, CategoriaEntrada.INFANTIL};
-        String[] nombreCategoriasEntrada = {"General", "VIP","Infantil"};
+        ArrayList<Entrada> nuevasEntradas = new ArrayList<>();
 
-        for (int i = 0; i < 3; i++) {
-            vista.preguntaCantidadEntradasPorTipo(nombreCategoriasEntrada[i], aforoRestante);
+        for(CategoriaEntrada categoria : CategoriaEntrada.values()){
+            vista.preguntaCantidadEntradasPorTipo(categoria.toString(), aforoRestante);
             int cantidad = Integer.parseInt(s.nextLine());
 
-            if(cantidad <= aforoRestante){
+            if(cantidad <= aforoRestante && cantidad >= 0){
                 float precio = 0;
                 if(cantidad > 0){
-                    vista.preguntaPrecioEntrada(nombreCategoriasEntrada[i]);
+                    vista.preguntaPrecioEntrada(categoria.toString());
                     precio = Float.parseFloat(s.nextLine());
                 }
-                Entrada modificacionEntrada = new Entrada(categorias[i], precio, cantidad);
-                evento.setConfiguracionEntrada(i, modificacionEntrada);
+                nuevasEntradas.add(new Entrada(categoria, precio, cantidad));
                 aforoRestante -= cantidad;
             }else{
                 vista.errorCantidadNoValida();
-                evento.setConfiguracionEntrada(i, new Entrada(categorias[i], 0 ,0));
+                nuevasEntradas.add(new Entrada(categoria, 0, 0));
             }
         }
+        evento.setTiposDeEntrada(nuevasEntradas);
         return true;
     }
 
     //D --> DELETE
     /**
-     * Elimina un evento por su nombre
+     * Elimina un evento por su nombre mediante una función lambda
      */
-    public boolean eliminarEvento(String nombre) {
-        int posicion = buscarPosicionPorNombre(nombre);
-        if (posicion == -1) return false;
-
-        eventos[posicion] = eventos[numEventos - 1];
-        eventos[numEventos - 1] = null;
-        numEventos--;
-
-        return true;
+    private boolean eliminaEvento(String nombreEvento) {
+        return eventos.removeIf(e -> e.getNombre().equalsIgnoreCase(nombreEvento));
     }
 
     /**
      * Gestiona la eliminación de un evento pidiendo confirmación
      */
-    public void eliminarEvento() {
+    public String eliminarEvento() {
         Scanner s = new Scanner(System.in);
-        if (numEventos == 0) {
+        if (eventos.isEmpty()) {
             vista.noHayEventos();
-        } else {
-            vista.mostrarListaEventos(eventos, numEventos);
-            vista.pedirDatosEvento("Escribe el nombre del evento que quieres eliminar: ");
-            String nombreEvento = s.nextLine();
-            Evento evento = buscarEventoPorNombre(nombreEvento);
+            return null;
+        }
 
-            if (evento != null) {
-                if (vista.pedirConfirmacion("¿Estás seguro de que quieres eliminar " + nombreEvento + " ?")) {
-                    if (eliminarEvento(nombreEvento)) {
-                        vista.mensajeConfirmacion();
-                    } else {
-                        vista.mensajeError();
-                    }
+        vista.mostrarListaEventos(eventos, eventos.size());
+        vista.pedirDatosEvento("Escribe el nombre del evento que quieres eliminar: ");
+        String nombreEvento = s.nextLine();
+        Evento evento = buscarEventoPorNombre(nombreEvento);
+
+        if (evento != null) {
+            if (vista.pedirConfirmacion("¿Estás seguro de que quieres eliminar " + nombreEvento + " ?")) {
+                if (eliminaEvento(nombreEvento)) {
+                    return nombreEvento;
                 } else {
-                    vista.operacionCancelada();
+                    vista.mensajeError();
                 }
             } else {
-                vista.eventoNoEncontrado();
+                vista.operacionCancelada();
             }
+        } else {
+            vista.eventoNoEncontrado();
         }
+        return null;
     }
 
     /**
      * Actualiza el stock de las entradas y de las personas inscritas a un evento
      */
-    public boolean controlaStockCorrecto(Evento evento, int indiceEntrada, int cantidad) {
-        Entrada entrada = evento.getTiposDeEntrada()[indiceEntrada];
-
-        if (entrada != null && entrada.getCantidadDisponible() >= cantidad) {
-            entrada.setCantidadDisponible(entrada.getCantidadDisponible() - cantidad);
-            evento.setPersonasInscritas(evento.getPersonasInscritas() + cantidad);
-            return true;
+    public boolean controlaStockCorrecto(Evento evento, CategoriaEntrada categoriaEntrada, int cantidad) {
+        for(Entrada entrada : evento.getTiposDeEntrada()){
+            if(entrada.getCategoria().equals(categoriaEntrada)){
+                if(entrada.getCantidadDisponible() >= cantidad){
+                    entrada.setCantidadDisponible(entrada.getCantidadDisponible() - cantidad);
+                    evento.setPersonasInscritas(evento.getPersonasInscritas() + cantidad);
+                    return true;
+                }
+            }
         }
         return false;
+    }
+
+    /**
+     * Permite ordenar los eventos ordenados de mayor número de personas inscritas a menor
+     */
+    public void ordenarEventosPorAsistentesDesc() {
+        eventos.sort((e1, e2) -> Integer.compare(e2.getPersonasInscritas(), e1.getPersonasInscritas()));
+    }
+
+    /**
+     * Permite ordenar los eventos por fecha de más reciente a más antigua
+     */
+    public void ordenarEventosPorFecha() {
+        eventos.sort((e1, e2) -> e2.getFecha().compareTo(e1.getFecha()));
+    }
+
+    /**
+     * Permite ordenar las entradas por su tipo alfabéticamente
+     */
+    public void ordenarEntradasPorTipo(Evento evento) {
+        if (evento != null) {
+            evento.getTiposDeEntrada().sort(Comparator.comparing(t -> t.getCategoria().name()));
+        }
+    }
+
+    /**
+     * Permite ordenar las entradas por su precio, de más cara a más económica
+     */
+    public void ordenarEntradasPorImporteDesc(Evento evento) {
+        if (evento != null) {
+            evento.getTiposDeEntrada().sort((t1, t2) -> Float.compare(t2.getPrecio(), t1.getPrecio()));
+        }
+    }
+
+    /**
+     * Permite ordenar las entradas por su precio, de más económica a mas cára
+     */
+    public void ordenarEntradasPorImporteAsc(Evento evento) {
+        if (evento != null) {
+            evento.getTiposDeEntrada().sort((t1, t2) -> Float.compare(t1.getPrecio(), t2.getPrecio()));
+        }
     }
 
 }

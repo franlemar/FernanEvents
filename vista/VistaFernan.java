@@ -2,6 +2,7 @@ package FernanEvents.vista;
 import FernanEvents.modelo.Entrada;
 import FernanEvents.modelo.Evento;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class VistaFernan{
@@ -93,15 +94,36 @@ public class VistaFernan{
     }
 
     /**
+     * Muestra un menú que pregunta al usuario cómo le gustaría ver los eventos disponibles de la plataforma
+     */
+    public void menuOrdenaEventos(){
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "¿Cómo quiere visualizar los eventos?" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "1. Ordenados por fecha (más recientes primero)");
+        System.out.println("2. Ordenados por número de personas inscritas (orden descendente)");
+        System.out.println(estilo.NEON_PINK + "3. Volver atrás" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_GREEN + "Seleccione la opción deseada: " + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Muestra un menú que pregunta al usuario cómo le gustaría ver las entradas disponibles de los eventos presentes en la plataforma
+     */
+    public void menuOrdenaEntradas(){
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "¿Cómo le gustaría consultar las entradas disponibles?" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "1. Ordenadas por precio (más caras primero)");
+        System.out.println("2. Ordenadas por precio (más baratas primero) ");
+        System.out.println("3. Ordenadas por su tipo (alfabéticamente) ");
+        System.out.println(estilo.NEON_PINK + "4. Volver atrás" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_GREEN + "Seleccione la opción deseada: " + estilo.ANSI_RESET);
+    }
+
+    /**
      * Muestra un menú desde donde los asistentes pueden comprobar una lista de amigos a los que han invitado a FernanEvents, así como enviar correos electrónicos con invitaciones para otros nuevos amigos
      */
     public void menuInvitarAmigo() {
         System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ INVITA A TUS AMIGOS ✦" + estilo.ANSI_RESET);
-
         System.out.println(estilo.PASTEL_BLUE + "1. Listado de referidos");
         System.out.println("2. Añadir nuevo amigo (email)");
         System.out.println(estilo.NEON_PINK + "3. Volver atrás" + estilo.ANSI_RESET);
-
         System.out.println(estilo.PASTEL_GREEN + "Seleccione la opción deseada: " + estilo.ANSI_RESET);
     }
 
@@ -201,17 +223,17 @@ public class VistaFernan{
     /**
      * Muestra una vista detallada de las entradas disponibles para un evento
      */
-    public void mostrarVistaDetalladaEntradas(Entrada[] tipoEntrada){
+    public void mostrarVistaDetalladaEntradas(ArrayList<Entrada> tipoEntrada){
         System.out.println(estilo.PASTEL_YELLOW + "\n=== ENTRADAS DISPONIBLES ===" + estilo.ANSI_RESET);
 
-        for (int i = 0; i < 3; i++) {
-            System.out.print(estilo.PASTEL_BLUE + "Tipo: " + estilo.ANSI_RESET + tipoEntrada[i].getCategoria());
-            System.out.print(" | " + estilo.PASTEL_BLUE + "Precio: " + estilo.ANSI_RESET + tipoEntrada[i].getPrecio() + " euros");
+        for(Entrada entrada : tipoEntrada){
+            System.out.print(estilo.PASTEL_BLUE + "Tipo: " + estilo.ANSI_RESET + entrada.getCategoria());
+            System.out.print(" | " + estilo.PASTEL_BLUE + "Precio: " + estilo.ANSI_RESET + entrada.getPrecio() + " euros");
 
-            if (tipoEntrada[i].getCantidadDisponible() <= 0) {
+            if(entrada.getCantidadDisponible() <= 0){
                 System.out.println(" | " + estilo.ANSI_RED + "AGOTADAS" + estilo.ANSI_RESET);
-            } else {
-                System.out.println(" | " + estilo.PASTEL_GREEN + "Disponibles: " + estilo.ANSI_RESET + tipoEntrada[i].getCantidadDisponible());
+            }else{
+                System.out.println(" | " + estilo.PASTEL_GREEN + "Disponibles: " + estilo.ANSI_RESET + entrada.getCantidadDisponible());
             }
         }
         System.out.println(" ");
@@ -276,7 +298,7 @@ public class VistaFernan{
      * Solicita al usuario que introduzca su correo
      */
     public void pedirCorreo(){
-        System.out.print(estilo.PASTEL_BLUE + "Introduzca su correo electrónico: "
+        System.out.print(estilo.PASTEL_BLUE + "Introduzca el correo electrónico: "
                 + estilo.ANSI_RESET);
     }
 
@@ -483,8 +505,8 @@ public class VistaFernan{
     /**
      * Mensaje que indica un usuario bloqueado con su índice y nombre
      */
-    public void mostrarUsuarioBloqueado(int indice, String nombre){
-        System.out.println(estilo.PASTEL_BLUE + nombre + " (" + indice + ")" + estilo.ANSI_RESET);
+    public void mostrarUsuarioBloqueado(String correo, String nombre){
+        System.out.println(estilo.PASTEL_BLUE + nombre + " (" + correo + ")" + estilo.ANSI_RESET);
     }
 
     /**
@@ -695,10 +717,10 @@ public class VistaFernan{
         System.out.print(estilo.PASTEL_BLUE + "Escriba el nombre del evento al que desea inscribirse: " + estilo.ANSI_RESET);
     }
 
-    public void mostrarListaEventos(Evento[] eventos, int total) {
+    public void mostrarListaEventos(ArrayList<Evento> eventos, int total) {
         System.out.println(estilo.PASTEL_BLUE + "Eventos disponibles:" + estilo.ANSI_RESET);
         for (int i = 0; i < total; i++) {
-            System.out.println(" - " + eventos[i].getNombre());
+            System.out.println(" - " + eventos.get(i).getNombre());
         }
     }
 
@@ -770,10 +792,12 @@ public class VistaFernan{
     /**
      * Muestra el menú para elegir el tipo de entrada que quiere adquirir el usuario para un evento determinado
      */
-    public void menuEntradaTipo() {
+    public void menuEntradaTipo(ArrayList<Entrada> entradas) {
         System.out.println(estilo.PASTEL_BLUE + "\nSeleccione el tipo de entrada:");
-        System.out.println("1. General \n2. VIP \n3. Infantil" + estilo.ANSI_RESET);
-        System.out.print(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
+        for (int i = 0; i < entradas.size(); i++) {
+            System.out.println((i + 1) + ". " + entradas.get(i).getCategoria());
+        }
+        System.out.print(estilo.ANSI_RESET + estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
     }
 
     /**
