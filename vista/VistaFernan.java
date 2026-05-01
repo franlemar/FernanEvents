@@ -30,7 +30,9 @@ public class VistaFernan{
         System.out.println("2. Eventos");
         System.out.println("3. Cartera digital");
         System.out.println("4. Configuración");
-        System.out.println(estilo.NEON_PINK + "5. Cerrar sesión" + estilo.ANSI_RESET);
+        System.out.println("5. Enviar listado de eventos por correo");
+        System.out.println("6. Enviar listado de entradas por correo");
+        System.out.println(estilo.NEON_PINK + "7. Cerrar sesión" + estilo.ANSI_RESET);
 
         System.out.println(estilo.PASTEL_GREEN + "Seleccione la opción deseada: " + estilo.ANSI_RESET);
     }
@@ -853,4 +855,19 @@ public class VistaFernan{
                 " euros" + estilo.ANSI_RESET);
 
     }
+
+    /**
+     * Mensaje informando que se están enviando los correos de eventos
+     */
+    public void enviandoCorreosEventos() {
+        System.out.println(estilo.PASTEL_BLUE + "Enviando resumen de eventos a los organizadores..." + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje informando que se están enviando los correos de entradas
+     */
+    public void enviandoCorreosEntradas() {
+        System.out.println(estilo.PASTEL_BLUE + "Enviando resumen de entradas a los asistentes..." + estilo.ANSI_RESET);
+    }
+
 }

@@ -131,7 +131,7 @@ public class ControladorFernan {
         }
 
         String codigoVerificacion = Cadenas.generarCodigoVerificacion();
-        String destinatario = "flenmar918@g.educaand.es";
+        String destinatario = "jmorcam520@g.educaand.es";
         String asunto = "Código de verificación - Inicio de sesión";
         String cuerpo = EnvioGmail.plantillaLoginAdmin(usuario.getNombre(), codigoVerificacion);
 
@@ -306,6 +306,14 @@ public class ControladorFernan {
                     break;
 
                 case 5:
+                    enviarListadoEventosPorCorreo();
+                    break;
+
+                case 6:
+                    enviarListadoEntradasPorCorreo();
+                    break;
+
+                case 7:
                     logs.registrar("Cierre de sesión", usuarioLogueado.getNombre());
                     break;
 
@@ -313,7 +321,7 @@ public class ControladorFernan {
                     vista.opcionNoValida();
 
             }
-        }while(opcionMenu != 5);
+        }while(opcionMenu != 7);
         vista.cerrarSesion(usuarioLogueado.getNombre());
     }
 
@@ -991,6 +999,43 @@ public class ControladorFernan {
     private void guardarDatos() {
         PersistenciaJSON.guardarUsuarios(modeloUsu.getUsuarios());
         PersistenciaJSON.guardarEventos(modeloEve.getEventos());
+    }
+
+    /**
+     * Recorre todos los organizadores y envía a cada uno un Excel con sus eventos
+     */
+    private void enviarListadoEventosPorCorreo() {
+        vista.enviandoCorreosEventos();
+        for (Usuario u : modeloUsu.getUsuarios()) {
+            if (u instanceof Organizador) {
+                EnvioGmail.enviarResumenEventosOrganizador(
+                        u.getCorreo(),
+                        u.getNombre(),
+                        modeloEve.getEventos()
+                );
+            }
+        }
+        vista.mensajeConfirmacion();
+    }
+
+    /**
+     * Recorre todos los asistentes y envía a cada uno un Excel con sus entradas
+     */
+    private void enviarListadoEntradasPorCorreo() {
+        vista.enviandoCorreosEntradas();
+        for (Usuario u : modeloUsu.getUsuarios()) {
+            if (u instanceof Asistente asistente) {
+                if (!asistente.getEventosInscrito().isEmpty()) {
+                    EnvioGmail.enviarResumenEntradasAsistente(
+                            asistente.getCorreo(),
+                            asistente.getNombre(),
+                            asistente.getEventosInscrito(),
+                            modeloEve.getEventos()
+                    );
+                }
+            }
+        }
+        vista.mensajeConfirmacion();
     }
 
 }
