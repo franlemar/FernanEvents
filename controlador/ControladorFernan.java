@@ -1,9 +1,7 @@
 package FernanEvents.controlador;
 
 import FernanEvents.modelo.*;
-import FernanEvents.modelo.utilidades.Cadenas;
-import FernanEvents.modelo.utilidades.EnvioGmail;
-import FernanEvents.modelo.utilidades.FuncionesFechas;
+import FernanEvents.modelo.utilidades.*;
 import FernanEvents.vista.VistaFernan;
 
 import java.util.ArrayList;
@@ -11,10 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import java.util.TimerTask;
-import FernanEvents.modelo.utilidades.PersistenciaJSON;
-import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class ControladorFernan {
 
@@ -22,11 +17,13 @@ public class ControladorFernan {
     private VistaFernan vista;
     private GestionEvento modeloEve;
     private Usuario usuarioLogueado;
+    private GestorLogs logs;
 
     public ControladorFernan(GestionUsuario modeloUsu, VistaFernan vista, GestionEvento modeloEve){
         this.modeloUsu = modeloUsu;
         this.vista = vista;
         this.modeloEve = modeloEve;
+        this.logs = new GestorLogs("datosJSON/registro_actividad.log");
 
         cargarDatos();
 
@@ -60,6 +57,7 @@ public class ControladorFernan {
             switch(opcionMenu){
                 case 1:
                     if(LoginUsuario()){
+
                         muestraMenuPorRol();
                     }
                     break;
@@ -67,6 +65,7 @@ public class ControladorFernan {
                 case 2:
                     if(registrarUsuario()){
                         vista.registroCorrecto();
+
                     }else{
                         vista.mensajeError();
                     }
@@ -132,7 +131,7 @@ public class ControladorFernan {
         }
 
         String codigoVerificacion = Cadenas.generarCodigoVerificacion();
-        String destinatario = "jmorcam520@g.educaand.es";
+        String destinatario = "flenmar918@g.educaand.es";
         String asunto = "Código de verificación - Inicio de sesión";
         String cuerpo = EnvioGmail.plantillaLoginAdmin(usuario.getNombre(), codigoVerificacion);
 
@@ -148,6 +147,7 @@ public class ControladorFernan {
                 logueado = true;
                 this.usuarioLogueado = usuario;
                 vista.loginCorrecto();
+                logs.registrar("Inicio de sesión", usuarioLogueado.getNombre());
                 return true;
 
             }else{
@@ -248,6 +248,7 @@ public class ControladorFernan {
                 }
 
                 modeloUsu.aniadirUsuario(nuevoUsuario);
+                logs.registrar("Nuevo usuario creado", nombreRegistro);
                 tokenVerificado = true;
             }
         }
@@ -305,6 +306,7 @@ public class ControladorFernan {
                     break;
 
                 case 5:
+                    logs.registrar("Cierre de sesión", usuarioLogueado.getNombre());
                     break;
 
                 default:
@@ -340,6 +342,7 @@ public class ControladorFernan {
                     break;
 
                 case 4:
+                    logs.registrar("Cierre de sesión", usuarioLogueado.getNombre());
                     break;
 
                 default:
@@ -383,6 +386,7 @@ public class ControladorFernan {
                     break;
 
                 case 6:
+                    logs.registrar("Cierre de sesión", usuarioLogueado.getNombre());
                     break;
 
                 default:
@@ -489,7 +493,12 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.preguntaSumaSaldo();
         float saldoASumar = Float.parseFloat(s.nextLine());
-        return modeloUsu.aniadirSaldo(usuarioLogueado.getCorreo(), saldoASumar);
+        boolean recargaCorrecta = modeloUsu.aniadirSaldo(usuarioLogueado.getCorreo(), saldoASumar);
+
+        if(recargaCorrecta){
+            logs.registrar("Recarga de saldo: " + saldoASumar + "€", usuarioLogueado.getNombre());
+        }
+        return recargaCorrecta;
     }
 
     /**
@@ -499,7 +508,13 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.preguntaRetiraSaldo();
         float saldoARetirar = Float.parseFloat(s.nextLine());
-        return modeloUsu.quitarSaldo(usuarioLogueado.getCorreo(), saldoARetirar);
+        boolean retiradaCorrecta = modeloUsu.quitarSaldo(usuarioLogueado.getCorreo(), saldoARetirar);
+
+        if(retiradaCorrecta){
+            logs.registrar("Retirada de saldo: " + saldoARetirar + "€", usuarioLogueado.getNombre());
+        }
+
+        return retiradaCorrecta;
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION CONFIGURACION DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -560,7 +575,13 @@ public class ControladorFernan {
             vista.nombreYaEnUso(nuevoNombreUsuario);
             return false;
         }
-        return modeloUsu.actualizarNombre(usuarioCambio.getCorreo(), nuevoNombreUsuario);
+
+        boolean cambioCorrecto = modeloUsu.actualizarNombre(usuarioCambio.getCorreo(), nuevoNombreUsuario);
+        if(cambioCorrecto){
+            logs.registrar("ADMIN: Cambio de nombre de usuario: " + nombreUsuarioCambio + " -> " + nuevoNombreUsuario,
+                    usuarioLogueado.getNombre());
+        }
+        return cambioCorrecto;
     }
 
     /**
@@ -579,7 +600,12 @@ public class ControladorFernan {
 
         vista.pedirNuevaPassword();
         String nuevaPassword = s.nextLine();
-        return modeloUsu.actualizarContrasena(usuarioCambio.getCorreo(), Cadenas.hashearPassword(nuevaPassword));
+        boolean cambioCorrectoPW = modeloUsu.actualizarContrasena(usuarioCambio.getCorreo(), Cadenas.hashearPassword(nuevaPassword));
+
+        if(cambioCorrectoPW){
+            logs.registrar("ADMIN: Cambio de contraseña para " + nombreUsuarioCambio, usuarioLogueado.getNombre());
+        }
+        return cambioCorrectoPW;
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCIÓN CONFIGURACIÓN RESTO DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -626,6 +652,8 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.pedirNuevoNombre();
         String nuevoNombre = s.nextLine();
+        String nombreAntiguo = usuarioLogueado.getNombre();
+
         if(modeloUsu.buscarPorNombre(nuevoNombre) != null){
             vista.nombreYaEnUso(nuevoNombre);
             return false;
@@ -633,6 +661,8 @@ public class ControladorFernan {
 
         if(modeloUsu.actualizarNombre(usuarioLogueado.getCorreo(), nuevoNombre)){
             usuarioLogueado = modeloUsu.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
+            logs.registrar("Cambio de nombre de usuario: " + nombreAntiguo + " -> " + nuevoNombre,
+                    usuarioLogueado.getNombre());
             return true;
         }
         return false;
@@ -654,6 +684,7 @@ public class ControladorFernan {
 
             if(modeloUsu.actualizarContrasena(usuarioLogueado.getCorreo(), Cadenas.hashearPassword(nuevaPassword))){
                 this.usuarioLogueado = modeloUsu. buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
+                logs.registrar("Cambio de contraseña", usuarioLogueado.getNombre());
                 return true;
             }
         }
@@ -765,6 +796,7 @@ public class ControladorFernan {
 
                     if(modeloEve.aniadirEvento(nuevoEvento)){
                         vista.mensajeConfirmacion();
+                        logs.registrar("Nuevo evento creado", usuarioLogueado.getNombre());
                     }else{
                         vista.mensajeError();
                     }
@@ -772,6 +804,7 @@ public class ControladorFernan {
 
                 case 3:
                     modeloEve.modificarEvento();
+                    logs.registrar("Modificación de evento", usuarioLogueado.getNombre());
                     break;
 
                 case 4:
@@ -779,6 +812,7 @@ public class ControladorFernan {
                     if(eventoEliminado != null){
                         modeloUsu.limpiarEventoDeAsistentes(eventoEliminado);
                         vista.mensajeConfirmacion();
+                        logs.registrar("Eliminación de evento", usuarioLogueado.getNombre());
                     }else{
                         vista.mensajeError();
                     }
@@ -823,6 +857,12 @@ public class ControladorFernan {
      */
     private void gestionCompraEntradas(){
         Scanner s = new Scanner(System.in);
+
+        if(modeloEve.getEventos().isEmpty()){
+            vista.noHayEventos();
+            return;
+        }
+
         gestionarVisualizacionEventosEntradas();
         vista.pedirNombreEventoInscribir();
         String eventoAInscribir = s.nextLine();
@@ -833,7 +873,7 @@ public class ControladorFernan {
             vista.menuEntradaTipo(entradas);
             int opcionTipoEntrada = Integer.parseInt(s.nextLine()) - 1;
 
-            if(opcionTipoEntrada < 0 || opcionTipoEntrada > eventoSeleccionado.getTiposDeEntrada().size()){
+            if(opcionTipoEntrada < 0 || opcionTipoEntrada >= eventoSeleccionado.getTiposDeEntrada().size()){
                 vista.opcionNoValida();
             }else{
                 Entrada tipoEntradaElegido = eventoSeleccionado.getTiposDeEntrada().get(opcionTipoEntrada);
@@ -880,6 +920,8 @@ public class ControladorFernan {
         modeloEve.controlaStockCorrecto(eventoSeleccionado, categoria, cantidadEntradas);
         asistente.registraCompraEntrada(eventoSeleccionado.getNombre(), cantidadEntradas);
         vista.mensajeConfirmacion();
+        logs.registrar("Compra de entradas: " + cantidadEntradas + " para " + eventoSeleccionado.getNombre(),
+                usuarioLogueado.getNombre());
     }
 
     /**
