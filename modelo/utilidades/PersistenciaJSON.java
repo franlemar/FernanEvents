@@ -27,6 +27,9 @@ public class PersistenciaJSON {
 
     // ------------------ GUARDAR -----------------------
 
+    /**
+     * Guarda una colección de usuarios en un archivo JSON, teniendo en cuenta el rol de cada usuario(Admin, Organizador o Asistente)
+     */
     public static void guardarUsuarios(Collection<Usuario> usuarios) {
         JsonArray array = new JsonArray();
         for (Usuario u : usuarios) {
@@ -37,6 +40,10 @@ public class PersistenciaJSON {
         escribirArchivo(ARCHIVO_USUARIOS, gson.toJson(array));
     }
 
+    /**
+     * Guarda una lista de eventos en un archivo JSON, además del organizador al que corresponde cada evento
+     *
+     */
     public static void guardarEventos(ArrayList<Evento> eventos) {
         JsonArray array = new JsonArray();
         for (Evento e : eventos) {
@@ -52,6 +59,9 @@ public class PersistenciaJSON {
 
     // --------------------CARGAR ------------------------
 
+    /**
+     * Carga los usuarios almacenados en un archivo JSON al momento de iniciar FernanEvents
+     */
     public static ArrayList<Usuario> cargarUsuarios() {
         String contenido = leerArchivo(ARCHIVO_USUARIOS);
         if (contenido == null) return new ArrayList<>();
@@ -75,6 +85,9 @@ public class PersistenciaJSON {
         return lista;
     }
 
+    /**
+     * Carga los eventos almacenador en un archivo JSON al momento de iniciar FernanEvents
+     */
     public static ArrayList<Evento> cargarEventos() {
         String contenido = leerArchivo(ARCHIVO_EVENTOS);
         if (contenido == null) return new ArrayList<>();
@@ -113,6 +126,9 @@ public class PersistenciaJSON {
 
     // -------------------HELPERS -----------------------
 
+    /**
+     * Método encargado de escribir texto en un archivo. Recibe por parámetro la ruta donde debe trabajar así como el contenido a escribir
+     */
     private static void escribirArchivo(String ruta, String contenido) {
         try (Writer writer = new FileWriter(ruta)) {
             writer.write(contenido);
@@ -121,6 +137,9 @@ public class PersistenciaJSON {
         }
     }
 
+    /**
+     * Método encargado de leer el contenido de un archivo según la ruta que recibe por parámetro
+     */
     private static String leerArchivo(String ruta) {
         File archivo = new File(ruta);
         if (!archivo.exists()) return null;

@@ -391,7 +391,6 @@ public class GestionEvento {
         return null;
     }
 
-
     /**
      * Actualiza el stock de las entradas y de las personas inscritas a un evento
      */
