@@ -14,6 +14,7 @@
       <root url="jar://$PROJECT_DIR$/lib/commons-lang3-3.14.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-io-2.16.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/curvesapi-1.08.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/log4j-api-2.23.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-collections4-4.4.jar!/" />
     </CLASSES>
     <JAVADOC />
