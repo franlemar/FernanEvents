@@ -7,12 +7,7 @@ import FernanEvents.vista.VistaFernan;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Scanner;
-
-import java.util.TimerTask;
-import java.util.Timer;
+import java.util.*;
 
 public class ControladorFernan {
 
@@ -341,6 +336,10 @@ public class ControladorFernan {
                     break;
 
                 case 7:
+                    mostrarConfiguracionPrograma();
+                    break;
+
+                case 8:
                     logs.registrar("Cierre de sesión", usuarioLogueado.getNombre());
                     break;
 
@@ -348,7 +347,7 @@ public class ControladorFernan {
                     vista.opcionNoValida();
 
             }
-        }while(opcionMenu != 7);
+        }while(opcionMenu != 8);
         vista.cerrarSesion(usuarioLogueado.getNombre());
     }
 
@@ -952,6 +951,14 @@ public class ControladorFernan {
             }
         }
         vista.mensajeConfirmacion();
+    }
+
+    /**
+     * Muestra por pantalla la configuracion del programa y los ultimos accesos
+     */
+    private void mostrarConfiguracionPrograma() {
+        Properties config = properties.obtenerTodas();
+        vista.mostrarConfiguracionSistema(config);
     }
 
 }

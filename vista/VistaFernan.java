@@ -34,7 +34,8 @@ public class VistaFernan{
         System.out.println("4. Configuración");
         System.out.println("5. Enviar listado de eventos por correo");
         System.out.println("6. Enviar listado de entradas por correo");
-        System.out.println(estilo.NEON_PINK + "7. Cerrar sesión" + estilo.ANSI_RESET);
+        System.out.println("7. Mostrar configuración avanzada");
+        System.out.println(estilo.NEON_PINK + "8. Cerrar sesión" + estilo.ANSI_RESET);
 
         System.out.println(estilo.PASTEL_GREEN + "Seleccione la opción deseada: " + estilo.ANSI_RESET);
     }
