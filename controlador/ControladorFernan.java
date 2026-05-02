@@ -64,7 +64,6 @@ public class ControladorFernan {
             switch(opcionMenu){
                 case 1:
                     if(LoginUsuario()){
-
                         muestraMenuPorRol();
                     }
                     break;
@@ -79,6 +78,19 @@ public class ControladorFernan {
                     break;
 
                 case 3:
+                    if(!properties.accesoInvitadoActivo()){
+                        vista.modoInvitadoDeshabilitado();
+                    }else{
+                        vista.infoModoInvitadoHabilitado();
+                        if(modeloEve.getEventos().isEmpty()){
+                            vista.noHayEventos();
+                        }else{
+                            gestionarVisualizacionEventosEntradas();
+                        }
+                    }
+                    break;
+
+                case 4:
                     //Rompe el bucle y lleva al mensaje de fuera del do-while
                     break;
 
@@ -86,7 +98,7 @@ public class ControladorFernan {
                     vista.opcionNoValida();
             }
 
-        }while(opcionMenu != 3);
+        }while(opcionMenu != 4);
         vista.mostrarDespedida();
     }
 
@@ -160,8 +172,7 @@ public class ControladorFernan {
                 String ultimoLogin = properties.obtenerUltimoLogin(correo);
                 vista.muestraUltimoLogin(ultimoLogin);
 
-                String fechaActual = devuelveFechaActualFormateada();
-                properties.actualizaUltimoLogin(correo, fechaActual);
+                properties.registrarAccesoUsuario(usuario.getCorreo());
 
                 logs.registrar("Inicio de sesión", usuarioLogueado.getNombre());
                 return true;
@@ -924,12 +935,23 @@ public class ControladorFernan {
     }
 
     /**
-     * Se encarga de recoger la fecha actual, darle formato legible y devolverla para almacenarla en una variable
+     * Recorre todos los asistentes y envía a cada uno un Excel con sus entradas
      */
-    public String devuelveFechaActualFormateada(){
-        LocalDateTime ahora = LocalDateTime.now();
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm");
-        return ahora.format(formato);
+    private void enviarListadoEntradasPorCorreo() {
+        vista.enviandoCorreosEntradas();
+        for (Usuario u : modeloUsu.getUsuarios()) {
+            if (u instanceof Asistente asistente) {
+                if (!asistente.getEventosInscrito().isEmpty()) {
+                    EnvioGmail.enviarResumenEntradasAsistente(
+                            asistente.getCorreo(),
+                            asistente.getNombre(),
+                            asistente.getEventosInscrito(),
+                            modeloEve.getEventos()
+                    );
+                }
+            }
+        }
+        vista.mensajeConfirmacion();
     }
 
 }

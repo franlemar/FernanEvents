@@ -3,6 +3,8 @@ package FernanEvents.modelo.utilidades;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 public class GestorProperties {
@@ -47,9 +49,52 @@ public class GestorProperties {
         try{
             FileOutputStream fos = new FileOutputStream(rutaArchivo);
             properties.setProperty(correoUsuario, fechaFormateada);
-            properties.store(fos, "Registro de últimos inicios de sesión");
+            properties.store(fos, "Registro de configuración y últimos logins realizados por usuarios");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Registra el acceso de un usuario a la plataforma dándole formato a la fecha a registrar
+     */
+    public void registrarAccesoUsuario(String correo) {
+        LocalDateTime ahora = LocalDateTime.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm");
+        String fechaFormateada = ahora.format(formato);
+
+        actualizaUltimoLogin(correo, fechaFormateada);
+    }
+
+    /**
+     * Obtiene la ruta de un archivo según la clave especificada en el properties
+     */
+    public String obtenerRuta(String clave) {
+        Properties properties = new Properties();
+        try {
+            FileInputStream fis = new FileInputStream(rutaArchivo);
+            properties.load(fis);
+            return properties.getProperty(clave);
+
+        } catch (IOException e) {
+            System.out.println("Error al cargar la ruta");
+            return null;
+        }
+    }
+
+    /**
+     * Comprueba si el acceso para invitados está en "true" o "false"
+     */
+    public boolean accesoInvitadoActivo() {
+        Properties properties = new Properties();
+        try {
+            FileInputStream fis = new FileInputStream(rutaArchivo);
+            properties.load(fis);
+            String valor = properties.getProperty("acceso.invitado", "false");
+            return Boolean.parseBoolean(valor);
+
+        } catch (IOException e) {
+            return false;
         }
     }
 }

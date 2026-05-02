@@ -16,7 +16,8 @@ public class VistaFernan{
         System.out.println(estilo.PASTEL_BLUE + "Bienvenido a FernanEvents. Seleccione qué desea hacer: " + estilo.ANSI_RESET);
         System.out.println(estilo.PASTEL_BLUE + "1. Iniciar sesión");
         System.out.println("2. Registrarse");
-        System.out.println(estilo.NEON_PINK + "3. Salir" + estilo.ANSI_RESET);
+        System.out.println("3. Entrar como invitado");
+        System.out.println(estilo.NEON_PINK + "4. Salir" + estilo.ANSI_RESET);
         System.out.println(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
     }
 
@@ -174,6 +175,18 @@ public class VistaFernan{
 
         System.out.println(estilo.NEON_GREEN + estilo.BOLD + "✔ Programa ejecutado correctamente." + estilo.ANSI_RESET);
         System.out.println();
+    }
+
+    public void infoModoInvitadoHabilitado(){
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ MODO INVITADO ✦" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "Gracias al modo invitado, se pueden consultar los eventos que hay " +
+                "disponibles en la plataforma.");
+        System.out.println("Para cualquier gestión relacionada con la compra de entradas, es necesario " +
+                estilo.PASTEL_YELLOW + "registrarse \n");
+    }
+
+    public void modoInvitadoDeshabilitado(){
+        System.out.println(estilo.ANSI_RED + "El modo para invitados está deshabilitado ⛔️ " + estilo.ANSI_RESET);
     }
 
     /**
