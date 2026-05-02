@@ -4,7 +4,7 @@
     "correo": "admin@fernanevents.com",
     "password": "$2a$12$LvepH6ynfhbgqFPYKMkzpOPkd4DHfSAlrqnduTQBadosSwVB.uRuG",
     "rol": "ADMINISTRADOR",
-    "saldo": 50.0,
+    "saldo": 90.0,
     "bloqueado": false,
     "tipo": "ADMINISTRADOR"
   },
@@ -33,7 +33,7 @@
     "correo": "chemamc3@gmail.com",
     "password": "$2a$12$P0GqWomMPOnPAzcKqrBiI.hwn5srgFJOuxkF5oswcjO1.5qCWL/eG",
     "rol": "ORGANIZADOR",
-    "saldo": 450.0,
+    "saldo": 810.0,
     "bloqueado": false,
     "tipo": "ORGANIZADOR"
   },
@@ -47,6 +47,19 @@
     "password": "$2a$12$l.YpN3vVpl9zKd.j7FqmNOA9.ed9TmFhroEobs2mIyEaT4h4s12I6",
     "rol": "ASISTENTE",
     "saldo": 500.0,
+    "bloqueado": false,
+    "tipo": "ASISTENTE"
+  },
+  {
+    "amigosReferidos": [],
+    "eventosInscrito": {
+      "badbunny": 2
+    },
+    "nombre": "franl",
+    "correo": "flenmar918@g.educaand.es",
+    "password": "$2a$12$/NZuSzm186R096GmZqaiBOssLE1X14/u46zEtr2sLxucLPXQmm.1O",
+    "rol": "ASISTENTE",
+    "saldo": 1100.0,
     "bloqueado": false,
     "tipo": "ASISTENTE"
   }

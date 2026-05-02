@@ -2,8 +2,11 @@ package FernanEvents.controlador;
 
 import FernanEvents.modelo.*;
 import FernanEvents.modelo.utilidades.*;
+import FernanEvents.modelo.utilidades.interfaces.GestorProperties;
 import FernanEvents.vista.VistaFernan;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
@@ -18,12 +21,14 @@ public class ControladorFernan {
     private GestionEvento modeloEve;
     private Usuario usuarioLogueado;
     private GestorLogs logs;
+    private GestorProperties properties;
 
     public ControladorFernan(GestionUsuario modeloUsu, VistaFernan vista, GestionEvento modeloEve){
         this.modeloUsu = modeloUsu;
         this.vista = vista;
         this.modeloEve = modeloEve;
         this.logs = new GestorLogs("datosJSON/registro_actividad.log");
+        this.properties = new GestorProperties("datosJSON/configuracion.properties");
 
         cargarDatos();
 
@@ -131,7 +136,7 @@ public class ControladorFernan {
         }
 
         String codigoVerificacion = Cadenas.generarCodigoVerificacion();
-        String destinatario = "jmorcam520@g.educaand.es";
+        String destinatario = "flenmar918@g.educaand.es";
         String asunto = "Código de verificación - Inicio de sesión";
         String cuerpo = EnvioGmail.plantillaLoginAdmin(usuario.getNombre(), codigoVerificacion);
 
@@ -147,6 +152,14 @@ public class ControladorFernan {
                 logueado = true;
                 this.usuarioLogueado = usuario;
                 vista.loginCorrecto();
+
+                String correo = usuarioLogueado.getCorreo();
+                String ultimoLogin = properties.obtenerUltimoLogin(correo);
+                vista.muestraUltimoLogin(ultimoLogin);
+
+                String fechaActual = devuelveFechaActualFormateada();
+                properties.actualizaUltimoLogin(correo, fechaActual);
+
                 logs.registrar("Inicio de sesión", usuarioLogueado.getNombre());
                 return true;
 
@@ -1036,6 +1049,15 @@ public class ControladorFernan {
             }
         }
         vista.mensajeConfirmacion();
+    }
+
+    /**
+     * Se encarga de recoger la fecha actual, darle formato legible y devolverla para almacenarla en una variable
+     */
+    public String devuelveFechaActualFormateada(){
+        LocalDateTime ahora = LocalDateTime.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm");
+        return ahora.format(formato);
     }
 
 }

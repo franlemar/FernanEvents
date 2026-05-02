@@ -5,7 +5,7 @@
     "categoriaEvento": "MUSICA",
     "fecha": "2026-06-06",
     "aforo": 500,
-    "personasInscritas": 121,
+    "personasInscritas": 123,
     "tiposDeEntrada": [
       {
         "categoria": "VIP",
@@ -15,7 +15,7 @@
       {
         "categoria": "GENERAL",
         "precio": 200.0,
-        "cantidadDisponible": 300
+        "cantidadDisponible": 298
       },
       {
         "categoria": "INFANTIL",

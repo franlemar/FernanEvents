@@ -383,6 +383,15 @@ public class VistaFernan{
                 "El código introducido no es correcto. Inténtelo de nuevo \n" + estilo.ANSI_RESET);
     }
 
+    public void muestraUltimoLogin(String fecha){
+        if(fecha != null){
+            System.out.println(estilo.PASTEL_GREEN + "Usted inició sesión por última vez el " + fecha + estilo.ANSI_RESET);
+        }else{
+            System.out.println(estilo.PASTEL_YELLOW + "Es la primera vez que inicias sesión en FernanEvents, ¡bienvenido!"
+                    + estilo.ANSI_RESET);
+        }
+    }
+
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.REGISTRO DE NUEVOS USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     /**
      * Mensaje que muestra el título de la seccion de registro de usuarios
@@ -494,7 +503,7 @@ public class VistaFernan{
      * Mensaje que indica que no hay usuarios bloqueados en el sistema
      */
     public void noHayUsuariosBloqueados(){
-        System.out.println(estilo.PASTEL_BLUE + "No hay ningún usuario bloqueado \n" + estilo.ANSI_RESET);
+        System.out.println(estilo.NEON_PINK + "No hay ningún usuario bloqueado \n" + estilo.ANSI_RESET);
     }
 
     /**
