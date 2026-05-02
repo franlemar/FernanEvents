@@ -1,39 +1,5 @@
 [
   {
-    "nombre": "badbunny",
-    "descripcion": "madrid",
-    "categoriaEvento": "MUSICA",
-    "fecha": "2026-06-06",
-    "aforo": 500,
-    "personasInscritas": 123,
-    "tiposDeEntrada": [
-      {
-        "categoria": "INFANTIL",
-        "precio": 100.0,
-        "cantidadDisponible": 60
-      },
-      {
-        "categoria": "GENERAL",
-        "precio": 200.0,
-        "cantidadDisponible": 298
-      },
-      {
-        "categoria": "VIP",
-        "precio": 500.0,
-        "cantidadDisponible": 19
-      }
-    ],
-    "organizador": {
-      "nombre": "chema",
-      "correo": "chemamc3@gmail.com",
-      "password": "$2a$12$P0GqWomMPOnPAzcKqrBiI.hwn5srgFJOuxkF5oswcjO1.5qCWL/eG",
-      "rol": "ORGANIZADOR",
-      "saldo": 0.0,
-      "bloqueado": false,
-      "tipo": "ORGANIZADOR"
-    }
-  },
-  {
     "nombre": "Concierto Olivia Rodrigo Tour",
     "descripcion": "Gira de conciertos del nuevo álbum de Olivia Rodrigo",
     "categoriaEvento": "MUSICA",
@@ -61,6 +27,40 @@
       "nombre": "organizador1",
       "correo": "organizador1@fernanevents.com",
       "password": "$2a$12$vIzMQ/9YbCA58FvDnS86jOf..TEOVeMZmtG5KwmZ5SYVJ41SetjjW",
+      "rol": "ORGANIZADOR",
+      "saldo": 0.0,
+      "bloqueado": false,
+      "tipo": "ORGANIZADOR"
+    }
+  },
+  {
+    "nombre": "badbunny",
+    "descripcion": "madrid",
+    "categoriaEvento": "MUSICA",
+    "fecha": "2026-06-06",
+    "aforo": 500,
+    "personasInscritas": 123,
+    "tiposDeEntrada": [
+      {
+        "categoria": "INFANTIL",
+        "precio": 100.0,
+        "cantidadDisponible": 60
+      },
+      {
+        "categoria": "GENERAL",
+        "precio": 200.0,
+        "cantidadDisponible": 298
+      },
+      {
+        "categoria": "VIP",
+        "precio": 500.0,
+        "cantidadDisponible": 19
+      }
+    ],
+    "organizador": {
+      "nombre": "chema",
+      "correo": "chemamc3@gmail.com",
+      "password": "$2a$12$P0GqWomMPOnPAzcKqrBiI.hwn5srgFJOuxkF5oswcjO1.5qCWL/eG",
       "rol": "ORGANIZADOR",
       "saldo": 0.0,
       "bloqueado": false,

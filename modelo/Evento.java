@@ -151,6 +151,9 @@ public class Evento {
         return tiposDeEntrada;
     }
 
+    /**
+     * Establece los tipos de entrada disponibles para el evento.
+     */
     public void setTiposDeEntrada(ArrayList<Entrada> tiposDeEntrada){
         this.tiposDeEntrada = tiposDeEntrada;
     }
