@@ -97,4 +97,18 @@ public class GestorProperties {
             return false;
         }
     }
+
+    /**
+     * Devuelve todas las entradas del fichero de configuración
+     */
+    public Properties obtenerTodas() {
+        Properties properties = new Properties();
+        try {
+            FileInputStream fis = new FileInputStream(rutaArchivo);
+            properties.load(fis);
+        } catch (IOException e) {
+            System.out.println("Error al leer el fichero de configuración");
+        }
+        return properties;
+    }
 }

@@ -3,6 +3,7 @@ import FernanEvents.modelo.Entrada;
 import FernanEvents.modelo.Evento;
 
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class VistaFernan{
@@ -890,6 +891,26 @@ public class VistaFernan{
      */
     public void enviandoCorreosEntradas() {
         System.out.println(estilo.PASTEL_BLUE + "Enviando resumen de entradas a los asistentes..." + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Metodo para mostrar el properties ordenado
+     */
+    public void mostrarConfiguracionSistema(Properties config) {
+        System.out.println("\n===== CONFIGURACIÓN DEL SISTEMA =====");
+        System.out.println("--- Opciones del sistema ---");
+        for (String clave : config.stringPropertyNames()) {
+            if (!clave.contains("@")) {
+                System.out.println(clave + " = " + config.getProperty(clave));
+            }
+        }
+        System.out.println("\n--- Últimas conexiones ---");
+        for (String clave : config.stringPropertyNames()) {
+            if (clave.contains("@")) {
+                System.out.println(clave + " -> " + config.getProperty(clave));
+            }
+        }
+        System.out.println("=====================================\n");
     }
 
 }
