@@ -2,7 +2,7 @@ package FernanEvents.controlador;
 
 import FernanEvents.modelo.*;
 import FernanEvents.modelo.utilidades.*;
-import FernanEvents.modelo.utilidades.interfaces.GestorProperties;
+import FernanEvents.modelo.utilidades.GestorProperties;
 import FernanEvents.vista.VistaFernan;
 
 import java.time.LocalDateTime;
