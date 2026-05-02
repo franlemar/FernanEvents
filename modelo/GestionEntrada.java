@@ -36,50 +36,51 @@ public class GestionEntrada {
             return;
         }
 
-        gestionarVisualizacionEventosEntradas();
-        vista.pedirNombreEventoInscribir();
-        String eventoAInscribir = s.nextLine();
-        Evento eventoSeleccionado = modeloEve.buscarEventoPorNombre(eventoAInscribir);
+        if(gestionarVisualizacionEventosEntradas()){
+            vista.pedirNombreEventoInscribir();
+            String eventoAInscribir = s.nextLine();
+            Evento eventoSeleccionado = modeloEve.buscarEventoPorNombre(eventoAInscribir);
 
-        if(eventoSeleccionado != null){
-            ArrayList<Entrada> entradas = eventoSeleccionado.getTiposDeEntrada();
-            vista.menuEntradaTipo(entradas);
-            int opcionTipoEntrada = Integer.parseInt(s.nextLine()) - 1;
+            if(eventoSeleccionado != null){
+                ArrayList<Entrada> entradas = eventoSeleccionado.getTiposDeEntrada();
+                vista.menuEntradaTipo(entradas);
+                int opcionTipoEntrada = Integer.parseInt(s.nextLine()) - 1;
 
-            if(opcionTipoEntrada < 0 || opcionTipoEntrada >= eventoSeleccionado.getTiposDeEntrada().size()){
-                vista.opcionNoValida();
-            }else{
-                Entrada tipoEntradaElegido = eventoSeleccionado.getTiposDeEntrada().get(opcionTipoEntrada);
-                vista.mostrarDetallePreCompra(tipoEntradaElegido.getCategoria().toString(), tipoEntradaElegido.getPrecio());
-                int cantidadEntradas = Integer.parseInt(s.nextLine());
-
-                Asistente asistente = (Asistente) usuarioLogueado;
-                int entradasYaCompradas = asistente.getNumEntradasEvento(eventoSeleccionado.getNombre());
-
-                if(entradasYaCompradas + cantidadEntradas > 4){
-                    vista.errorLimiteEntradas(entradasYaCompradas);
-                }else if(cantidadEntradas <= 0){
-                    vista.errorCantidadNoValida();
+                if(opcionTipoEntrada < 0 || opcionTipoEntrada >= eventoSeleccionado.getTiposDeEntrada().size()){
+                    vista.opcionNoValida();
                 }else{
-                    float precioTotal = cantidadEntradas * tipoEntradaElegido.getPrecio();
+                    Entrada tipoEntradaElegido = eventoSeleccionado.getTiposDeEntrada().get(opcionTipoEntrada);
+                    vista.mostrarDetallePreCompra(tipoEntradaElegido.getCategoria().toString(), tipoEntradaElegido.getPrecio());
+                    int cantidadEntradas = Integer.parseInt(s.nextLine());
 
-                    if(tipoEntradaElegido.getCantidadDisponible() < cantidadEntradas){
-                        vista.noHayStockEntradas();
-                    }else if(usuarioLogueado.getSaldo() < precioTotal){
-                        vista.saldoInsuficiente();
+                    Asistente asistente = (Asistente) usuarioLogueado;
+                    int entradasYaCompradas = asistente.getNumEntradasEvento(eventoSeleccionado.getNombre());
+
+                    if(entradasYaCompradas + cantidadEntradas > 4){
+                        vista.errorLimiteEntradas(entradasYaCompradas);
+                    }else if(cantidadEntradas <= 0){
+                        vista.errorCantidadNoValida();
                     }else{
-                        String mensajeConfirmaCompra = confirmaCompraEntrada(cantidadEntradas, precioTotal);
-                        if(mensajeConfirmaCompra.equalsIgnoreCase("si")){
-                            movimientoSaldosCompraEntrada(asistente, precioTotal, eventoSeleccionado,
-                                    tipoEntradaElegido.getCategoria(), cantidadEntradas);
+                        float precioTotal = cantidadEntradas * tipoEntradaElegido.getPrecio();
+
+                        if(tipoEntradaElegido.getCantidadDisponible() < cantidadEntradas){
+                            vista.noHayStockEntradas();
+                        }else if(usuarioLogueado.getSaldo() < precioTotal){
+                            vista.saldoInsuficiente();
                         }else{
-                            vista.operacionCancelada();
+                            String mensajeConfirmaCompra = confirmaCompraEntrada(cantidadEntradas, precioTotal);
+                            if(mensajeConfirmaCompra.equalsIgnoreCase("si")){
+                                movimientoSaldosCompraEntrada(asistente, precioTotal, eventoSeleccionado,
+                                        tipoEntradaElegido.getCategoria(), cantidadEntradas);
+                            }else{
+                                vista.operacionCancelada();
+                            }
                         }
                     }
                 }
+            }else{
+                vista.eventoNoEncontrado();
             }
-        }else{
-            vista.eventoNoEncontrado();
         }
     }
 
@@ -107,24 +108,24 @@ public class GestionEntrada {
         return s.nextLine();
     }
 
-    public void gestionarVisualizacionEventosEntradas() {
+    public boolean gestionarVisualizacionEventosEntradas() {
         Scanner s = new Scanner(System.in);
         vista.menuOrdenaEventos();
         int opcionEventos = Integer.parseInt(s.nextLine());
-        if (opcionEventos == 3) return;
+        if (opcionEventos == 3) return false;
 
         switch (opcionEventos) {
             case 1 -> modeloEve.ordenarEventosPorFecha();
             case 2 -> modeloEve.ordenarEventosPorAsistentesDesc();
             default -> {
                 vista.opcionNoValida();
-                return;
+                return false;
             }
         }
 
         vista.menuOrdenaEntradas();
         int opcionEntradas = Integer.parseInt(s.nextLine());
-        if (opcionEntradas == 4) return;
+        if (opcionEntradas == 4) return false;
 
         for (Evento evento : modeloEve.getEventos()) {
             switch (opcionEntradas) {
@@ -133,11 +134,12 @@ public class GestionEntrada {
                 case 3 -> modeloEve.ordenarEntradasPorTipo(evento);
                 default -> {
                     vista.opcionNoValida();
-                    return;
+                    return false;
                 }
             }
         }
         modeloEve.mostrarEventos();
+        return true;
     }
 
     /**

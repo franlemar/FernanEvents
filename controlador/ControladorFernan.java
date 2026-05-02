@@ -28,8 +28,8 @@ public class ControladorFernan {
         this.modeloUsu = modeloUsu;
         this.vista = vista;
         this.modeloEve = modeloEve;
-        this.logs = new GestorLogs("datosJSON/registro_actividad.log");
         this.properties = new GestorProperties("datosJSON/configuracion.properties");
+        this.logs = new GestorLogs(properties.obtenerRuta("ruta.logs"));
         this.modeloEnt = new GestionEntrada(modeloUsu, modeloEve, vista, usuarioLogueado, logs);
 
         cargarDatos();
@@ -85,7 +85,7 @@ public class ControladorFernan {
                         if(modeloEve.getEventos().isEmpty()){
                             vista.noHayEventos();
                         }else{
-                            gestionarVisualizacionEventosEntradas();
+                            modeloEnt.gestionarVisualizacionEventosEntradas();
                         }
                     }
                     break;
@@ -897,14 +897,14 @@ public class ControladorFernan {
      * los usuarios predefinidos.
      */
     private void cargarDatos() {
-        ArrayList<Usuario> usuariosGuardados = PersistenciaJSON.cargarUsuarios();
+        ArrayList<Usuario> usuariosGuardados = PersistenciaJSON.cargarUsuarios(properties.obtenerRuta("ruta.usuarios"));
         if (usuariosGuardados.isEmpty()) {
             modeloUsu.cargarUsuariosPredefinidos();
         } else {
             for (Usuario u : usuariosGuardados) modeloUsu.aniadirUsuario(u);
         }
 
-        ArrayList<Evento> eventosGuardados = PersistenciaJSON.cargarEventos();
+        ArrayList<Evento> eventosGuardados = PersistenciaJSON.cargarEventos(properties.obtenerRuta("ruta.eventos"));
         for (Evento e : eventosGuardados) modeloEve.aniadirEvento(e);
     }
 
@@ -913,8 +913,8 @@ public class ControladorFernan {
      * al cerrar la aplicación.
      */
     private void guardarDatos() {
-        PersistenciaJSON.guardarUsuarios(modeloUsu.getUsuarios());
-        PersistenciaJSON.guardarEventos(modeloEve.getEventos());
+        PersistenciaJSON.guardarUsuarios(modeloUsu.getUsuarios(), properties.obtenerRuta("ruta.usuarios"));
+        PersistenciaJSON.guardarEventos(modeloEve.getEventos(), properties.obtenerRuta("ruta.eventos"));
     }
 
     /**

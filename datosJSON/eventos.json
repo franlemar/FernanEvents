@@ -8,9 +8,9 @@
     "personasInscritas": 123,
     "tiposDeEntrada": [
       {
-        "categoria": "VIP",
-        "precio": 500.0,
-        "cantidadDisponible": 19
+        "categoria": "INFANTIL",
+        "precio": 100.0,
+        "cantidadDisponible": 60
       },
       {
         "categoria": "GENERAL",
@@ -18,9 +18,9 @@
         "cantidadDisponible": 298
       },
       {
-        "categoria": "INFANTIL",
-        "precio": 100.0,
-        "cantidadDisponible": 60
+        "categoria": "VIP",
+        "precio": 500.0,
+        "cantidadDisponible": 19
       }
     ],
     "organizador": {
@@ -42,9 +42,9 @@
     "personasInscritas": 100,
     "tiposDeEntrada": [
       {
-        "categoria": "VIP",
-        "precio": 129.9,
-        "cantidadDisponible": 100
+        "categoria": "INFANTIL",
+        "precio": 0.0,
+        "cantidadDisponible": 0
       },
       {
         "categoria": "GENERAL",
@@ -52,9 +52,9 @@
         "cantidadDisponible": 300
       },
       {
-        "categoria": "INFANTIL",
-        "precio": 0.0,
-        "cantidadDisponible": 0
+        "categoria": "VIP",
+        "precio": 129.9,
+        "cantidadDisponible": 100
       }
     ],
     "organizador": {
