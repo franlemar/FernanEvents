@@ -21,6 +21,9 @@ public class GestionEntrada {
         this.logs = logs;
     }
 
+    /**
+     * Establece el usuario logueado actual a través de un usuario que recibe el método por parámetro
+     */
     public void setUsuarioLogueado(Usuario usuarioLogueado) {
         this.usuarioLogueado = usuarioLogueado;
     }
@@ -108,6 +111,10 @@ public class GestionEntrada {
         return s.nextLine();
     }
 
+    /**
+     * Método que se encarga de ordenar y mostrar los eventos disponibles en FernanEvents en función de los
+     * criterios que introduzca por consola el usuario
+     */
     public boolean gestionarVisualizacionEventosEntradas() {
         Scanner s = new Scanner(System.in);
         vista.menuOrdenaEventos();

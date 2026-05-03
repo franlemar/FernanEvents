@@ -16,14 +16,6 @@ public class GestorProperties {
         this.rutaArchivo = rutaArchivo;
     }
 
-    public String getRutaArchivo() {
-        return rutaArchivo;
-    }
-
-    public void setRutaArchivo(String rutaArchivo) {
-        this.rutaArchivo = rutaArchivo;
-    }
-
     /**
      * Método que se encarga de obtener la última fecha de conexión a FernanEvents de un usuario
      */
@@ -40,6 +32,10 @@ public class GestorProperties {
         }
     }
 
+    /**
+     * Método que se encarga de actualizar el último login realizado para cada usuario, almacenando el correo del usuario
+     *  y la fecha exacta de cuando inicia sesión en la plataforma
+     */
     public void actualizaUltimoLogin(String correoUsuario, String fechaFormateada){
         Properties properties = new Properties();
 

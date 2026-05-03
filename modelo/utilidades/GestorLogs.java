@@ -14,14 +14,10 @@ public class GestorLogs {
         this.ruta_Archivo = ruta;
     }
 
-    public String getRuta_Archivo() {
-        return ruta_Archivo;
-    }
-
-    public void setRuta_Archivo(String ruta_Archivo) {
-        this.ruta_Archivo = ruta_Archivo;
-    }
-
+    /**
+     * Crea un registro en el archivo de logs en función de la acción realizada en FernanEvents, con el nombre
+     * de usuario que lo realiza y la fecha y hora del momento exacto
+     */
     public void registrar(String accion, String nombreUsuario){
         LocalDateTime ahora = LocalDateTime.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");

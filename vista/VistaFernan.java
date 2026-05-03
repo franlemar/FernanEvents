@@ -179,6 +179,9 @@ public class VistaFernan{
         System.out.println();
     }
 
+    /**
+     * Devuelve la información relacionada con el modo invitado de FernanEvents cuando éste está habilitado
+     */
     public void infoModoInvitadoHabilitado(){
         System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ MODO INVITADO ✦" + estilo.ANSI_RESET);
         System.out.println(estilo.PASTEL_BLUE + "Gracias al modo invitado, se pueden consultar los eventos que hay " +
@@ -187,6 +190,9 @@ public class VistaFernan{
                 estilo.PASTEL_YELLOW + "registrarse \n");
     }
 
+    /**
+     * Devuelve un mensaje al usuario para hacerle saber que el modo invitado de FernanEvents está deshabilitado
+     */
     public void modoInvitadoDeshabilitado(){
         System.out.println(estilo.ANSI_RED + "El modo para invitados está deshabilitado ⛔️ " + estilo.ANSI_RESET);
     }
@@ -398,6 +404,9 @@ public class VistaFernan{
                 "El código introducido no es correcto. Inténtelo de nuevo \n" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Muestra al usuario la fecha y hora de la última vez que inició sesión en FernanEvents
+     */
     public void muestraUltimoLogin(String fecha){
         if(fecha != null){
             System.out.println(estilo.PASTEL_GREEN + "Usted inició sesión por última vez el " + fecha + estilo.ANSI_RESET);
@@ -743,6 +752,9 @@ public class VistaFernan{
         System.out.print(estilo.PASTEL_BLUE + "Escriba el nombre del evento al que desea inscribirse: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Muestra una lista con los nombres de los eventos disponibles
+     */
     public void mostrarListaEventos(ArrayList<Evento> eventos, int total) {
         System.out.println(estilo.PASTEL_BLUE + "Eventos disponibles:" + estilo.ANSI_RESET);
         for (int i = 0; i < total; i++) {

@@ -1,39 +1,5 @@
 [
   {
-    "nombre": "Concierto Olivia Rodrigo Tour",
-    "descripcion": "Gira de conciertos del nuevo álbum de Olivia Rodrigo",
-    "categoriaEvento": "MUSICA",
-    "fecha": "2027-07-07",
-    "aforo": 500,
-    "personasInscritas": 100,
-    "tiposDeEntrada": [
-      {
-        "categoria": "INFANTIL",
-        "precio": 0.0,
-        "cantidadDisponible": 0
-      },
-      {
-        "categoria": "GENERAL",
-        "precio": 89.9,
-        "cantidadDisponible": 300
-      },
-      {
-        "categoria": "VIP",
-        "precio": 129.9,
-        "cantidadDisponible": 100
-      }
-    ],
-    "organizador": {
-      "nombre": "organizador1",
-      "correo": "organizador1@fernanevents.com",
-      "password": "$2a$12$vIzMQ/9YbCA58FvDnS86jOf..TEOVeMZmtG5KwmZ5SYVJ41SetjjW",
-      "rol": "ORGANIZADOR",
-      "saldo": 0.0,
-      "bloqueado": false,
-      "tipo": "ORGANIZADOR"
-    }
-  },
-  {
     "nombre": "badbunny",
     "descripcion": "madrid",
     "categoriaEvento": "MUSICA",
@@ -42,14 +8,14 @@
     "personasInscritas": 123,
     "tiposDeEntrada": [
       {
-        "categoria": "INFANTIL",
-        "precio": 100.0,
-        "cantidadDisponible": 60
-      },
-      {
         "categoria": "GENERAL",
         "precio": 200.0,
         "cantidadDisponible": 298
+      },
+      {
+        "categoria": "INFANTIL",
+        "precio": 100.0,
+        "cantidadDisponible": 60
       },
       {
         "categoria": "VIP",
@@ -61,6 +27,40 @@
       "nombre": "chema",
       "correo": "chemamc3@gmail.com",
       "password": "$2a$12$P0GqWomMPOnPAzcKqrBiI.hwn5srgFJOuxkF5oswcjO1.5qCWL/eG",
+      "rol": "ORGANIZADOR",
+      "saldo": 0.0,
+      "bloqueado": false,
+      "tipo": "ORGANIZADOR"
+    }
+  },
+  {
+    "nombre": "Concierto Olivia Rodrigo Tour",
+    "descripcion": "Gira de conciertos del nuevo álbum de Olivia Rodrigo",
+    "categoriaEvento": "MUSICA",
+    "fecha": "2027-07-07",
+    "aforo": 500,
+    "personasInscritas": 100,
+    "tiposDeEntrada": [
+      {
+        "categoria": "GENERAL",
+        "precio": 89.9,
+        "cantidadDisponible": 300
+      },
+      {
+        "categoria": "INFANTIL",
+        "precio": 0.0,
+        "cantidadDisponible": 0
+      },
+      {
+        "categoria": "VIP",
+        "precio": 129.9,
+        "cantidadDisponible": 100
+      }
+    ],
+    "organizador": {
+      "nombre": "organizador1",
+      "correo": "organizador1@fernanevents.com",
+      "password": "$2a$12$vIzMQ/9YbCA58FvDnS86jOf..TEOVeMZmtG5KwmZ5SYVJ41SetjjW",
       "rol": "ORGANIZADOR",
       "saldo": 0.0,
       "bloqueado": false,
