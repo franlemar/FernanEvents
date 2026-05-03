@@ -898,20 +898,20 @@ public class VistaFernan{
      * Metodo para mostrar el properties ordenado
      */
     public void mostrarConfiguracionSistema(Properties config) {
-        System.out.println("\n===== CONFIGURACIÓN DEL SISTEMA =====");
-        System.out.println("--- Opciones del sistema ---");
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + estilo.UNDERLINE + "\n ✦ CONFIGURACIÓN DEL SISTEMA ✦" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_YELLOW + estilo.BOLD + " Opciones del sistema " + estilo.ANSI_RESET);
         for (String clave : config.stringPropertyNames()) {
             if (!clave.contains("@")) {
-                System.out.println(clave + " = " + config.getProperty(clave));
+                System.out.println(estilo.PASTEL_BLUE + clave + " = " + config.getProperty(clave) + estilo.ANSI_RESET);
             }
         }
-        System.out.println("\n--- Últimas conexiones ---");
+        System.out.println(estilo.PASTEL_YELLOW + estilo.BOLD + "\n Últimas conexiones " + estilo.ANSI_RESET);
         for (String clave : config.stringPropertyNames()) {
             if (clave.contains("@")) {
-                System.out.println(clave + " -> " + config.getProperty(clave));
+                System.out.println(estilo.PASTEL_BLUE + clave + " -> " + config.getProperty(clave) + estilo.ANSI_RESET);
             }
         }
-        System.out.println("=====================================\n");
+        System.out.println(estilo.PASTEL_GREEN + "=====================================\n" + estilo.ANSI_RESET);
     }
 
 }

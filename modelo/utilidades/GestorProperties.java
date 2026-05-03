@@ -1,5 +1,6 @@
 package FernanEvents.modelo.utilidades;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,6 +32,7 @@ public class GestorProperties {
         try{
             FileInputStream fis = new FileInputStream(rutaArchivo);
             properties.load(fis);
+            fis.close();
             return properties.getProperty(correoUsuario);
 
         }catch (IOException e){
@@ -40,16 +42,24 @@ public class GestorProperties {
 
     public void actualizaUltimoLogin(String correoUsuario, String fechaFormateada){
         Properties properties = new Properties();
-        try{
-            FileInputStream fis = new FileInputStream(rutaArchivo);
-            properties.load(fis);
 
-        }catch (IOException e){}
+        File archivo = new File(rutaArchivo);
+        if(archivo.exists()){
+            try{
+                FileInputStream fis = new FileInputStream(rutaArchivo);
+                properties.load(fis);
+                fis.close();
+
+            }catch (IOException e){
+                System.out.println("ERROR: no se pudieron cargar los datos anteriores");
+            }
+        }
+        properties.setProperty(correoUsuario, fechaFormateada);
 
         try{
             FileOutputStream fos = new FileOutputStream(rutaArchivo);
-            properties.setProperty(correoUsuario, fechaFormateada);
             properties.store(fos, "Registro de configuración y últimos logins realizados por usuarios");
+            fos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -74,6 +84,7 @@ public class GestorProperties {
         try {
             FileInputStream fis = new FileInputStream(rutaArchivo);
             properties.load(fis);
+            fis.close();
             return properties.getProperty(clave);
 
         } catch (IOException e) {
@@ -90,6 +101,7 @@ public class GestorProperties {
         try {
             FileInputStream fis = new FileInputStream(rutaArchivo);
             properties.load(fis);
+            fis.close();
             String valor = properties.getProperty("acceso.invitado", "false");
             return Boolean.parseBoolean(valor);
 
@@ -106,6 +118,7 @@ public class GestorProperties {
         try {
             FileInputStream fis = new FileInputStream(rutaArchivo);
             properties.load(fis);
+            fis.close();
         } catch (IOException e) {
             System.out.println("Error al leer el fichero de configuración");
         }
