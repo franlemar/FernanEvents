@@ -175,6 +175,9 @@ public class GestionUsuario{
         return false;
     }
 
+    /**
+     * Elimina un evento del historial de inscripciones de todos los asistentes.
+     */
     public void limpiarEventoDeAsistentes(String nombreEvento){
         for(Usuario u : usuarios.values()){
             if(u instanceof Asistente asistente){

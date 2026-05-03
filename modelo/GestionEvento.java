@@ -152,6 +152,9 @@ public class GestionEvento {
 
     }
 
+    /**
+     * Devuelve un ArrayList de Eventos
+     */
     public ArrayList<Evento> getEventos() {
         return eventos;
     }

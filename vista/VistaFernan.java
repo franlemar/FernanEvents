@@ -3,6 +3,7 @@ import FernanEvents.modelo.Entrada;
 import FernanEvents.modelo.Evento;
 
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class VistaFernan{
@@ -16,7 +17,8 @@ public class VistaFernan{
         System.out.println(estilo.PASTEL_BLUE + "Bienvenido a FernanEvents. Seleccione qué desea hacer: " + estilo.ANSI_RESET);
         System.out.println(estilo.PASTEL_BLUE + "1. Iniciar sesión");
         System.out.println("2. Registrarse");
-        System.out.println(estilo.NEON_PINK + "3. Salir" + estilo.ANSI_RESET);
+        System.out.println("3. Entrar como invitado");
+        System.out.println(estilo.NEON_PINK + "4. Salir" + estilo.ANSI_RESET);
         System.out.println(estilo.PASTEL_GREEN + "Seleccione una opción: " + estilo.ANSI_RESET);
     }
 
@@ -30,7 +32,10 @@ public class VistaFernan{
         System.out.println("2. Eventos");
         System.out.println("3. Cartera digital");
         System.out.println("4. Configuración");
-        System.out.println(estilo.NEON_PINK + "5. Cerrar sesión" + estilo.ANSI_RESET);
+        System.out.println("5. Enviar listado de eventos por correo");
+        System.out.println("6. Enviar listado de entradas por correo");
+        System.out.println("7. Mostrar configuración avanzada");
+        System.out.println(estilo.NEON_PINK + "8. Cerrar sesión" + estilo.ANSI_RESET);
 
         System.out.println(estilo.PASTEL_GREEN + "Seleccione la opción deseada: " + estilo.ANSI_RESET);
     }
@@ -172,6 +177,24 @@ public class VistaFernan{
 
         System.out.println(estilo.NEON_GREEN + estilo.BOLD + "✔ Programa ejecutado correctamente." + estilo.ANSI_RESET);
         System.out.println();
+    }
+
+    /**
+     * Devuelve la información relacionada con el modo invitado de FernanEvents cuando éste está habilitado
+     */
+    public void infoModoInvitadoHabilitado(){
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + "✦ MODO INVITADO ✦" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_BLUE + "Gracias al modo invitado, se pueden consultar los eventos que hay " +
+                "disponibles en la plataforma.");
+        System.out.println("Para cualquier gestión relacionada con la compra de entradas, es necesario " +
+                estilo.PASTEL_YELLOW + "registrarse \n");
+    }
+
+    /**
+     * Devuelve un mensaje al usuario para hacerle saber que el modo invitado de FernanEvents está deshabilitado
+     */
+    public void modoInvitadoDeshabilitado(){
+        System.out.println(estilo.ANSI_RED + "El modo para invitados está deshabilitado ⛔️ " + estilo.ANSI_RESET);
     }
 
     /**
@@ -381,6 +404,18 @@ public class VistaFernan{
                 "El código introducido no es correcto. Inténtelo de nuevo \n" + estilo.ANSI_RESET);
     }
 
+    /**
+     * Muestra al usuario la fecha y hora de la última vez que inició sesión en FernanEvents
+     */
+    public void muestraUltimoLogin(String fecha){
+        if(fecha != null){
+            System.out.println(estilo.PASTEL_GREEN + "Usted inició sesión por última vez el " + fecha + estilo.ANSI_RESET);
+        }else{
+            System.out.println(estilo.PASTEL_YELLOW + "Es la primera vez que inicias sesión en FernanEvents, ¡bienvenido!"
+                    + estilo.ANSI_RESET);
+        }
+    }
+
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.REGISTRO DE NUEVOS USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     /**
      * Mensaje que muestra el título de la seccion de registro de usuarios
@@ -492,7 +527,7 @@ public class VistaFernan{
      * Mensaje que indica que no hay usuarios bloqueados en el sistema
      */
     public void noHayUsuariosBloqueados(){
-        System.out.println(estilo.PASTEL_BLUE + "No hay ningún usuario bloqueado \n" + estilo.ANSI_RESET);
+        System.out.println(estilo.NEON_PINK + "No hay ningún usuario bloqueado \n" + estilo.ANSI_RESET);
     }
 
     /**
@@ -717,6 +752,9 @@ public class VistaFernan{
         System.out.print(estilo.PASTEL_BLUE + "Escriba el nombre del evento al que desea inscribirse: " + estilo.ANSI_RESET);
     }
 
+    /**
+     * Muestra una lista con los nombres de los eventos disponibles
+     */
     public void mostrarListaEventos(ArrayList<Evento> eventos, int total) {
         System.out.println(estilo.PASTEL_BLUE + "Eventos disponibles:" + estilo.ANSI_RESET);
         for (int i = 0; i < total; i++) {
@@ -853,4 +891,39 @@ public class VistaFernan{
                 " euros" + estilo.ANSI_RESET);
 
     }
+
+    /**
+     * Mensaje informando que se están enviando los correos de eventos
+     */
+    public void enviandoCorreosEventos() {
+        System.out.println(estilo.PASTEL_BLUE + "Enviando resumen de eventos a los organizadores..." + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Mensaje informando que se están enviando los correos de entradas
+     */
+    public void enviandoCorreosEntradas() {
+        System.out.println(estilo.PASTEL_BLUE + "Enviando resumen de entradas a los asistentes..." + estilo.ANSI_RESET);
+    }
+
+    /**
+     * Metodo para mostrar el properties ordenado
+     */
+    public void mostrarConfiguracionSistema(Properties config) {
+        System.out.println(estilo.PASTEL_PURPLE + estilo.BOLD + estilo.UNDERLINE + "\n ✦ CONFIGURACIÓN DEL SISTEMA ✦" + estilo.ANSI_RESET);
+        System.out.println(estilo.PASTEL_YELLOW + estilo.BOLD + " Opciones del sistema " + estilo.ANSI_RESET);
+        for (String clave : config.stringPropertyNames()) {
+            if (!clave.contains("@")) {
+                System.out.println(estilo.PASTEL_BLUE + clave + " = " + config.getProperty(clave) + estilo.ANSI_RESET);
+            }
+        }
+        System.out.println(estilo.PASTEL_YELLOW + estilo.BOLD + "\n Últimas conexiones " + estilo.ANSI_RESET);
+        for (String clave : config.stringPropertyNames()) {
+            if (clave.contains("@")) {
+                System.out.println(estilo.PASTEL_BLUE + clave + " -> " + config.getProperty(clave) + estilo.ANSI_RESET);
+            }
+        }
+        System.out.println(estilo.PASTEL_GREEN + "=====================================\n" + estilo.ANSI_RESET);
+    }
+
 }

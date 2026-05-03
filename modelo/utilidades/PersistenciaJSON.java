@@ -2,18 +2,13 @@ package FernanEvents.modelo.utilidades;
 
 import FernanEvents.modelo.*;
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class PersistenciaJSON {
-
-    private static final String ARCHIVO_USUARIOS = "datosJSON/usuarios.json";
-    private static final String ARCHIVO_EVENTOS  = "datosJSON/eventos.json";
 
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class,
@@ -30,21 +25,21 @@ public class PersistenciaJSON {
     /**
      * Guarda una colección de usuarios en un archivo JSON, teniendo en cuenta el rol de cada usuario(Admin, Organizador o Asistente)
      */
-    public static void guardarUsuarios(Collection<Usuario> usuarios) {
+    public static void guardarUsuarios(Collection<Usuario> usuarios, String ruta) {
         JsonArray array = new JsonArray();
         for (Usuario u : usuarios) {
             JsonObject obj = gson.toJsonTree(u).getAsJsonObject();
             obj.addProperty("tipo", u.getRol().name());
             array.add(obj);
         }
-        escribirArchivo(ARCHIVO_USUARIOS, gson.toJson(array));
+        escribirArchivo(gson.toJson(array), ruta);
     }
 
     /**
      * Guarda una lista de eventos en un archivo JSON, además del organizador al que corresponde cada evento
      *
      */
-    public static void guardarEventos(ArrayList<Evento> eventos) {
+    public static void guardarEventos(ArrayList<Evento> eventos, String ruta) {
         JsonArray array = new JsonArray();
         for (Evento e : eventos) {
             JsonObject obj = gson.toJsonTree(e).getAsJsonObject();
@@ -54,7 +49,7 @@ public class PersistenciaJSON {
             }
             array.add(obj);
         }
-        escribirArchivo(ARCHIVO_EVENTOS, gson.toJson(array));
+        escribirArchivo(gson.toJson(array), ruta);
     }
 
     // --------------------CARGAR ------------------------
@@ -62,8 +57,8 @@ public class PersistenciaJSON {
     /**
      * Carga los usuarios almacenados en un archivo JSON al momento de iniciar FernanEvents
      */
-    public static ArrayList<Usuario> cargarUsuarios() {
-        String contenido = leerArchivo(ARCHIVO_USUARIOS);
+    public static ArrayList<Usuario> cargarUsuarios(String ruta) {
+        String contenido = leerArchivo(ruta);
         if (contenido == null) return new ArrayList<>();
 
         ArrayList<Usuario> lista = new ArrayList<>();
@@ -88,8 +83,8 @@ public class PersistenciaJSON {
     /**
      * Carga los eventos almacenador en un archivo JSON al momento de iniciar FernanEvents
      */
-    public static ArrayList<Evento> cargarEventos() {
-        String contenido = leerArchivo(ARCHIVO_EVENTOS);
+    public static ArrayList<Evento> cargarEventos(String ruta) {
+        String contenido = leerArchivo(ruta);
         if (contenido == null) return new ArrayList<>();
 
         ArrayList<Evento> lista = new ArrayList<>();
@@ -129,7 +124,7 @@ public class PersistenciaJSON {
     /**
      * Método encargado de escribir texto en un archivo. Recibe por parámetro la ruta donde debe trabajar así como el contenido a escribir
      */
-    private static void escribirArchivo(String ruta, String contenido) {
+    private static void escribirArchivo(String contenido, String ruta) {
         try (Writer writer = new FileWriter(ruta)) {
             writer.write(contenido);
         } catch (IOException e) {

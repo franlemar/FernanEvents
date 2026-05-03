@@ -10,6 +10,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Properties;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.List;
+import java.util.Map;
+
 public class EnvioGmail {
     /**
      * Enviar correo con usando Gmail SMTP
@@ -273,5 +284,266 @@ public class EnvioGmail {
         </body>
         </html>
         """.formatted(nombreInvitado, nombreRemitente, fechaFormateada);
+    }
+
+    /**
+     * Genera un Excel con el resumen de eventos de un organizador y lo envía por correo
+     */
+    public static void enviarResumenEventosOrganizador(String correoOrganizador, String nombreOrganizador, List<FernanEvents.modelo.Evento> eventos) {
+        try {
+            // Crear Excel
+            Workbook wb = new XSSFWorkbook();
+            Sheet hoja = wb.createSheet("Mis Eventos");
+
+            // Cabecera
+            Row cabecera = hoja.createRow(0);
+            String[] columnas = {"Nombre", "Categoría", "Fecha", "Aforo", "Inscritos", "Aforo restante", "Tipo entrada", "Precio", "Disponibles"};
+            for (int i = 0; i < columnas.length; i++) {
+                cabecera.createCell(i).setCellValue(columnas[i]);
+            }
+
+            int fila = 1;
+            for (FernanEvents.modelo.Evento e : eventos) {
+                if (e.getOrganizador() != null && e.getOrganizador().getCorreo().equalsIgnoreCase(correoOrganizador)) {
+                    if (e.getTiposDeEntrada().isEmpty()) {
+                        Row row = hoja.createRow(fila++);
+                        row.createCell(0).setCellValue(e.getNombre());
+                        row.createCell(1).setCellValue(e.getCategoria().toString());
+                        row.createCell(2).setCellValue(e.getFecha().toString());
+                        row.createCell(3).setCellValue(e.getAforo());
+                        row.createCell(4).setCellValue(e.getPersonasInscritas());
+                        row.createCell(5).setCellValue(e.getAforoRestante());
+                    } else {
+                        for (FernanEvents.modelo.Entrada entrada : e.getTiposDeEntrada()) {
+                            Row row = hoja.createRow(fila++);
+                            row.createCell(0).setCellValue(e.getNombre());
+                            row.createCell(1).setCellValue(e.getCategoria().toString());
+                            row.createCell(2).setCellValue(e.getFecha().toString());
+                            row.createCell(3).setCellValue(e.getAforo());
+                            row.createCell(4).setCellValue(e.getPersonasInscritas());
+                            row.createCell(5).setCellValue(e.getAforoRestante());
+                            row.createCell(6).setCellValue(entrada.getCategoria().toString());
+                            row.createCell(7).setCellValue(entrada.getPrecio());
+                            row.createCell(8).setCellValue(entrada.getCantidadDisponible());
+                        }
+                    }
+                }
+            }
+
+            // Guardar archivo temporal
+            File archivo = File.createTempFile("eventos_" + nombreOrganizador, ".xlsx");
+            try (FileOutputStream fos = new FileOutputStream(archivo)) {
+                wb.write(fos);
+            }
+            wb.close();
+
+            // Enviar correo con adjunto
+            String remitente = "chemamc3@gmail.com";
+            String clave = "blne cdaw znbi vmtn";
+            Properties props = System.getProperties();
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.user", remitente);
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.port", "587");
+
+            Session session = Session.getDefaultInstance(props);
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(remitente));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correoOrganizador));
+            message.setSubject("FernanEvents - Resumen de tus eventos");
+
+            MimeBodyPart textoParte = new MimeBodyPart();
+            textoParte.setContent(plantillaResumenEventos(nombreOrganizador), "text/html; charset=utf-8");
+
+            MimeBodyPart adjuntoParte = new MimeBodyPart();
+            DataSource source = new FileDataSource(archivo);
+            adjuntoParte.setDataHandler(new javax.activation.DataHandler(source));
+            adjuntoParte.setFileName("resumen_eventos_" + nombreOrganizador + ".xlsx");
+
+            MimeMultipart multipart = new MimeMultipart();
+            multipart.addBodyPart(textoParte);
+            multipart.addBodyPart(adjuntoParte);
+            message.setContent(multipart);
+
+            Transport transport = session.getTransport("smtp");
+            transport.connect("smtp.gmail.com", remitente, clave);
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+
+            archivo.delete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Genera un Excel con el resumen de entradas de un asistente y lo envía por correo
+     */
+    public static void enviarResumenEntradasAsistente(String correoAsistente, String nombreAsistente, Map<String, Integer> eventosInscrito, List<FernanEvents.modelo.Evento> eventos) {
+        try {
+            Workbook wb = new XSSFWorkbook();
+            Sheet hoja = wb.createSheet("Mis Entradas");
+
+            Row cabecera = hoja.createRow(0);
+            String[] columnas = {"Evento", "Categoría", "Fecha", "Nº Entradas"};
+            for (int i = 0; i < columnas.length; i++) {
+                cabecera.createCell(i).setCellValue(columnas[i]);
+            }
+
+            int fila = 1;
+            for (Map.Entry<String, Integer> entry : eventosInscrito.entrySet()) {
+                String nombreEvento = entry.getKey();
+                int cantidad = entry.getValue();
+                Row row = hoja.createRow(fila++);
+                row.createCell(0).setCellValue(nombreEvento);
+
+                // Buscar datos del evento para añadir categoría y fecha
+                FernanEvents.modelo.Evento evento = null;
+                for (FernanEvents.modelo.Evento e : eventos) {
+                    if (e.getNombre().equalsIgnoreCase(nombreEvento)) {
+                        evento = e;
+                        break;
+                    }
+                }
+                if (evento != null) {
+                    row.createCell(1).setCellValue(evento.getCategoria().toString());
+                    row.createCell(2).setCellValue(evento.getFecha().toString());
+                } else {
+                    row.createCell(1).setCellValue("Evento eliminado");
+                    row.createCell(2).setCellValue("-");
+                }
+                row.createCell(3).setCellValue(cantidad);
+            }
+
+            File archivo = File.createTempFile("entradas_" + nombreAsistente, ".xlsx");
+            try (FileOutputStream fos = new FileOutputStream(archivo)) {
+                wb.write(fos);
+            }
+            wb.close();
+
+            String remitente = "chemamc3@gmail.com";
+            String clave = "blne cdaw znbi vmtn";
+            Properties props = System.getProperties();
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.user", remitente);
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.port", "587");
+
+            Session session = Session.getDefaultInstance(props);
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(remitente));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correoAsistente));
+            message.setSubject("FernanEvents - Resumen de tus entradas");
+
+            MimeBodyPart textoParte = new MimeBodyPart();
+            textoParte.setContent(plantillaResumenEntradas(nombreAsistente), "text/html; charset=utf-8");
+
+            MimeBodyPart adjuntoParte = new MimeBodyPart();
+            DataSource source = new FileDataSource(archivo);
+            adjuntoParte.setDataHandler(new javax.activation.DataHandler(source));
+            adjuntoParte.setFileName("resumen_entradas_" + nombreAsistente + ".xlsx");
+
+            MimeMultipart multipart = new MimeMultipart();
+            multipart.addBodyPart(textoParte);
+            multipart.addBodyPart(adjuntoParte);
+            message.setContent(multipart);
+
+            Transport transport = session.getTransport("smtp");
+            transport.connect("smtp.gmail.com", remitente, clave);
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+
+            archivo.delete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Plantilla HTML del correo de resumen de eventos para organizadores
+     */
+    public static String plantillaResumenEventos(String nombreOrganizador) {
+        return """
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family: Arial, sans-serif; background-color: #f5f7fa; padding: 20px; margin: 0;">
+        <table width="100%%" align="center" style="max-width: 500px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <tr>
+                <td style="padding: 25px 30px 20px; border-bottom: 1px solid #eaeaea;">
+                    <div style="text-align: center;">
+                        <h1 style="margin: 0; color: #2c3e50; font-size: 30px; font-weight: 600;">
+                            <span style="color: #4d4d4d;">Fernan</span><span style="color: #4d4d4d;">Events</span>
+                        </h1>
+                        <p style="margin: 5px 0 0; color: #7f8c8d; font-size: 13px;">Resumen de tus eventos</p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 30px;">
+                    <p style="margin: 0 0 15px; color: #333; font-size: 15px;">
+                        ¡Hola <strong style="color: #2c3e50;">%s</strong>!
+                    </p>
+                    <p style="margin: 0 0 20px; color: #555; font-size: 15px; line-height: 1.5;">
+                        Adjunto encontrarás un Excel con el resumen de todos tus eventos en FernanEvents.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 20px 30px; background: linear-gradient(135deg, #9fd7ff, #e2a6d9); border-radius: 0 0 8px 8px;">
+                    <p style="margin: 0; text-align: center; font-size: 12px; color: #2c3e50;">
+                        © 2026 FernanEvents • Correo automático
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    """.formatted(nombreOrganizador);
+    }
+
+    /**
+     * Plantilla HTML del correo de resumen de entradas para asistentes
+     */
+    public static String plantillaResumenEntradas(String nombreAsistente) {
+        return """
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family: Arial, sans-serif; background-color: #f5f7fa; padding: 20px; margin: 0;">
+        <table width="100%%" align="center" style="max-width: 500px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <tr>
+                <td style="padding: 25px 30px 20px; border-bottom: 1px solid #eaeaea;">
+                    <div style="text-align: center;">
+                        <h1 style="margin: 0; color: #2c3e50; font-size: 30px; font-weight: 600;">
+                            <span style="color: #4d4d4d;">Fernan</span><span style="color: #4d4d4d;">Events</span>
+                        </h1>
+                        <p style="margin: 5px 0 0; color: #7f8c8d; font-size: 13px;">Resumen de tus entradas</p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 30px;">
+                    <p style="margin: 0 0 15px; color: #333; font-size: 15px;">
+                        ¡Hola <strong style="color: #2c3e50;">%s</strong>!
+                    </p>
+                    <p style="margin: 0 0 20px; color: #555; font-size: 15px; line-height: 1.5;">
+                        Adjunto encontrarás un Excel con el resumen de todas tus entradas en FernanEvents.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 20px 30px; background: linear-gradient(135deg, #9fd7ff, #e2a6d9); border-radius: 0 0 8px 8px;">
+                    <p style="margin: 0; text-align: center; font-size: 12px; color: #2c3e50;">
+                        © 2026 FernanEvents • Correo automático
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    """.formatted(nombreAsistente);
     }
 }

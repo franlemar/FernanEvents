@@ -1,32 +1,31 @@
 package FernanEvents.controlador;
 
 import FernanEvents.modelo.*;
-import FernanEvents.modelo.utilidades.Cadenas;
-import FernanEvents.modelo.utilidades.EnvioGmail;
-import FernanEvents.modelo.utilidades.FuncionesFechas;
+import FernanEvents.modelo.utilidades.*;
+import FernanEvents.modelo.utilidades.GestorProperties;
 import FernanEvents.vista.VistaFernan;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Scanner;
-
-import java.util.TimerTask;
-import FernanEvents.modelo.utilidades.PersistenciaJSON;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class ControladorFernan {
 
     private GestionUsuario modeloUsu;
     private VistaFernan vista;
     private GestionEvento modeloEve;
+    private GestionEntrada modeloEnt;
     private Usuario usuarioLogueado;
+    private GestorLogs logs;
+    private GestorProperties properties;
 
     public ControladorFernan(GestionUsuario modeloUsu, VistaFernan vista, GestionEvento modeloEve){
         this.modeloUsu = modeloUsu;
         this.vista = vista;
         this.modeloEve = modeloEve;
+        this.properties = new GestorProperties("datosJSON/configuracion.properties");
+        this.logs = new GestorLogs(properties.obtenerRuta("ruta.logs"));
+        this.modeloEnt = new GestionEntrada(modeloUsu, modeloEve, vista, usuarioLogueado, logs);
 
         cargarDatos();
 
@@ -67,12 +66,26 @@ public class ControladorFernan {
                 case 2:
                     if(registrarUsuario()){
                         vista.registroCorrecto();
+
                     }else{
                         vista.mensajeError();
                     }
                     break;
 
                 case 3:
+                    if(!properties.accesoInvitadoActivo()){
+                        vista.modoInvitadoDeshabilitado();
+                    }else{
+                        vista.infoModoInvitadoHabilitado();
+                        if(modeloEve.getEventos().isEmpty()){
+                            vista.noHayEventos();
+                        }else{
+                            modeloEnt.gestionarVisualizacionEventosEntradas();
+                        }
+                    }
+                    break;
+
+                case 4:
                     //Rompe el bucle y lleva al mensaje de fuera del do-while
                     break;
 
@@ -80,7 +93,7 @@ public class ControladorFernan {
                     vista.opcionNoValida();
             }
 
-        }while(opcionMenu != 3);
+        }while(opcionMenu != 4);
         vista.mostrarDespedida();
     }
 
@@ -132,7 +145,7 @@ public class ControladorFernan {
         }
 
         String codigoVerificacion = Cadenas.generarCodigoVerificacion();
-        String destinatario = "jmorcam520@g.educaand.es";
+        String destinatario = "flenmar918@g.educaand.es";
         String asunto = "Código de verificación - Inicio de sesión";
         String cuerpo = EnvioGmail.plantillaLoginAdmin(usuario.getNombre(), codigoVerificacion);
 
@@ -147,7 +160,16 @@ public class ControladorFernan {
             if(entradaCodigo.equals(codigoVerificacion)){
                 logueado = true;
                 this.usuarioLogueado = usuario;
+                modeloEnt.setUsuarioLogueado(usuarioLogueado);
                 vista.loginCorrecto();
+
+                String correo = usuarioLogueado.getCorreo();
+                String ultimoLogin = properties.obtenerUltimoLogin(correo);
+                vista.muestraUltimoLogin(ultimoLogin);
+
+                properties.registrarAccesoUsuario(usuario.getCorreo());
+
+                logs.registrar("Inicio de sesión", usuarioLogueado.getNombre());
                 return true;
 
             }else{
@@ -248,6 +270,7 @@ public class ControladorFernan {
                 }
 
                 modeloUsu.aniadirUsuario(nuevoUsuario);
+                logs.registrar("Nuevo usuario creado", nombreRegistro);
                 tokenVerificado = true;
             }
         }
@@ -293,7 +316,7 @@ public class ControladorFernan {
                     break;
 
                 case 2:
-                    gestionarVisualizacionEventosEntradas();
+                    modeloEnt.gestionarVisualizacionEventosEntradas();
                     break;
 
                 case 3:
@@ -305,13 +328,26 @@ public class ControladorFernan {
                     break;
 
                 case 5:
+                    enviarListadoEventosPorCorreo();
+                    break;
+
+                case 6:
+                    modeloEnt.enviarListadoEntradasPorCorreo();
+                    break;
+
+                case 7:
+                    mostrarConfiguracionPrograma();
+                    break;
+
+                case 8:
+                    logs.registrar("Cierre de sesión", usuarioLogueado.getNombre());
                     break;
 
                 default:
                     vista.opcionNoValida();
 
             }
-        }while(opcionMenu != 5);
+        }while(opcionMenu != 8);
         vista.cerrarSesion(usuarioLogueado.getNombre());
     }
 
@@ -340,6 +376,7 @@ public class ControladorFernan {
                     break;
 
                 case 4:
+                    logs.registrar("Cierre de sesión", usuarioLogueado.getNombre());
                     break;
 
                 default:
@@ -367,7 +404,7 @@ public class ControladorFernan {
                     break;
 
                 case 2:
-                    gestionCompraEntradas();
+                    modeloEnt.gestionCompraEntradas();
                     break;
 
                 case 3:
@@ -383,6 +420,7 @@ public class ControladorFernan {
                     break;
 
                 case 6:
+                    logs.registrar("Cierre de sesión", usuarioLogueado.getNombre());
                     break;
 
                 default:
@@ -458,6 +496,7 @@ public class ControladorFernan {
                 case 2:
                     if(sumaSaldo()){
                         usuarioLogueado = modeloUsu.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
+                        modeloEnt.setUsuarioLogueado(usuarioLogueado);
                         vista.sumaSaldoOK(usuarioLogueado.getSaldo());
                     }else{
                         vista.mensajeError();
@@ -467,6 +506,7 @@ public class ControladorFernan {
                 case 3:
                     if(retiraSaldo()){
                         usuarioLogueado = modeloUsu.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
+                        modeloEnt.setUsuarioLogueado(usuarioLogueado);
                         vista.retiraSaldoOK(usuarioLogueado.getSaldo());
                     }else{
                         vista.mensajeError();
@@ -489,7 +529,12 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.preguntaSumaSaldo();
         float saldoASumar = Float.parseFloat(s.nextLine());
-        return modeloUsu.aniadirSaldo(usuarioLogueado.getCorreo(), saldoASumar);
+        boolean recargaCorrecta = modeloUsu.aniadirSaldo(usuarioLogueado.getCorreo(), saldoASumar);
+
+        if(recargaCorrecta){
+            logs.registrar("Recarga de saldo: " + saldoASumar + "€", usuarioLogueado.getNombre());
+        }
+        return recargaCorrecta;
     }
 
     /**
@@ -499,7 +544,13 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.preguntaRetiraSaldo();
         float saldoARetirar = Float.parseFloat(s.nextLine());
-        return modeloUsu.quitarSaldo(usuarioLogueado.getCorreo(), saldoARetirar);
+        boolean retiradaCorrecta = modeloUsu.quitarSaldo(usuarioLogueado.getCorreo(), saldoARetirar);
+
+        if(retiradaCorrecta){
+            logs.registrar("Retirada de saldo: " + saldoARetirar + "€", usuarioLogueado.getNombre());
+        }
+
+        return retiradaCorrecta;
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCION CONFIGURACION DE ADMINISTRADOR.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -560,7 +611,13 @@ public class ControladorFernan {
             vista.nombreYaEnUso(nuevoNombreUsuario);
             return false;
         }
-        return modeloUsu.actualizarNombre(usuarioCambio.getCorreo(), nuevoNombreUsuario);
+
+        boolean cambioCorrecto = modeloUsu.actualizarNombre(usuarioCambio.getCorreo(), nuevoNombreUsuario);
+        if(cambioCorrecto){
+            logs.registrar("ADMIN: Cambio de nombre de usuario: " + nombreUsuarioCambio + " -> " + nuevoNombreUsuario,
+                    usuarioLogueado.getNombre());
+        }
+        return cambioCorrecto;
     }
 
     /**
@@ -579,7 +636,12 @@ public class ControladorFernan {
 
         vista.pedirNuevaPassword();
         String nuevaPassword = s.nextLine();
-        return modeloUsu.actualizarContrasena(usuarioCambio.getCorreo(), Cadenas.hashearPassword(nuevaPassword));
+        boolean cambioCorrectoPW = modeloUsu.actualizarContrasena(usuarioCambio.getCorreo(), Cadenas.hashearPassword(nuevaPassword));
+
+        if(cambioCorrectoPW){
+            logs.registrar("ADMIN: Cambio de contraseña para " + nombreUsuarioCambio, usuarioLogueado.getNombre());
+        }
+        return cambioCorrectoPW;
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.OPCIÓN CONFIGURACIÓN RESTO DE USUARIOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -626,6 +688,8 @@ public class ControladorFernan {
         Scanner s = new Scanner(System.in);
         vista.pedirNuevoNombre();
         String nuevoNombre = s.nextLine();
+        String nombreAntiguo = usuarioLogueado.getNombre();
+
         if(modeloUsu.buscarPorNombre(nuevoNombre) != null){
             vista.nombreYaEnUso(nuevoNombre);
             return false;
@@ -633,6 +697,9 @@ public class ControladorFernan {
 
         if(modeloUsu.actualizarNombre(usuarioLogueado.getCorreo(), nuevoNombre)){
             usuarioLogueado = modeloUsu.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
+            modeloEnt.setUsuarioLogueado(usuarioLogueado);
+            logs.registrar("Cambio de nombre de usuario: " + nombreAntiguo + " -> " + nuevoNombre,
+                    usuarioLogueado.getNombre());
             return true;
         }
         return false;
@@ -654,6 +721,8 @@ public class ControladorFernan {
 
             if(modeloUsu.actualizarContrasena(usuarioLogueado.getCorreo(), Cadenas.hashearPassword(nuevaPassword))){
                 this.usuarioLogueado = modeloUsu. buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
+                modeloEnt.setUsuarioLogueado(usuarioLogueado);
+                logs.registrar("Cambio de contraseña", usuarioLogueado.getNombre());
                 return true;
             }
         }
@@ -756,7 +825,7 @@ public class ControladorFernan {
             opcionMenu = Integer.parseInt(s.nextLine());
             switch(opcionMenu){
                 case 1:
-                    gestionarVisualizacionEventosEntradas();
+                    modeloEnt.gestionarVisualizacionEventosEntradas();
                     break;
 
                 case 2:
@@ -765,6 +834,7 @@ public class ControladorFernan {
 
                     if(modeloEve.aniadirEvento(nuevoEvento)){
                         vista.mensajeConfirmacion();
+                        logs.registrar("Nuevo evento creado", usuarioLogueado.getNombre());
                     }else{
                         vista.mensajeError();
                     }
@@ -772,6 +842,7 @@ public class ControladorFernan {
 
                 case 3:
                     modeloEve.modificarEvento();
+                    logs.registrar("Modificación de evento", usuarioLogueado.getNombre());
                     break;
 
                 case 4:
@@ -779,6 +850,7 @@ public class ControladorFernan {
                     if(eventoEliminado != null){
                         modeloUsu.limpiarEventoDeAsistentes(eventoEliminado);
                         vista.mensajeConfirmacion();
+                        logs.registrar("Eliminación de evento", usuarioLogueado.getNombre());
                     }else{
                         vista.mensajeError();
                     }
@@ -818,127 +890,20 @@ public class ControladorFernan {
         }
     }
 
-    /**
-     * Se encarga de todo el proceso de compra de entradas a un evento para los asistentes
-     */
-    private void gestionCompraEntradas(){
-        Scanner s = new Scanner(System.in);
-        gestionarVisualizacionEventosEntradas();
-        vista.pedirNombreEventoInscribir();
-        String eventoAInscribir = s.nextLine();
-        Evento eventoSeleccionado = modeloEve.buscarEventoPorNombre(eventoAInscribir);
-
-        if(eventoSeleccionado != null){
-            ArrayList<Entrada> entradas = eventoSeleccionado.getTiposDeEntrada();
-            vista.menuEntradaTipo(entradas);
-            int opcionTipoEntrada = Integer.parseInt(s.nextLine()) - 1;
-
-            if(opcionTipoEntrada < 0 || opcionTipoEntrada > eventoSeleccionado.getTiposDeEntrada().size()){
-                vista.opcionNoValida();
-            }else{
-                Entrada tipoEntradaElegido = eventoSeleccionado.getTiposDeEntrada().get(opcionTipoEntrada);
-                vista.mostrarDetallePreCompra(tipoEntradaElegido.getCategoria().toString(), tipoEntradaElegido.getPrecio());
-                int cantidadEntradas = Integer.parseInt(s.nextLine());
-
-                Asistente asistente = (Asistente) usuarioLogueado;
-                int entradasYaCompradas = asistente.getNumEntradasEvento(eventoSeleccionado.getNombre());
-
-                if(entradasYaCompradas + cantidadEntradas > 4){
-                    vista.errorLimiteEntradas(entradasYaCompradas);
-                }else if(cantidadEntradas <= 0){
-                    vista.errorCantidadNoValida();
-                }else{
-                    float precioTotal = cantidadEntradas * tipoEntradaElegido.getPrecio();
-
-                    if(tipoEntradaElegido.getCantidadDisponible() < cantidadEntradas){
-                        vista.noHayStockEntradas();
-                    }else if(usuarioLogueado.getSaldo() < precioTotal){
-                        vista.saldoInsuficiente();
-                    }else{
-                        String mensajeConfirmaCompra = confirmaCompraEntrada(cantidadEntradas, precioTotal);
-                        if(mensajeConfirmaCompra.equalsIgnoreCase("si")){
-                            movimientoSaldosCompraEntrada(asistente, precioTotal, eventoSeleccionado,
-                                    tipoEntradaElegido.getCategoria(), cantidadEntradas);
-                        }else{
-                            vista.operacionCancelada();
-                        }
-                    }
-                }
-            }
-        }else{
-            vista.eventoNoEncontrado();
-        }
-    }
-
-    /**
-     * Gestiona el movimiento de los saldos entre las carteras del administrador, organizadores y asistentes
-     */
-    private void movimientoSaldosCompraEntrada(Asistente asistente, float precioTotal, Evento eventoSeleccionado, CategoriaEntrada categoria, int cantidadEntradas ){
-        modeloUsu.quitarSaldo(usuarioLogueado.getCorreo(), precioTotal);
-        modeloUsu.aniadirSaldo(eventoSeleccionado.getOrganizador().getCorreo(), precioTotal * 0.90f);
-        modeloUsu.aniadirSaldo("admin@fernanevents.com", precioTotal * 0.10f);
-        modeloEve.controlaStockCorrecto(eventoSeleccionado, categoria, cantidadEntradas);
-        asistente.registraCompraEntrada(eventoSeleccionado.getNombre(), cantidadEntradas);
-        vista.mensajeConfirmacion();
-    }
-
-    /**
-     * Confirma mediante unos mensajes en consola, el proceso de compra de entradas
-     */
-    private String confirmaCompraEntrada(int cantidadEntradas, float precioTotal){
-        Scanner s = new Scanner(System.in);
-        vista.avisoPrecioTotal(cantidadEntradas, precioTotal);
-        vista.preguntaConfirmacionCompra(usuarioLogueado.getSaldo());
-        return s.nextLine();
-    }
-
-    private void gestionarVisualizacionEventosEntradas() {
-        Scanner s = new Scanner(System.in);
-        vista.menuOrdenaEventos();
-        int opcionEventos = Integer.parseInt(s.nextLine());
-        if (opcionEventos == 3) return;
-
-        switch (opcionEventos) {
-            case 1 -> modeloEve.ordenarEventosPorFecha();
-            case 2 -> modeloEve.ordenarEventosPorAsistentesDesc();
-            default -> {
-                vista.opcionNoValida();
-                return;
-            }
-        }
-
-        vista.menuOrdenaEntradas();
-        int opcionEntradas = Integer.parseInt(s.nextLine());
-        if (opcionEntradas == 4) return;
-
-        for (Evento evento : modeloEve.getEventos()) {
-            switch (opcionEntradas) {
-                case 1 -> modeloEve.ordenarEntradasPorImporteDesc(evento);
-                case 2 -> modeloEve.ordenarEntradasPorImporteAsc(evento);
-                case 3 -> modeloEve.ordenarEntradasPorTipo(evento);
-                default -> {
-                    vista.opcionNoValida();
-                    return;
-                }
-            }
-        }
-        modeloEve.mostrarEventos();
-    }
-
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS PARA GUARDAR Y CARGAR DATOS JSON*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     /**
      * Carga los usuarios y eventos desde los archivos JSON al iniciar la aplicación. Si no existe JSON previo, carga
      * los usuarios predefinidos.
      */
     private void cargarDatos() {
-        ArrayList<Usuario> usuariosGuardados = PersistenciaJSON.cargarUsuarios();
+        ArrayList<Usuario> usuariosGuardados = PersistenciaJSON.cargarUsuarios(properties.obtenerRuta("ruta.usuarios"));
         if (usuariosGuardados.isEmpty()) {
             modeloUsu.cargarUsuariosPredefinidos();
         } else {
             for (Usuario u : usuariosGuardados) modeloUsu.aniadirUsuario(u);
         }
 
-        ArrayList<Evento> eventosGuardados = PersistenciaJSON.cargarEventos();
+        ArrayList<Evento> eventosGuardados = PersistenciaJSON.cargarEventos(properties.obtenerRuta("ruta.eventos"));
         for (Evento e : eventosGuardados) modeloEve.aniadirEvento(e);
     }
 
@@ -947,8 +912,53 @@ public class ControladorFernan {
      * al cerrar la aplicación.
      */
     private void guardarDatos() {
-        PersistenciaJSON.guardarUsuarios(modeloUsu.getUsuarios());
-        PersistenciaJSON.guardarEventos(modeloEve.getEventos());
+        PersistenciaJSON.guardarUsuarios(modeloUsu.getUsuarios(), properties.obtenerRuta("ruta.usuarios"));
+        PersistenciaJSON.guardarEventos(modeloEve.getEventos(), properties.obtenerRuta("ruta.eventos"));
+    }
+
+    /**
+     * Recorre todos los organizadores y envía a cada uno un Excel con sus eventos
+     */
+    private void enviarListadoEventosPorCorreo() {
+        vista.enviandoCorreosEventos();
+        for (Usuario u : modeloUsu.getUsuarios()) {
+            if (u instanceof Organizador) {
+                EnvioGmail.enviarResumenEventosOrganizador(
+                        u.getCorreo(),
+                        u.getNombre(),
+                        modeloEve.getEventos()
+                );
+            }
+        }
+        vista.mensajeConfirmacion();
+    }
+
+    /**
+     * Recorre todos los asistentes y envía a cada uno un Excel con sus entradas
+     */
+    private void enviarListadoEntradasPorCorreo() {
+        vista.enviandoCorreosEntradas();
+        for (Usuario u : modeloUsu.getUsuarios()) {
+            if (u instanceof Asistente asistente) {
+                if (!asistente.getEventosInscrito().isEmpty()) {
+                    EnvioGmail.enviarResumenEntradasAsistente(
+                            asistente.getCorreo(),
+                            asistente.getNombre(),
+                            asistente.getEventosInscrito(),
+                            modeloEve.getEventos()
+                    );
+                }
+            }
+        }
+        vista.mensajeConfirmacion();
+    }
+
+    /**
+     * Muestra por pantalla la configuracion del programa y los ultimos accesos
+     */
+    private void mostrarConfiguracionPrograma() {
+        Properties config = properties.obtenerTodas();
+        vista.mostrarConfiguracionSistema(config);
     }
 
 }
