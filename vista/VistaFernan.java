@@ -316,18 +316,46 @@ public class VistaFernan{
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Opción no válida" + estilo.ANSI_RESET + "\n");
     }
 
+
+//*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.NOTIFICACIONES SOBRE BASE DE DATOS.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     /**
      * Muestra un mensaje de error indicando que se ha producido un error de conexión con la BDD
      */
     public void errorConexionBDD(){
-        System.out.println("Se ha producido un error que impide la conexión a la base de datos");
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Se ha producido un error que impide la conexión a la " +
+                "base de datos" + estilo.ANSI_RESET + "\n");
     }
 
     /**
      * Muestra un mensaje de error indicando que se ha producido un error al cerrar la conexión con la BDD
      */
     public void errorCerrarConexion(){
-        System.out.println("Se ha producido un error que impide cerrar la conexión con la base de datos");
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Se ha producido un error que impide cerrar la conexión " +
+                "con la base de datos" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Muestra un mensaje de error indicando que se ha producido un error al realizar una operación de INSERT en la BDD
+     */
+    public void errorInsertBDD(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Se ha producido un error en la inserción de información" +
+                " a la base de datos" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Muestra un mensaje de error indicando que se ha producido un error al realizar una operación de UPDATE en la BDD
+     */
+    public void errorUpdateBDD(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Se ha producido un error en la actualización de información" +
+                " de la base de datos" + estilo.ANSI_RESET + "\n");
+    }
+
+    /**
+     * Muestra un mensaje de error indicando que se ha producido un error al realizar una operación de DELETE en la BDD
+     */
+    public void errorDeleteBDD(){
+        System.out.println(estilo.ANSI_RED + estilo.BOLD + "Se ha producido un error en la eliminación de información" +
+                " de la base de datos" + estilo.ANSI_RESET + "\n");
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA LOGIN.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
