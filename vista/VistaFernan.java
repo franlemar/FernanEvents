@@ -316,6 +316,20 @@ public class VistaFernan{
         System.out.println(estilo.ANSI_RED + estilo.BOLD + "Opción no válida" + estilo.ANSI_RESET + "\n");
     }
 
+    /**
+     * Muestra un mensaje de error indicando que se ha producido un error de conexión con la BDD
+     */
+    public void errorConexionBDD(){
+        System.out.println("Se ha producido un error que impide la conexión a la base de datos");
+    }
+
+    /**
+     * Muestra un mensaje de error indicando que se ha producido un error al cerrar la conexión con la BDD
+     */
+    public void errorCerrarConexion(){
+        System.out.println("Se ha producido un error que impide cerrar la conexión con la base de datos");
+    }
+
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MENSAJES PARA LOGIN.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     /**
      * Solicita al usuario que introduzca su correo

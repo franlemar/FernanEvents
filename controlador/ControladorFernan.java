@@ -5,8 +5,6 @@ import FernanEvents.modelo.utilidades.*;
 import FernanEvents.modelo.utilidades.GestorProperties;
 import FernanEvents.vista.VistaFernan;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ControladorFernan {
