@@ -8,5 +8,6 @@ public interface UsuarioDAO {
     public boolean update(Usuario usuario, DAOManager dao);
     public boolean delete(Usuario usuario, DAOManager dao);
     public Usuario read(String correo, DAOManager dao);
+    public Usuario read(int id, DAOManager dao);
 
 }

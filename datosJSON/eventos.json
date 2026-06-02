@@ -1,5 +1,6 @@
 [
   {
+    "id": 0,
     "nombre": "badbunny",
     "descripcion": "madrid",
     "categoriaEvento": "MUSICA",
@@ -10,17 +11,23 @@
       {
         "categoria": "GENERAL",
         "precio": 200.0,
-        "cantidadDisponible": 298
+        "cantidadDisponible": 298,
+        "id": 0,
+        "id_evento": 0
       },
       {
         "categoria": "INFANTIL",
         "precio": 100.0,
-        "cantidadDisponible": 60
+        "cantidadDisponible": 60,
+        "id": 0,
+        "id_evento": 0
       },
       {
         "categoria": "VIP",
         "precio": 500.0,
-        "cantidadDisponible": 19
+        "cantidadDisponible": 19,
+        "id": 0,
+        "id_evento": 0
       }
     ],
     "organizador": {
@@ -34,6 +41,7 @@
     }
   },
   {
+    "id": 0,
     "nombre": "Concierto Olivia Rodrigo Tour",
     "descripcion": "Gira de conciertos del nuevo álbum de Olivia Rodrigo",
     "categoriaEvento": "MUSICA",
@@ -44,17 +52,23 @@
       {
         "categoria": "GENERAL",
         "precio": 89.9,
-        "cantidadDisponible": 300
+        "cantidadDisponible": 300,
+        "id": 0,
+        "id_evento": 0
       },
       {
         "categoria": "INFANTIL",
         "precio": 0.0,
-        "cantidadDisponible": 0
+        "cantidadDisponible": 0,
+        "id": 0,
+        "id_evento": 0
       },
       {
         "categoria": "VIP",
         "precio": 129.9,
-        "cantidadDisponible": 100
+        "cantidadDisponible": 100,
+        "id": 0,
+        "id_evento": 0
       }
     ],
     "organizador": {

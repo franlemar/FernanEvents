@@ -1,11 +1,12 @@
 package FernanEvents.modelo;
 
 public class Entrada {
+
+    private int id;
+    private int id_evento;
     private CategoriaEntrada categoria;
     private float precio;
     private int cantidadDisponible;
-    private int id;
-    private int id_evento;
 
     public Entrada(CategoriaEntrada categoria, float precio, int cantidadDisponible){
         this.categoria = categoria;

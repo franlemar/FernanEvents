@@ -15,7 +15,7 @@ public class DAOAsistentes_EventoSQL implements Asistentes_EventoDAO {
      * Método que inserta un asistente en un evento de la base de datos de FernanEvents
      */
     public boolean insert (Asistente asistente, Evento evento, DAOManager dao){
-        String sql = "INSERT INTO asistentes_evento(correo_asistente, id_evento) " +
+        String sql = "INSERT INTO Asistentes_evento(correo_asistente, id_evento) " +
                 "VALUES (?,?);";
 
         try(PreparedStatement ps = dao.getConn().prepareStatement(sql)){
@@ -35,7 +35,7 @@ public class DAOAsistentes_EventoSQL implements Asistentes_EventoDAO {
      * Método que actualiza la cantidad de entradas de un asistente en un evento de la base de datos de FernanEvents
      */
     public boolean update(Asistente asistente, Evento evento, DAOManager dao){
-        String sql = "UPDATE asistentes_evento SET cantidad_entradas = ? WHERE correo_asistente = ? AND id_evento = ?;";
+        String sql = "UPDATE Asistentes_evento SET cantidad_entradas = ? WHERE correo_asistente = ? AND id_evento = ?;";
 
         try(PreparedStatement ps = dao.getConn().prepareStatement(sql)){
             ps.setInt(1, asistente.getNumEntradasEvento(evento.getNombre()));
@@ -52,7 +52,7 @@ public class DAOAsistentes_EventoSQL implements Asistentes_EventoDAO {
     }
 
     public boolean delete(Asistente asistente, Evento evento, DAOManager dao) {
-        String sql = "DELETE FROM asistentes_Evento WHERE correo_asistente = ? AND id_evento = ?;";
+        String sql = "DELETE FROM Asistentes_Evento WHERE correo_asistente = ? AND id_evento = ?;";
 
         try (PreparedStatement ps = dao.getConn().prepareStatement(sql)) {
             ps.setString(1, asistente.getCorreo());

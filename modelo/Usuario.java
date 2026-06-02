@@ -3,6 +3,7 @@ package FernanEvents.modelo;
 public abstract class Usuario {
 
     //Atributos
+    private int id;
     private String nombre;
     private String correo;
     private String password;
@@ -22,6 +23,21 @@ public abstract class Usuario {
     }
 
     //Métodos
+
+    /**
+     * Obtiene el identificador único del usuario
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Establece el identificador único del usuario
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
     /**
      * Obtiene el nombre de usuario
      */

@@ -1,8 +1,6 @@
 package FernanEvents.modelo.dao.modeloDAO;
 
-import FernanEvents.modelo.CategoriaEvento;
-import FernanEvents.modelo.Evento;
-import FernanEvents.modelo.Organizador;
+import FernanEvents.modelo.*;
 import FernanEvents.modelo.dao.conexion.DAOManager;
 import FernanEvents.modelo.dao.modeloDAO.interfaces.EventoDAO;
 
@@ -109,7 +107,12 @@ public class DAOEventoSQL implements EventoDAO {
                     Organizador organizador = (Organizador) usuarioDAO.read(correoOrganizador, dao);
 
                     eventoLeido = new Evento(nombre, descripcion, categoria, fecha, aforo, personasInscritas);
+                    eventoLeido.setId(idEvento);
                     eventoLeido.setOrganizador(organizador);
+
+                    DAOEntradaSQL entradaDAO = new DAOEntradaSQL();
+                    eventoLeido.setTiposDeEntrada(entradaDAO.readEntradasPorEvento(idEvento, dao));
+
                 }
             }
             return eventoLeido;
@@ -129,9 +132,12 @@ public class DAOEventoSQL implements EventoDAO {
 
         try(PreparedStatement ps = dao.getConn().prepareStatement(sql)){
             try(ResultSet rs = ps.executeQuery()){
+
                 DAOUsuarioSQL usuarioDAO = new DAOUsuarioSQL();
+                DAOEntradaSQL entradaDAO = new DAOEntradaSQL();
 
                 while(rs.next()){
+                    int id = rs.getInt("id");
                     String nombre = rs.getString("nombre");
                     String descripcion = rs.getString("descripcion");
                     String nombreCategoria = rs.getString("categoria");
@@ -144,7 +150,10 @@ public class DAOEventoSQL implements EventoDAO {
 
                     Organizador organizador = (Organizador) usuarioDAO.read(correoOrganizador, dao);
                     Evento evento = new Evento(nombre, descripcion, categoria, fecha, aforo, personasInscritas);
+                    evento.setId(id);
                     evento.setOrganizador(organizador);
+
+                    evento.setTiposDeEntrada(entradaDAO.readEntradasPorEvento(id, dao));
 
                     eventos.add(evento);
                 }
@@ -157,4 +166,5 @@ public class DAOEventoSQL implements EventoDAO {
         }
 
     }
+
 }

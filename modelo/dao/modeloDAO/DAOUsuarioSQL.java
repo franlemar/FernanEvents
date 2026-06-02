@@ -40,7 +40,7 @@ public class DAOUsuarioSQL implements UsuarioDAO {
      */
     public boolean update(Usuario usuario, DAOManager dao) {
         String sql = "UPDATE Usuario SET nombre = ?, correo = ?, password = ?, rol = ?, saldo = ?, bloqueado = ? " +
-                "WHERE correo = ?;";
+                "WHERE id = ?;";
 
         try(PreparedStatement ps = dao.getConn().prepareStatement(sql)){
             ps.setString(1, usuario.getNombre());
@@ -49,7 +49,7 @@ public class DAOUsuarioSQL implements UsuarioDAO {
             ps.setString(4, usuario.getRol().name());
             ps.setFloat(5, usuario.getSaldo());
             ps.setBoolean(6, usuario.isBloqueado());
-            ps.setString(7, usuario.getCorreo());
+            ps.setInt(7, usuario.getId());
 
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas > 0;
@@ -83,7 +83,7 @@ public class DAOUsuarioSQL implements UsuarioDAO {
     }
 
     /**
-     * Método que devuelve un usuario con su información correspondiente
+     * Método que devuelve un usuario con su información correspondiente. Para ello, utiliza el correo del usuario
      */
     public Usuario read(String correo, DAOManager dao) {
         String sql = "SELECT * FROM Usuario WHERE correo = ?;";
@@ -94,32 +94,30 @@ public class DAOUsuarioSQL implements UsuarioDAO {
 
             try(ResultSet rs = ps.executeQuery()){
                 if(rs.next()){
-                    String nombre = rs.getString("nombre");
-                    String password = rs.getString("password");
-                    String nombreRol = rs.getString("rol");
-                    float saldo = rs.getFloat("saldo");
-                    boolean bloqueado = rs.getBoolean("bloqueado");
+                    usuarioLeido = creaUsuario(rs);
+                }
+            }
+            return usuarioLeido;
 
-                    Rol rol = Rol.valueOf(nombreRol);
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-                    switch(rol){
-                        case ADMINISTRADOR:
-                            usuarioLeido = new Administrador(nombre, correo, password);
-                            break;
+    /**
+     * Método que devuelve un usuario con su información correspondiente. Para ello, utiliza el id del usuario
+     */
+    public Usuario read(int id, DAOManager dao) {
+        String sql = "SELECT * FROM Usuario WHERE id = ?;";
+        Usuario usuarioLeido = null;
 
-                        case ORGANIZADOR:
-                            usuarioLeido = new Organizador(nombre, correo, password);
-                            break;
+        try(PreparedStatement ps = dao.getConn().prepareStatement(sql)){
+            ps.setInt(1, id);
 
-                        case ASISTENTE:
-                            usuarioLeido = new Asistente(nombre, correo, password);
-                            break;
-                    }
-
-                    if(usuarioLeido != null){
-                        usuarioLeido.setSaldo(saldo);
-                        usuarioLeido.setBloqueado(bloqueado);
-                    }
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
+                    usuarioLeido = creaUsuario(rs);
                 }
             }
             return usuarioLeido;
@@ -140,33 +138,9 @@ public class DAOUsuarioSQL implements UsuarioDAO {
         try (PreparedStatement ps = dao.getConn().prepareStatement(sql)) {
             try (java.sql.ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    String nombre = rs.getString("nombre");
-                    String correo = rs.getString("correo");
-                    String password = rs.getString("password");
-                    String nombreRol = rs.getString("rol");
-                    float saldo = rs.getFloat("saldo");
-                    boolean bloqueado = rs.getBoolean("bloqueado");
-
-                    Rol rol = Rol.valueOf(nombreRol);
-                    Usuario usuario = null;
-
-                    switch (rol) {
-                        case ADMINISTRADOR:
-                            usuario = new Administrador(nombre, correo, password);
-                            break;
-                        case ORGANIZADOR:
-                            usuario = new Organizador(nombre, correo, password);
-                            break;
-                        case ASISTENTE:
-                            usuario = new Asistente(nombre, correo, password);
-                            break;
-                    }
-
-                    if (usuario != null) {
-                        usuario.setSaldo(saldo);
-                        usuario.setBloqueado(bloqueado);
-
-                        usuarios.add(usuario);
+                    Usuario usuarioLeido = creaUsuario(rs);
+                    if(usuarioLeido != null){
+                        usuarios.add(usuarioLeido);
                     }
                 }
             }
@@ -176,5 +150,43 @@ public class DAOUsuarioSQL implements UsuarioDAO {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+    /**
+     * Método helper para crear un usuario con todos los parámetros necesarios.
+     * Hace uso del ResultSet para obtener la información necesaria.
+     */
+    private Usuario creaUsuario(ResultSet rs) throws SQLException{
+        int id = rs.getInt("id");
+        String nombre = rs.getString("nombre");
+        String correo = rs.getString("correo");
+        String password = rs.getString("password");
+        String nombreRol = rs.getString("rol");
+        float saldo = rs.getFloat("saldo");
+        boolean bloqueado = rs.getBoolean("bloqueado");
+
+        Rol rol = Rol.valueOf(nombreRol);
+        Usuario usuario = null;
+
+        switch (rol) {
+            case ADMINISTRADOR:
+                usuario = new Administrador(nombre, correo, password);
+                break;
+            case ORGANIZADOR:
+                usuario = new Organizador(nombre, correo, password);
+                break;
+            case ASISTENTE:
+                usuario = new Asistente(nombre, correo, password);
+                break;
+        }
+
+        if (usuario != null) {
+            usuario.setId(id);
+            usuario.setSaldo(saldo);
+            usuario.setBloqueado(bloqueado);
+        }
+
+        return usuario;
     }
 }
