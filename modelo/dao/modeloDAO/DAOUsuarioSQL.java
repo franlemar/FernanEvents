@@ -83,7 +83,7 @@ public class DAOUsuarioSQL implements UsuarioDAO {
     }
 
     /**
-     * Método que devuelve un usuario con su información correspondiente de la base de datos de FernanEvents
+     * Método que devuelve un usuario con su información correspondiente
      */
     public Usuario read(String correo, DAOManager dao) {
         String sql = "SELECT * FROM Usuario WHERE correo = ?;";
@@ -131,7 +131,7 @@ public class DAOUsuarioSQL implements UsuarioDAO {
     }
 
     /**
-     * Método que devuelve todos los usuarios que existen en  la base de datos de FernanEvents con su información correspondiente
+     * Método que devuelve todos los usuarios que existen en la base de datos de FernanEvents
      */
     public ArrayList<Usuario> readAll(DAOManager dao) {
         String sql = "SELECT * FROM Usuario;";

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Evento {
 
     //Atributos
+    private int id;
     private String nombre;
     private String descripcion;
     private CategoriaEvento categoriaEvento;
@@ -26,6 +27,21 @@ public class Evento {
         this.aforo = aforo;
         this.personasInscritas = personasInscritas;
         this.tiposDeEntrada = new ArrayList<>();
+    }
+
+
+    /**
+     * Obtiene el identificador único de un evento de la plataforma
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Establece un identificador único de un evento de la plataforma
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
