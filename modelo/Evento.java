@@ -12,8 +12,10 @@ public class Evento {
     private LocalDate fecha;
     private int aforo;
     private int personasInscritas;
+    private int id;
     private ArrayList<Entrada> tiposDeEntrada;
     private Usuario organizador;
+
 
     //Constructor
     public Evento(String nombre, String descripcion, CategoriaEvento categoria, LocalDate fecha, int aforo, int personasInscritas) {
@@ -158,4 +160,17 @@ public class Evento {
         this.tiposDeEntrada = tiposDeEntrada;
     }
 
+    /**
+     * Obtiene el id del evento
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Establece el id del evento
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
 }
