@@ -7,6 +7,7 @@ import FernanEvents.modelo.dao.modeloDAO.interfaces.UsuarioDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class DAOUsuarioSQL implements UsuarioDAO {
@@ -17,7 +18,7 @@ public class DAOUsuarioSQL implements UsuarioDAO {
     public boolean insert(Usuario usuario, DAOManager dao) {
         String sql = "INSERT INTO Usuario(nombre, correo, password, rol, saldo, bloqueado) VALUES(?, ?, ?, ?, ?, ?);";
 
-        try(PreparedStatement ps = dao.getConn().prepareStatement(sql)){
+        try(PreparedStatement ps = dao.getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getCorreo());
             ps.setString(3, usuario.getPassword());
@@ -26,7 +27,16 @@ public class DAOUsuarioSQL implements UsuarioDAO {
             ps.setBoolean(6, usuario.isBloqueado());
 
             int filasAfectadas = ps.executeUpdate();
-            return filasAfectadas > 0;
+
+            if (filasAfectadas > 0) {
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        usuario.setId(generatedKeys.getInt(1));
+                    }
+                }
+                return true;
+            }
+            return false;
 
         }catch (SQLException e){
             //mensaje vista error de insercion de datos en controlador

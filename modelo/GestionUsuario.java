@@ -1,16 +1,28 @@
 package FernanEvents.modelo;
 
+import FernanEvents.modelo.dao.conexion.DAOManager;
+import FernanEvents.modelo.dao.modeloDAO.DAOAmigos_ReferidosSQL;
+import FernanEvents.modelo.dao.modeloDAO.DAOUsuarioSQL;
 import FernanEvents.modelo.utilidades.Cadenas;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 public class GestionUsuario{
 
     private HashMap<String, Usuario> usuarios;
+    private DAOUsuarioSQL usuarioDAO;
+    private DAOAmigos_ReferidosSQL amigosReferidosDAO;
 
     public GestionUsuario(){
         this.usuarios = new HashMap<>();
+        this.usuarioDAO = new DAOUsuarioSQL();
+        this.amigosReferidosDAO = new DAOAmigos_ReferidosSQL();
+    }
+
+    private DAOManager getDaoManager(){
+        return DAOManager.getSingletonInstance();
     }
 
     /**
@@ -36,8 +48,13 @@ public class GestionUsuario{
         if(nuevoUsuario == null || usuarios.containsKey(nuevoUsuario.getCorreo())){
             return false;
         }
-        usuarios.put(nuevoUsuario.getCorreo(), nuevoUsuario);
-        return true;
+
+        if(usuarioDAO.insert(nuevoUsuario, getDaoManager())){
+            usuarios.put(nuevoUsuario.getCorreo(), nuevoUsuario);
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -53,8 +70,15 @@ public class GestionUsuario{
             }
         }
 
+        String nombreAnterior = usuario.getNombre();
         usuario.setNombre(nuevoNombre);
-        return true;
+
+        if (usuarioDAO.update(usuario, getDaoManager())) {
+            return true;
+        } else {
+            usuario.setNombre(nombreAnterior);
+            return false;
+        }
     }
 
     /**
@@ -64,8 +88,15 @@ public class GestionUsuario{
         Usuario usuario = usuarios.get(correo);
         if (usuario == null) { return false; }
 
+        String passAnterior = usuario.getPassword();
         usuario.setPassword(nuevaContrasena);
-        return true;
+
+        if (usuarioDAO.update(usuario, getDaoManager())) {
+            return true;
+        } else {
+            usuario.setPassword(passAnterior);
+            return false;
+        }
     }
 
     /**
@@ -74,8 +105,15 @@ public class GestionUsuario{
     public boolean actualizaEstadoBloqueo(String correoUsuario, boolean estado){
         Usuario usuario = buscaUsuarioPorCorreo(correoUsuario);
         if(usuario != null){
+            boolean estadoOriginal = usuario.isBloqueado();
             usuario.setBloqueado(estado);
-            return true;
+
+            if(usuarioDAO.update(usuario, getDaoManager())){
+                return true;
+            } else {
+                usuario.setBloqueado(estadoOriginal);
+                return false;
+            }
         }
         return false;
     }
@@ -86,8 +124,16 @@ public class GestionUsuario{
     public boolean aniadirSaldo (String correo, float cantidad){
         Usuario usuario = buscaUsuarioPorCorreo(correo);
         if (usuario == null || cantidad <= 0) { return false; }
-        usuario.setSaldo(usuario.getSaldo() + cantidad);
-        return true;
+
+        float saldoAnterior = usuario.getSaldo();
+        usuario.setSaldo(saldoAnterior + cantidad);
+
+        if (usuarioDAO.update(usuario, getDaoManager())) {
+            return true;
+        } else {
+            usuario.setSaldo(saldoAnterior);
+            return false;
+        }
     }
 
     /**
@@ -98,8 +144,15 @@ public class GestionUsuario{
         if (usuario == null || cantidad <= 0) { return false; }
 
         if (usuario.getSaldo() >= cantidad) {
-            usuario.setSaldo(usuario.getSaldo() - cantidad);
-            return true;
+            float saldoAnterior = usuario.getSaldo();
+            usuario.setSaldo(saldoAnterior - cantidad);
+
+            if (usuarioDAO.update(usuario, getDaoManager())) {
+                return true;
+            } else {
+                usuario.setSaldo(saldoAnterior);
+                return false;
+            }
         }
         return false;
     }
@@ -109,8 +162,14 @@ public class GestionUsuario{
      */
     public boolean aniadirAmigoReferido(Usuario usuario, String correoAmigo) {
         if (usuario instanceof Asistente asistente && correoAmigo.contains("@")) {
-            asistente.getAmigosReferidos().add(correoAmigo);
-            return true;
+            if (asistente.getAmigosReferidos().contains(correoAmigo)) {
+                return false;
+            }
+
+            if (amigosReferidosDAO.insert(asistente.getCorreo(), correoAmigo, getDaoManager())) {
+                asistente.getAmigosReferidos().add(correoAmigo);
+                return true;
+            }
         }
         return false;
     }
@@ -119,10 +178,42 @@ public class GestionUsuario{
      * Elimina un usuario por su correo
      */
     public boolean eliminaUsuario(String correo) {
-        return usuarios.remove(correo) != null;
+        Usuario usuario = buscaUsuarioPorCorreo(correo);
+        if (usuario == null) { return false; }
+
+        if (usuarioDAO.delete(usuario, getDaoManager())) {
+            usuarios.remove(correo);
+            return true;
+        }
+
+        return false;
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS HELPER.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+
+    /**
+     * Carga los usuarios directamente desde la base de datos de FernanEvents.
+     * Si la BD está vacía, inserta los usuarios predefinidos.
+     */
+    public void cargarUsuariosDesdeBDD() {
+        DAOManager daoManager = getDaoManager();
+        ArrayList<Usuario> usuariosBDD = usuarioDAO.readAll(daoManager);
+
+        if (usuariosBDD != null) {
+            usuarios.clear();
+
+            for (Usuario usuario : usuariosBDD) {
+                usuarios.put(usuario.getCorreo(), usuario);
+
+                if (usuario instanceof Asistente asistente) {
+                    ArrayList<String> amigosReferidos = amigosReferidosDAO.readAllAmigos(asistente.getCorreo(), daoManager);
+                    if (amigosReferidos != null) {
+                        asistente.setAmigosReferidos(amigosReferidos);
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * Crea los usuarios predefinidos para las pruebas
