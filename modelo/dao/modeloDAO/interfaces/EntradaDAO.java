@@ -7,5 +7,5 @@ public interface EntradaDAO {
     public boolean insert(Entrada entrada, DAOManager dao);
     public boolean update(Entrada entrada, DAOManager dao);
     public boolean delete(Entrada entrada, DAOManager dao);
-    public Entrada read(int id, DAOManager dao);
+    public Entrada read(Entrada entrada, DAOManager dao);
 }
