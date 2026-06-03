@@ -84,7 +84,13 @@ public class Asistente extends Usuario implements Bloqueable {
      */
     public void registraCompraEntrada(String nombreEvento, int cantidadEntradas){
         int cantidadActual = getNumEntradasEvento(nombreEvento.trim());
-        eventosInscrito.put(nombreEvento.trim(), cantidadActual + cantidadEntradas);
+        int nuevaCantidad = cantidadActual + cantidadEntradas;
+
+        if (nuevaCantidad <= 0) {
+            eventosInscrito.remove(nombreEvento.trim());
+        } else {
+            eventosInscrito.put(nombreEvento.trim(), nuevaCantidad);
+        }
     }
 
 }
