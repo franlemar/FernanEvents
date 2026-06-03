@@ -23,8 +23,14 @@ public class DAOManager {
     public static DAOManager getSingletonInstance(){
         if (singleton == null) {
             singleton = new DAOManager();
-            return singleton;
-        }else return null;
+
+            try {
+                singleton.open();
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return singleton;
     }
 
     /**

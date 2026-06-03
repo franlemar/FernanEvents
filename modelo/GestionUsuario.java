@@ -2,23 +2,27 @@ package FernanEvents.modelo;
 
 import FernanEvents.modelo.dao.conexion.DAOManager;
 import FernanEvents.modelo.dao.modeloDAO.DAOAmigos_ReferidosSQL;
+import FernanEvents.modelo.dao.modeloDAO.DAOAsistentes_EventoSQL;
 import FernanEvents.modelo.dao.modeloDAO.DAOUsuarioSQL;
 import FernanEvents.modelo.utilidades.Cadenas;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 public class GestionUsuario{
 
     private HashMap<String, Usuario> usuarios;
     private DAOUsuarioSQL usuarioDAO;
     private DAOAmigos_ReferidosSQL amigosReferidosDAO;
+    private DAOAsistentes_EventoSQL asistentesEventoDAO;
 
     public GestionUsuario(){
         this.usuarios = new HashMap<>();
         this.usuarioDAO = new DAOUsuarioSQL();
         this.amigosReferidosDAO = new DAOAmigos_ReferidosSQL();
+        this.asistentesEventoDAO = new DAOAsistentes_EventoSQL();
     }
 
     private DAOManager getDAOManager(){
@@ -209,6 +213,11 @@ public class GestionUsuario{
                     ArrayList<String> amigosReferidos = amigosReferidosDAO.readAllAmigos(asistente.getCorreo(), daoManager);
                     if (amigosReferidos != null) {
                         asistente.setAmigosReferidos(amigosReferidos);
+                    }
+
+                    HashMap<String, Integer> inscripciones = asistentesEventoDAO.readAllInscripcionesPorAsistente(asistente.getCorreo(), daoManager);
+                    if (inscripciones != null && !inscripciones.isEmpty()) {
+                        asistente.getEventosInscrito().putAll(inscripciones);
                     }
                 }
             }

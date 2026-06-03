@@ -114,6 +114,10 @@ public class GestionEvento {
         if(nuevoEvento == null) return false;
 
         if(eventoDAO.insert(nuevoEvento, getDAOManager())){
+            for(Entrada entrada : nuevoEvento.getTiposDeEntrada()){
+                entrada.setId_evento(nuevoEvento.getId());
+                entradaDAO.insert(entrada, getDAOManager());
+            }
             eventos.add(nuevoEvento);
             return true;
         }

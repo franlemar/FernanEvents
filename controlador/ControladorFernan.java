@@ -26,20 +26,6 @@ public class ControladorFernan {
         this.modeloEnt = new GestionEntrada(modeloUsu, modeloEve, vista, usuarioLogueado, logs);
 
         cargarDatos();
-
-        // ----Autoguardado de datos en el JSON cada 5 segundos-----
-        Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                guardarDatos();
-            }
-        }, 5000, 5000);
-
-        //----Guardar datos en el JSON al cerrar bruscamente------
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            guardarDatos();
-        }));
     }
 
     /**
@@ -888,30 +874,15 @@ public class ControladorFernan {
         }
     }
 
-    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS PARA GUARDAR Y CARGAR DATOS JSON*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
+    //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.MÉTODOS PARA GUARDAR Y CARGAR DATOS *.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
     /**
-     * Carga los usuarios y eventos desde los archivos JSON al iniciar la aplicación. Si no existe JSON previo, carga
+     * Carga los usuarios y eventos desde la base de datos al iniciar la aplicación. Si no existen usuarios en la BDD, carga
      * los usuarios predefinidos.
      */
     private void cargarDatos() {
-        ArrayList<Usuario> usuariosGuardados = PersistenciaJSON.cargarUsuarios(properties.obtenerRuta("ruta.usuarios"));
-        if (usuariosGuardados.isEmpty()) {
-            modeloUsu.cargarUsuariosPredefinidos();
-        } else {
-            for (Usuario u : usuariosGuardados) modeloUsu.aniadirUsuario(u);
-        }
-
-        ArrayList<Evento> eventosGuardados = PersistenciaJSON.cargarEventos(properties.obtenerRuta("ruta.eventos"));
-        for (Evento e : eventosGuardados) modeloEve.aniadirEvento(e);
-    }
-
-    /**
-     * Guarda los usuarios y eventos actuales en los archivos JSON. Se ejecuta automáticamente cada 60 segundos y
-     * al cerrar la aplicación.
-     */
-    private void guardarDatos() {
-        PersistenciaJSON.guardarUsuarios(modeloUsu.getUsuarios(), properties.obtenerRuta("ruta.usuarios"));
-        PersistenciaJSON.guardarEventos(modeloEve.getEventos(), properties.obtenerRuta("ruta.eventos"));
+        modeloUsu.cargarUsuariosDesdeBDD();
+        modeloUsu.cargarUsuariosPredefinidos();
+        modeloEve.cargarEventosDesdeBDD();
     }
 
     /**
