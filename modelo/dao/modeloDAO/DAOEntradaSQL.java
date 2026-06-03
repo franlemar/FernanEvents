@@ -19,14 +19,23 @@ public class DAOEntradaSQL implements EntradaDAO {
     public boolean insert(Entrada entrada, DAOManager dao) {
         String sql = "INSERT INTO Entrada(id_evento, categoria, precio, cantidadDisponible) VALUES (?,?,?,?);";
 
-        try (PreparedStatement ps = dao.getConn().prepareStatement(sql)) {
+        try (PreparedStatement ps = dao.getConn().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, entrada.getId_evento());
             ps.setString(2, entrada.getCategoria().name());
             ps.setFloat(3, entrada.getPrecio());
             ps.setInt(4, entrada.getCantidadDisponible());
 
             int filasAfectadas = ps.executeUpdate();
-            return filasAfectadas > 0;
+
+            if (filasAfectadas > 0) {
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        entrada.setId(generatedKeys.getInt(1));
+                    }
+                }
+                return true;
+            }
+            return false;
 
         } catch (SQLException e) {
             //mensaje vista error de insercion de datos en controlador

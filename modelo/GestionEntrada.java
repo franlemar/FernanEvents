@@ -1,4 +1,6 @@
 package FernanEvents.modelo;
+import FernanEvents.modelo.dao.conexion.DAOManager;
+import FernanEvents.modelo.dao.modeloDAO.DAOAsistentes_EventoSQL;
 import FernanEvents.modelo.utilidades.EnvioGmail;
 import FernanEvents.modelo.utilidades.GestorLogs;
 import FernanEvents.vista.VistaFernan;
@@ -12,6 +14,7 @@ public class GestionEntrada {
     private VistaFernan vista;
     private Usuario usuarioLogueado;
     private GestorLogs logs;
+    private DAOAsistentes_EventoSQL asistenteEventoDAO;
 
     public GestionEntrada(GestionUsuario modeloUsu, GestionEvento modeloEve, VistaFernan vista, Usuario usuarioLogueado, GestorLogs logs) {
         this.modeloUsu = modeloUsu;
@@ -19,6 +22,11 @@ public class GestionEntrada {
         this.vista = vista;
         this.usuarioLogueado = usuarioLogueado;
         this.logs = logs;
+        this.asistenteEventoDAO = new DAOAsistentes_EventoSQL();
+    }
+
+    private DAOManager getDAOManager(){
+        return DAOManager.getSingletonInstance();
     }
 
     /**
@@ -95,10 +103,34 @@ public class GestionEntrada {
         modeloUsu.aniadirSaldo(eventoSeleccionado.getOrganizador().getCorreo(), precioTotal * 0.90f);
         modeloUsu.aniadirSaldo("admin@fernanevents.com", precioTotal * 0.10f);
         modeloEve.controlaStockCorrecto(eventoSeleccionado, categoria, cantidadEntradas);
+
+        boolean asisEventoYaExisteEnTabla = asistenteEventoDAO.read(asistente, eventoSeleccionado, getDAOManager()) != null;
+
         asistente.registraCompraEntrada(eventoSeleccionado.getNombre(), cantidadEntradas);
-        vista.mensajeConfirmacion();
-        logs.registrar("Compra de entradas: " + cantidadEntradas + " para " + eventoSeleccionado.getNombre(),
-                usuarioLogueado.getNombre());
+
+        boolean actualizaDatosEnTabla;
+        if (asisEventoYaExisteEnTabla) {
+            actualizaDatosEnTabla = asistenteEventoDAO.update(asistente, eventoSeleccionado, getDAOManager());
+        } else {
+            actualizaDatosEnTabla = asistenteEventoDAO.insert(asistente, eventoSeleccionado, getDAOManager());
+        }
+
+        if (!actualizaDatosEnTabla) {
+            modeloUsu.aniadirSaldo(usuarioLogueado.getCorreo(), precioTotal);
+            modeloUsu.quitarSaldo(eventoSeleccionado.getOrganizador().getCorreo(), precioTotal * 0.90f);
+            modeloUsu.quitarSaldo("admin@fernanevents.com", precioTotal * 0.10f);
+
+            modeloEve.controlaStockCorrecto(eventoSeleccionado, categoria, -cantidadEntradas);
+
+            asistente.registraCompraEntrada(eventoSeleccionado.getNombre(), -cantidadEntradas);
+
+            vista.mensajeError();
+
+        } else {
+            vista.mensajeConfirmacion();
+            logs.registrar("Compra de entradas: " + cantidadEntradas + " para " + eventoSeleccionado.getNombre(),
+                    usuarioLogueado.getNombre());
+        }
     }
 
     /**
