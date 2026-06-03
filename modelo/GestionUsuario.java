@@ -21,7 +21,7 @@ public class GestionUsuario{
         this.amigosReferidosDAO = new DAOAmigos_ReferidosSQL();
     }
 
-    private DAOManager getDaoManager(){
+    private DAOManager getDAOManager(){
         return DAOManager.getSingletonInstance();
     }
 
@@ -49,7 +49,7 @@ public class GestionUsuario{
             return false;
         }
 
-        if(usuarioDAO.insert(nuevoUsuario, getDaoManager())){
+        if(usuarioDAO.insert(nuevoUsuario, getDAOManager())){
             usuarios.put(nuevoUsuario.getCorreo(), nuevoUsuario);
             return true;
         }
@@ -73,7 +73,7 @@ public class GestionUsuario{
         String nombreAnterior = usuario.getNombre();
         usuario.setNombre(nuevoNombre);
 
-        if (usuarioDAO.update(usuario, getDaoManager())) {
+        if (usuarioDAO.update(usuario, getDAOManager())) {
             return true;
         } else {
             usuario.setNombre(nombreAnterior);
@@ -91,7 +91,7 @@ public class GestionUsuario{
         String passAnterior = usuario.getPassword();
         usuario.setPassword(nuevaContrasena);
 
-        if (usuarioDAO.update(usuario, getDaoManager())) {
+        if (usuarioDAO.update(usuario, getDAOManager())) {
             return true;
         } else {
             usuario.setPassword(passAnterior);
@@ -108,7 +108,7 @@ public class GestionUsuario{
             boolean estadoOriginal = usuario.isBloqueado();
             usuario.setBloqueado(estado);
 
-            if(usuarioDAO.update(usuario, getDaoManager())){
+            if(usuarioDAO.update(usuario, getDAOManager())){
                 return true;
             } else {
                 usuario.setBloqueado(estadoOriginal);
@@ -128,7 +128,7 @@ public class GestionUsuario{
         float saldoAnterior = usuario.getSaldo();
         usuario.setSaldo(saldoAnterior + cantidad);
 
-        if (usuarioDAO.update(usuario, getDaoManager())) {
+        if (usuarioDAO.update(usuario, getDAOManager())) {
             return true;
         } else {
             usuario.setSaldo(saldoAnterior);
@@ -147,7 +147,7 @@ public class GestionUsuario{
             float saldoAnterior = usuario.getSaldo();
             usuario.setSaldo(saldoAnterior - cantidad);
 
-            if (usuarioDAO.update(usuario, getDaoManager())) {
+            if (usuarioDAO.update(usuario, getDAOManager())) {
                 return true;
             } else {
                 usuario.setSaldo(saldoAnterior);
@@ -166,7 +166,7 @@ public class GestionUsuario{
                 return false;
             }
 
-            if (amigosReferidosDAO.insert(asistente.getCorreo(), correoAmigo, getDaoManager())) {
+            if (amigosReferidosDAO.insert(asistente.getCorreo(), correoAmigo, getDAOManager())) {
                 asistente.getAmigosReferidos().add(correoAmigo);
                 return true;
             }
@@ -181,7 +181,7 @@ public class GestionUsuario{
         Usuario usuario = buscaUsuarioPorCorreo(correo);
         if (usuario == null) { return false; }
 
-        if (usuarioDAO.delete(usuario, getDaoManager())) {
+        if (usuarioDAO.delete(usuario, getDAOManager())) {
             usuarios.remove(correo);
             return true;
         }
@@ -196,7 +196,7 @@ public class GestionUsuario{
      * Si la BD está vacía, inserta los usuarios predefinidos.
      */
     public void cargarUsuariosDesdeBDD() {
-        DAOManager daoManager = getDaoManager();
+        DAOManager daoManager = getDAOManager();
         ArrayList<Usuario> usuariosBDD = usuarioDAO.readAll(daoManager);
 
         if (usuariosBDD != null) {
@@ -219,6 +219,8 @@ public class GestionUsuario{
      * Crea los usuarios predefinidos para las pruebas
      */
     public void cargarUsuariosPredefinidos(){
+        if(!usuarios.isEmpty()) return;
+
         aniadirUsuario(new Administrador("admin", "admin@fernanevents.com", Cadenas.hashearPassword("admin")));
         aniadirUsuario(new Organizador("organizador1", "organizador1@fernanevents.com", Cadenas.hashearPassword("organizador1")));
         aniadirUsuario(new Asistente("asistente1", "asistente1@fernanevents.com", Cadenas.hashearPassword("1234")));

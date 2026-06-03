@@ -18,7 +18,7 @@ public class DAOEventoSQL implements EventoDAO {
         String sql = "INSERT INTO Evento(nombre, descripcion, categoria, fecha, aforo, personas_inscritas, " +
                 "correo_organizador) VALUES(?, ?, ?, ?, ?, ?, ?);";
 
-        try(PreparedStatement ps = dao.getConn().prepareStatement(sql)){
+        try(PreparedStatement ps = dao.getConn().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
             ps.setString(1, evento.getNombre());
             ps.setString(2, evento.getDescripcion());
             ps.setString(3, evento.getCategoria().name());
@@ -28,7 +28,16 @@ public class DAOEventoSQL implements EventoDAO {
             ps.setString(7, evento.getOrganizador().getCorreo());
 
             int filasAfectadas = ps.executeUpdate();
-            return filasAfectadas > 0;
+
+            if (filasAfectadas > 0) {
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        evento.setId(generatedKeys.getInt(1));
+                    }
+                }
+                return true;
+            }
+            return false;
 
         }catch (SQLException e){
             e.printStackTrace();

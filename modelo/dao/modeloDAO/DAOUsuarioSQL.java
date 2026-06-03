@@ -18,7 +18,7 @@ public class DAOUsuarioSQL implements UsuarioDAO {
     public boolean insert(Usuario usuario, DAOManager dao) {
         String sql = "INSERT INTO Usuario(nombre, correo, password, rol, saldo, bloqueado) VALUES(?, ?, ?, ?, ?, ?);";
 
-        try(PreparedStatement ps = dao.getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+        try(PreparedStatement ps = dao.getConn().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getCorreo());
             ps.setString(3, usuario.getPassword());

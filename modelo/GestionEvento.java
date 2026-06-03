@@ -1,5 +1,8 @@
 package FernanEvents.modelo;
 
+import FernanEvents.modelo.dao.conexion.DAOManager;
+import FernanEvents.modelo.dao.modeloDAO.DAOEntradaSQL;
+import FernanEvents.modelo.dao.modeloDAO.DAOEventoSQL;
 import FernanEvents.modelo.utilidades.FuncionesFechas;
 import FernanEvents.vista.VistaFernan;
 
@@ -12,10 +15,28 @@ public class GestionEvento {
 
     private ArrayList<Evento> eventos;
     private VistaFernan vista;
+    private DAOEventoSQL eventoDAO;
+    private DAOEntradaSQL entradaDAO;
 
     public GestionEvento(VistaFernan vista) {
         eventos = new ArrayList<>();
         this.vista = vista;
+        this.eventoDAO = new DAOEventoSQL();
+        this.entradaDAO = new DAOEntradaSQL();
+    }
+
+    private DAOManager getDAOManager(){
+        return DAOManager.getSingletonInstance();
+    }
+
+    public void cargarEventosDesdeBDD(){
+        DAOManager daoManager = getDAOManager();
+        ArrayList<Evento> eventosBDD = eventoDAO.readAll(daoManager);
+
+        if(eventosBDD != null){
+            eventos.clear();
+            eventos.addAll(eventosBDD);
+        }
     }
 
     //*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.CRUD.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*
@@ -90,8 +111,13 @@ public class GestionEvento {
      * Añade un nuevo evento al array
      */
     public boolean aniadirEvento(Evento nuevoEvento) {
-        eventos.add(nuevoEvento);
-        return true;
+        if(nuevoEvento == null) return false;
+
+        if(eventoDAO.insert(nuevoEvento, getDAOManager())){
+            eventos.add(nuevoEvento);
+            return true;
+        }
+        return false;
     }
 
     //----------------------------------------------------------------------------------------------------
@@ -257,8 +283,15 @@ public class GestionEvento {
             return false;
         }
 
+        String nombreAnterior = evento.getNombre();
         evento.setNombre(nuevoNombre);
-        return true;
+
+        if (eventoDAO.update(evento, getDAOManager())) {
+            return true;
+        } else {
+            evento.setNombre(nombreAnterior);
+            return false;
+        }
     }
 
     /**
@@ -268,8 +301,15 @@ public class GestionEvento {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
 
+        String descAnterior = evento.getDescripcion();
         evento.setDescripcion(nuevaDescripcion);
-        return true;
+
+        if (eventoDAO.update(evento, getDAOManager())) {
+            return true;
+        } else {
+            evento.setDescripcion(descAnterior);
+            return false;
+        }
     }
 
     /**
@@ -279,8 +319,15 @@ public class GestionEvento {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
 
+        CategoriaEvento catAnterior = evento.getCategoria();
         evento.setCategoria(nuevaCategoria);
-        return true;
+
+        if (eventoDAO.update(evento, getDAOManager())) {
+            return true;
+        } else {
+            evento.setCategoria(catAnterior);
+            return false;
+        }
     }
 
     /**
@@ -290,9 +337,16 @@ public class GestionEvento {
         Evento evento = buscarEventoPorNombre(nombreEvento);
         if (evento == null) return false;
 
+        LocalDate fechaAnterior = evento.getFecha();
         LocalDate fecha = FuncionesFechas.convertirStringEnFecha(nuevaFecha);
         evento.setFecha(fecha);
-        return true;
+
+        if (eventoDAO.update(evento, getDAOManager())) {
+            return true;
+        } else {
+            evento.setFecha(fechaAnterior);
+            return false;
+        }
     }
 
     /**
@@ -306,8 +360,15 @@ public class GestionEvento {
             return false;
         }
 
+        int aforoAnterior = evento.getAforo();
         evento.setAforo(nuevoAforo);
-        return true;
+
+        if (eventoDAO.update(evento, getDAOManager())) {
+            return true;
+        } else {
+            evento.setAforo(aforoAnterior);
+            return false;
+        }
     }
 
     /**
@@ -322,8 +383,15 @@ public class GestionEvento {
             return false;
         }
 
+        int inscritosAnteriores = evento.getPersonasInscritas();
         evento.setPersonasInscritas(nuevosInscritos);
-        return true;
+
+        if (eventoDAO.update(evento, getDAOManager())) {
+            return true;
+        } else {
+            evento.setPersonasInscritas(inscritosAnteriores);
+            return false;
+        }
     }
 
     /**
@@ -332,35 +400,69 @@ public class GestionEvento {
     public boolean actualizarEntradasInterno(Evento evento){
         Scanner s = new Scanner(System.in);
         int aforoRestante = evento.getAforo() - evento.getPersonasInscritas();
+        ArrayList<Entrada> entradasAnteriores = evento.getTiposDeEntrada();
         ArrayList<Entrada> nuevasEntradas = new ArrayList<>();
 
         for(CategoriaEntrada categoria : CategoriaEntrada.values()){
             vista.preguntaCantidadEntradasPorTipo(categoria.toString(), aforoRestante);
             int cantidad = Integer.parseInt(s.nextLine());
 
+            Entrada nuevaEntrada;
             if(cantidad <= aforoRestante && cantidad >= 0){
                 float precio = 0;
                 if(cantidad > 0){
                     vista.preguntaPrecioEntrada(categoria.toString());
                     precio = Float.parseFloat(s.nextLine());
                 }
-                nuevasEntradas.add(new Entrada(categoria, precio, cantidad));
+                nuevaEntrada = new Entrada(categoria, precio, cantidad);
                 aforoRestante -= cantidad;
             }else{
                 vista.errorCantidadNoValida();
-                nuevasEntradas.add(new Entrada(categoria, 0, 0));
+                nuevaEntrada = new Entrada(categoria, 0, 0);
+            }
+
+            for(Entrada entradaAnterior : entradasAnteriores){
+                if(entradaAnterior.getCategoria().equals(categoria)){
+                    nuevaEntrada.setId(entradaAnterior.getId());
+                    nuevaEntrada.setId_evento(entradaAnterior.getId_evento());
+                    break;
+                }
+            }
+            nuevasEntradas.add(nuevaEntrada);
+        }
+
+        evento.setTiposDeEntrada(nuevasEntradas);
+
+        // Actualizamos cada entrada individualmente en BD
+        boolean todasEntradasOk = true;
+        for(Entrada entrada : nuevasEntradas){
+            if(!entradaDAO.update(entrada, getDAOManager())){
+                todasEntradasOk = false;
+                break;
             }
         }
-        evento.setTiposDeEntrada(nuevasEntradas);
-        return true;
+
+        if(eventoDAO.update(evento, getDAOManager()) && todasEntradasOk){
+            return true;
+        } else {
+            evento.setTiposDeEntrada(entradasAnteriores);
+            return false;
+        }
     }
 
     //D --> DELETE
     /**
-     * Elimina un evento por su nombre mediante una función lambda
+     * Elimina un evento por su nombre
      */
     private boolean eliminaEvento(String nombreEvento) {
-        return eventos.removeIf(e -> e.getNombre().equalsIgnoreCase(nombreEvento));
+        Evento evento = buscarEventoPorNombre(nombreEvento);
+        if (evento == null) return false;
+
+        if (eventoDAO.delete(evento, getDAOManager())) {
+            eventos.remove(evento);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -401,9 +503,23 @@ public class GestionEvento {
         for(Entrada entrada : evento.getTiposDeEntrada()){
             if(entrada.getCategoria().equals(categoriaEntrada)){
                 if(entrada.getCantidadDisponible() >= cantidad){
-                    entrada.setCantidadDisponible(entrada.getCantidadDisponible() - cantidad);
-                    evento.setPersonasInscritas(evento.getPersonasInscritas() + cantidad);
-                    return true;
+
+                    int cantAnteriorEntrada = entrada.getCantidadDisponible();
+                    int inscritosAnterioresEvento = evento.getPersonasInscritas();
+
+                    entrada.setCantidadDisponible(cantAnteriorEntrada - cantidad);
+                    evento.setPersonasInscritas(inscritosAnterioresEvento + cantidad);
+
+                    boolean eventoActualizado = eventoDAO.update(evento, getDAOManager());
+                    boolean entradaActualizada = entradaDAO.update(entrada, getDAOManager());
+
+                    if (eventoActualizado && entradaActualizada) {
+                        return true;
+                    } else {
+                        entrada.setCantidadDisponible(cantAnteriorEntrada);
+                        evento.setPersonasInscritas(inscritosAnterioresEvento);
+                        return false;
+                    }
                 }
             }
         }
