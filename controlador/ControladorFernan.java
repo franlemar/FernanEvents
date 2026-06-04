@@ -129,7 +129,7 @@ public class ControladorFernan {
         }
 
         String codigoVerificacion = Cadenas.generarCodigoVerificacion();
-        String destinatario = "flenmar918@g.educaand.es";
+        String destinatario = "jmorcam520@g.educaand.es";
         String asunto = "Código de verificación - Inicio de sesión";
         String cuerpo = EnvioGmail.plantillaLoginAdmin(usuario.getNombre(), codigoVerificacion);
 
@@ -254,6 +254,7 @@ public class ControladorFernan {
                 }
 
                 modeloUsu.aniadirUsuario(nuevoUsuario);
+                logs.registrar("Inserción en tabla usuarios", nombreRegistro);
                 logs.registrar("Nuevo usuario creado", nombreRegistro);
                 tokenVerificado = true;
             }
@@ -452,6 +453,7 @@ public class ControladorFernan {
         vista.pedirCorreo();
         String correoABloquear = s.nextLine();
         if(modeloUsu.actualizaEstadoBloqueo(correoABloquear, false)){
+            logs.registrar("Actualización en tabla usuarios", usuarioLogueado.getNombre());
             vista.mensajeConfirmacion();
             return true;
         }
@@ -516,6 +518,7 @@ public class ControladorFernan {
         boolean recargaCorrecta = modeloUsu.aniadirSaldo(usuarioLogueado.getCorreo(), saldoASumar);
 
         if(recargaCorrecta){
+            logs.registrar("Actualización en tabla usuarios", usuarioLogueado.getNombre());
             logs.registrar("Recarga de saldo: " + saldoASumar + "€", usuarioLogueado.getNombre());
         }
         return recargaCorrecta;
@@ -531,6 +534,7 @@ public class ControladorFernan {
         boolean retiradaCorrecta = modeloUsu.quitarSaldo(usuarioLogueado.getCorreo(), saldoARetirar);
 
         if(retiradaCorrecta){
+            logs.registrar("Actualización en tabla usuarios", usuarioLogueado.getNombre());
             logs.registrar("Retirada de saldo: " + saldoARetirar + "€", usuarioLogueado.getNombre());
         }
 
@@ -598,6 +602,7 @@ public class ControladorFernan {
 
         boolean cambioCorrecto = modeloUsu.actualizarNombre(usuarioCambio.getCorreo(), nuevoNombreUsuario);
         if(cambioCorrecto){
+            logs.registrar("Actualización en tabla usuarios", usuarioLogueado.getNombre());
             logs.registrar("ADMIN: Cambio de nombre de usuario: " + nombreUsuarioCambio + " -> " + nuevoNombreUsuario,
                     usuarioLogueado.getNombre());
         }
@@ -623,6 +628,7 @@ public class ControladorFernan {
         boolean cambioCorrectoPW = modeloUsu.actualizarContrasena(usuarioCambio.getCorreo(), Cadenas.hashearPassword(nuevaPassword));
 
         if(cambioCorrectoPW){
+            logs.registrar("Actualización en tabla usuarios", usuarioLogueado.getNombre());
             logs.registrar("ADMIN: Cambio de contraseña para " + nombreUsuarioCambio, usuarioLogueado.getNombre());
         }
         return cambioCorrectoPW;
@@ -682,6 +688,7 @@ public class ControladorFernan {
         if(modeloUsu.actualizarNombre(usuarioLogueado.getCorreo(), nuevoNombre)){
             usuarioLogueado = modeloUsu.buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
             modeloEnt.setUsuarioLogueado(usuarioLogueado);
+            logs.registrar("Actualización en tabla usuarios", usuarioLogueado.getNombre());
             logs.registrar("Cambio de nombre de usuario: " + nombreAntiguo + " -> " + nuevoNombre,
                     usuarioLogueado.getNombre());
             return true;
@@ -706,6 +713,7 @@ public class ControladorFernan {
             if(modeloUsu.actualizarContrasena(usuarioLogueado.getCorreo(), Cadenas.hashearPassword(nuevaPassword))){
                 this.usuarioLogueado = modeloUsu. buscaUsuarioPorCorreo(usuarioLogueado.getCorreo());
                 modeloEnt.setUsuarioLogueado(usuarioLogueado);
+                logs.registrar("Actualización en tabla usuarios", usuarioLogueado.getNombre());
                 logs.registrar("Cambio de contraseña", usuarioLogueado.getNombre());
                 return true;
             }
@@ -818,6 +826,7 @@ public class ControladorFernan {
 
                     if(modeloEve.aniadirEvento(nuevoEvento)){
                         vista.mensajeConfirmacion();
+                        logs.registrar("Inserción en tabla eventos", usuarioLogueado.getNombre());
                         logs.registrar("Nuevo evento creado", usuarioLogueado.getNombre());
                     }else{
                         vista.mensajeError();
@@ -826,6 +835,7 @@ public class ControladorFernan {
 
                 case 3:
                     modeloEve.modificarEvento();
+                    logs.registrar("Actualización en tabla eventos", usuarioLogueado.getNombre());
                     logs.registrar("Modificación de evento", usuarioLogueado.getNombre());
                     break;
 
@@ -834,6 +844,7 @@ public class ControladorFernan {
                     if(eventoEliminado != null){
                         modeloUsu.limpiarEventoDeAsistentes(eventoEliminado);
                         vista.mensajeConfirmacion();
+                        logs.registrar("Borrado en tabla eventos", usuarioLogueado.getNombre());
                         logs.registrar("Eliminación de evento", usuarioLogueado.getNombre());
                     }else{
                         vista.mensajeError();
@@ -881,8 +892,11 @@ public class ControladorFernan {
      */
     private void cargarDatos() {
         modeloUsu.cargarUsuariosDesdeBDD();
+        logs.registrar("Acceso a tabla usuarios", "sistema");
         modeloUsu.cargarUsuariosPredefinidos();
         modeloEve.cargarEventosDesdeBDD();
+        logs.registrar("Acceso a tabla eventos", "sistema");
+
     }
 
     /**
