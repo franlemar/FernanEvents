@@ -53,6 +53,9 @@ public class DAOAsistentes_EventoSQL implements Asistentes_EventoDAO {
         }
     }
 
+    /**
+     * Método que elimina la inscripción de un asistente a un evento en la base de datos de FernanEvents
+     */
     public boolean delete(Asistente asistente, Evento evento, DAOManager dao) {
         String sql = "DELETE FROM Asistentes_Evento WHERE correo_asistente = ? AND id_evento = ?;";
 
@@ -69,6 +72,9 @@ public class DAOAsistentes_EventoSQL implements Asistentes_EventoDAO {
         }
     }
 
+    /**
+     * Método que comprueba si existe la inscripción de un asistente a un evento en la base de datos de FernanEvents
+     */
     public Asistente read(Asistente asistente, Evento evento, DAOManager dao){
         String sql = "SELECT * FROM Asistentes_Evento WHERE correo_asistente = ? AND id_evento = ?;";
 
@@ -88,6 +94,9 @@ public class DAOAsistentes_EventoSQL implements Asistentes_EventoDAO {
         }
     }
 
+    /**
+     * Método que devuelve un HashMap con todos los eventos a los que está inscrito un asistente y el número de entradas de cada uno
+     */
     public HashMap<String, Integer> readAllInscripcionesPorAsistente(String correoAsistente, DAOManager dao) {
         HashMap<String, Integer> inscripciones = new HashMap<>();
         String sql = "SELECT e.nombre, ae.cantidad_entradas FROM Asistentes_evento ae " +

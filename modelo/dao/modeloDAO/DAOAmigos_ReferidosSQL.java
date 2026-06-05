@@ -48,6 +48,9 @@ public class DAOAmigos_ReferidosSQL implements Amigos_ReferidosDAO {
         }
     }
 
+    /**
+     * Método que devuelve un ArrayList con todos los correos de amigos referidos por un asistente
+     */
     public ArrayList<String> readAllAmigos(String correoAsistente, DAOManager dao) {
         String sql = "SELECT correo_amigo FROM Amigos_referidos WHERE correo_asistente = ?;";
         ArrayList<String> amigosReferidos = new ArrayList<>();
