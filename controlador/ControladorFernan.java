@@ -21,7 +21,7 @@ public class ControladorFernan {
         this.modeloUsu = modeloUsu;
         this.vista = vista;
         this.modeloEve = modeloEve;
-        this.properties = new GestorProperties("datosJSON/configuracion.properties");
+        this.properties = new GestorProperties("archivosConfig/configuracion.properties");
         this.logs = new GestorLogs(properties.obtenerRuta("ruta.logs"));
         this.modeloEnt = new GestionEntrada(modeloUsu, modeloEve, vista, usuarioLogueado, logs);
 
@@ -129,7 +129,7 @@ public class ControladorFernan {
         }
 
         String codigoVerificacion = Cadenas.generarCodigoVerificacion();
-        String destinatario = "jmorcam520@g.educaand.es";
+        String destinatario = "flenmar918@g.educaand.es";
         String asunto = "Código de verificación - Inicio de sesión";
         String cuerpo = EnvioGmail.plantillaLoginAdmin(usuario.getNombre(), codigoVerificacion);
 

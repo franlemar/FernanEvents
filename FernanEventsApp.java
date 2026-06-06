@@ -4,6 +4,7 @@ import FernanEvents.controlador.ControladorFernan;
 import FernanEvents.modelo.GestionEvento;
 import FernanEvents.modelo.GestionUsuario;
 import FernanEvents.vista.VistaFernan;
+
 /**
  * Método principal que arranca la aplicación inicializando los modelos, la vista y el controlador
  */

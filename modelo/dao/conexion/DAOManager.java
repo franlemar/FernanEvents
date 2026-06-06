@@ -10,7 +10,7 @@ public class DAOManager {
 
     private Connection conn;
     private static DAOManager singleton;
-    private static final String RUTA_CONFIG = "datosJSON/configuracion.properties";
+    private static final String RUTA_CONFIG = "archivosConfig/configuracion.properties";
 
     private DAOManager() {
         this.conn = null;
