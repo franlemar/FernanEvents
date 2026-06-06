@@ -1,6 +1,9 @@
 FernanEvents
 FernanEvents.controlador
 FernanEvents.modelo
+FernanEvents.modelo.dao.conexion
+FernanEvents.modelo.dao.modeloDAO
+FernanEvents.modelo.dao.modeloDAO.interfaces
 FernanEvents.modelo.utilidades
 FernanEvents.modelo.utilidades.interfaces
 FernanEvents.vista
